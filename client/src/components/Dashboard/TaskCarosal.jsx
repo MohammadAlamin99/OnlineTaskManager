@@ -36,9 +36,9 @@ const TaskCarosal = ({ props }) => {
                 : [...prevSelectedUsers, userId]
         );
     };
-
+    
     const dispatch = useDispatch();
-const SearchUser = useSelector((state)=>state.users.user);
+    const SearchUser = useSelector((state)=>state.users.user);
 
     useEffect(() => {
         (async () => {

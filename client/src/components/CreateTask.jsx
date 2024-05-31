@@ -4,6 +4,10 @@ import LeftSideHome from './Dashboard/LeftSideHome';
 import Carousel from './Dashboard/TaskCarosal';
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { getCompletedRequest, getInProgressRequest, getTaskRequest } from '../apiRequiest/apiRequiest';
+import { useDispatch, useSelector } from 'react-redux';
+import { setComplete } from '../redux/state-slice/completeTask-slice';
+import { setInProgress } from '../redux/state-slice/inProgressTask-slice';
+import { setTodo } from '../redux/state-slice/todoTask-slice';
 const CreateTask = () => {
     const [isCarouselVisible, setCarouselVisible] = useState(false);
 
@@ -15,28 +19,31 @@ const CreateTask = () => {
         setCarouselVisible(false);
     };
 
-    const [getTask, setTask] = useState([]);
-
+    const todoDispatch = useDispatch();
+    const getTodo = useSelector((state)=>state.getTodo.todo)
     useEffect(()=>{
         (async()=>{
             let result = await getTaskRequest("TODO");
-            setTask(result)
+            todoDispatch(setTodo(result))
         })()
     },[0])
 
-    const [progress, setProgress]=useState([])
+    const inDisPatch = useDispatch();
+    const getInPro = useSelector((state)=>state.getInProgress.inProgress);
+
     useEffect(()=>{
         (async()=>{
             let result = await getInProgressRequest("In Progress");
-            setProgress(result)
+            inDisPatch(setInProgress(result))
         })()
     },[0])
 
-    const [complete, setComplete]=useState([])
+    const comDispatch = useDispatch();
+    const getComplete = useSelector((state)=> state.getComplete.complete);
     useEffect(()=>{
         (async()=>{
             let result = await getCompletedRequest("Completed");
-            setComplete(result)
+            comDispatch(setComplete(result));
         })()
     },[0])
 
@@ -62,14 +69,14 @@ const CreateTask = () => {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-lg-4">
-                                todo
+                            <div className="col-lg-4 todo">
+                                To-Do
                             </div>
-                            <div className="col-lg-4">
-                                inprogress
+                            <div className="col-lg-4 inPro">
+                                In-Progress
                             </div>
-                            <div className="col-lg-4">
-                                complete
+                            <div className="col-lg-4 comp">
+                                Complete
                             </div>
                         </div>
 
@@ -77,14 +84,14 @@ const CreateTask = () => {
                             <div className="getTask d-flex pb-2">
                                 <div className="col-4">
                                  {
-                                    getTask.length>0?(
-                                        getTask.map((item, i)=>{
+                                    getTodo.length>0?(
+                                        getTodo.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
                                                 <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
-                                                <h4 style={{color:"#0A904B", fontWeight:"600"}}>{item.status}</h4>
+                                                <h4 style={{color:"#08A9F4", fontWeight:"600"}}>{item.status}</h4>
                                                 <h4>{item.dueDate}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
@@ -110,14 +117,14 @@ const CreateTask = () => {
                                 </div>
                                 <div className="col-lg-4">
                                 {
-                                    progress.length>0?(
-                                        progress.map((item, i)=>{
+                                    getInPro.length>0?(
+                                        getInPro.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
                                                 <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
-                                                <h4 style={{color:"#0A904B", fontWeight:"600"}}>{item.status}</h4>
+                                                <h4 style={{color:"#FF7800", fontWeight:"600"}}>{item.status}</h4>
                                                 <h4>{item.dueDate}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
@@ -141,18 +148,16 @@ const CreateTask = () => {
                                     ):("No Task Found")
                                  }
                                 </div>
-
-
                                 <div className="col-lg-4">
                                 {
-                                    complete.length>0?(
-                                        complete.map((item, i)=>{
+                                    getComplete.length>0?(
+                                        getComplete.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
                                                 <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
-                                                <h4 style={{color:"#0A904B", fontWeight:"600"}}>{item.status}</h4>
+                                                <h4 style={{color:"#2ECD6E", fontWeight:"600"}}>{item.status}</h4>
                                                 <h4>{item.dueDate}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
@@ -176,12 +181,8 @@ const CreateTask = () => {
                                     ):("No Task Found")
                                  }
                                 </div>
-
-
                             </div>
                         </div>
-
-                        
                     </div>
                 </div>
             </div>
