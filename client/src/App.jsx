@@ -5,6 +5,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { getToken } from "./Helper/SessionHelper";
 import TaskPage from "./pages/TaskPage";
+import CompletePage from "./pages/CompletePage";
+import InProgressPage from "./pages/InProgressPage";
+import TodoPage from "./pages/TodoPage";
 
 
 function App() {
@@ -16,6 +19,9 @@ if(getToken()){
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/task" element={<TaskPage/>} />
+        <Route path="/complete" element={<CompletePage/>} />
+        <Route path="/inprogress" element={<InProgressPage/>} />
+        <Route path="/todo" element={<TodoPage/>} />
       </Routes>
     </BrowserRouter>
   );
