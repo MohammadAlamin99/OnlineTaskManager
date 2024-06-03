@@ -118,7 +118,7 @@ const CreateTask = () => {
                                                    
                                                 <p>{item.priority} <MdKeyboardDoubleArrowUp />  
                                                 <LiaEditSolid  onClick={() => showUpdate(item._id)} 
-                                                 style={{color:"black", fontSize:"17px", cursor:"pointer", marginLeft:"13rem"}}/>
+                                                 style={{color:"black", fontSize:"17px", cursor:"pointer", marginLeft:"12rem"}}/>
                                                  <AiOutlineDelete onClick={()=> DeleteTaskHandler(item._id)} style={{color:"red", fontSize:"17px", cursor:"pointer", marginLeft:"10px"}}/>
                                                  </p>
 
@@ -154,7 +154,11 @@ const CreateTask = () => {
                                         getInPro.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
-                                                <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
+                                                <p>{item.priority} <MdKeyboardDoubleArrowUp />
+                                                <LiaEditSolid  onClick={() => showUpdate(item._id)} 
+                                                 style={{color:"black", fontSize:"17px", cursor:"pointer", marginLeft:"12rem"}}/>
+                                                 <AiOutlineDelete onClick={()=> DeleteTaskHandler(item._id)} style={{color:"red", fontSize:"17px", cursor:"pointer", marginLeft:"10px"}}/>
+                                                </p>
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#FF7800", fontWeight:"600"}}>{item.status}</h4>
@@ -187,7 +191,11 @@ const CreateTask = () => {
                                         getComplete.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
-                                                <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
+                                                <p>{item.priority} <MdKeyboardDoubleArrowUp />
+                                                <LiaEditSolid  onClick={() => showUpdate(item._id)} 
+                                                 style={{color:"black", fontSize:"17px", cursor:"pointer", marginLeft:"12rem"}}/>
+                                                 <AiOutlineDelete onClick={()=> DeleteTaskHandler(item._id)} style={{color:"red", fontSize:"17px", cursor:"pointer", marginLeft:"10px"}}/>
+                                                </p>
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#2ECD6E", fontWeight:"600"}}>{item.status}</h4>

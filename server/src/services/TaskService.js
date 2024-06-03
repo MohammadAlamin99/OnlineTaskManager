@@ -81,8 +81,8 @@ exports.getCompleteTaskService = async (req) => {
 // update Task
 exports.updaeTask = async (req)=>{
     try{
-        let id = req.params.id;
         let reqBody = req.body;
+        let id = req.body.id;
         let Query = {_id:id}
         let data = await TasksModel.updateOne(Query,reqBody);
         return({status:"success", data:data});

@@ -122,9 +122,10 @@ export async function DeleteTaskRequest(id) {
  }
 
 //  update status task
-export  async function UpdateStatusRequiest(id, status) {
+export  async function UpdateTaskRequest (id,title,description,dueDate,priority,status,category) {
     try {
-        let result = await axios.get(BaseURL+'/api/v1/updateStatus/'+id+"/"+status,Headers);
+        let reqBody ={id:id, title:title, description:description, dueDate:dueDate, priority:priority, status:status, category:category};
+        let result = await axios.post(BaseURL+'/api/v1/taskUpdate',reqBody,Headers);
         return result 
     }
     catch (e) {
