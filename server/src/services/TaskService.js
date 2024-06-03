@@ -78,8 +78,33 @@ exports.getCompleteTaskService = async (req) => {
     }
 }
 
+// update Task
+exports.updaeTask = async (req)=>{
+    try{
+        let id = req.params.id;
+        let reqBody = req.body;
+        let Query = {_id:id}
+        let data = await TasksModel.updateOne(Query,reqBody);
+        return({status:"success", data:data});
+    }
+    catch(e){
+        console.log(e)
+        return {status:"fail", message:"something went wrong"}
+    }
+}
 
-
+// Delete Task
+exports.deleteTask = async(req)=>{
+    try{
+        let id = req.params.id;
+        let Query = {_id:id}
+        let data = await TasksModel.deleteOne(Query);
+        return({status:"success", data:data});
+    }
+    catch(e){
+        return({status:"fail", message:"Something went wrong"})
+    }
+}
 
 
 

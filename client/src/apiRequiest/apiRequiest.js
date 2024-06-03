@@ -99,7 +99,7 @@ export  async function ListByStatusRequiest(status) {
  }
 
 //  Task list count
- export  async function ListTaskCountRequiest() {
+ export async function ListTaskCountRequiest() {
     try {
         let result = await axios.get(BaseURL+'/api/v1/listTaskCount',Headers);
         let data = result.data["data"];
@@ -111,9 +111,9 @@ export  async function ListByStatusRequiest(status) {
  }
 
 //  Delete Task
-export  async function DeleteTaskRequest(id) {
+export async function DeleteTaskRequest(id) {
     try {
-        let result = await axios.delete(BaseURL+'/api/v1/deleteTask/'+id,Headers);
+        let result = await axios.delete(BaseURL+'/api/v1/taskDelete/'+id,Headers);
         return result;
     }
     catch (e) {
@@ -134,7 +134,7 @@ export  async function UpdateStatusRequiest(id, status) {
 
 //  User profile update
 
-export  async function UserProfileUpdateRequest(email,firstName,lastName,mobile,password,photo) {
+export async function UserProfileUpdateRequest(email,firstName,lastName,mobile,password,photo) {
     try {
         let reqBody={email:email,firstName:firstName,lastName:lastName,mobile:mobile,password:password, photo:photo}
         let UserDetails={email:email,firstName:firstName,lastName:lastName,mobile:mobile,photo:photo}

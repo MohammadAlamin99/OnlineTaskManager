@@ -17,9 +17,10 @@ router.post("/createTask",AuthVerificationMiddleware, TasksController.taskCreate
 router.get("/getTaskController/:status",AuthVerificationMiddleware, TasksController.getTaskController)
 router.get("/getInprogress/:status",AuthVerificationMiddleware, TasksController.getInprogressController)
 router.get("/getComplete/:status",AuthVerificationMiddleware, TasksController.getCompleteController)
+router.post("/taskUpdate/:id",AuthVerificationMiddleware, TasksController.taskUpdate)
+router.delete("/taskDelete/:id",AuthVerificationMiddleware, TasksController.taskDelete)
 
 
-router.delete("/deleteTask",AuthVerificationMiddleware, TasksController.deleteTask)
 router.get("/teamWorkList/:id",AuthVerificationMiddleware, TasksController.teamWorkList)
 router.get("/updateStatus/:id/:status",AuthVerificationMiddleware, TasksController.updateStatus)
 

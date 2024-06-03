@@ -3,14 +3,20 @@ import Header from './Dashboard/Header';
 import LeftSideHome from './Dashboard/LeftSideHome';
 import Carousel from './Dashboard/TaskCarosal';
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { getCompletedRequest, getInProgressRequest, getTaskRequest } from '../apiRequiest/apiRequiest';
+import { DeleteTaskRequest, getCompletedRequest, getInProgressRequest, getTaskRequest } from '../apiRequiest/apiRequiest';
 import { useDispatch, useSelector } from 'react-redux';
 import { setComplete } from '../redux/state-slice/completeTask-slice';
 import { setInProgress } from '../redux/state-slice/inProgressTask-slice';
 import { setTodo } from '../redux/state-slice/todoTask-slice';
+import { LiaEditSolid } from "react-icons/lia";
+import EditCarosal from './EditCarosal';
+import { AiOutlineDelete } from "react-icons/ai";
+
 const CreateTask = () => {
     const [isCarouselVisible, setCarouselVisible] = useState(false);
+    const [isUpadateCarousel, setUpadateCarousel] = useState(false);
 
+    // create task carousel
     const showCarousel = () => {
         setCarouselVisible(true);
     };
@@ -19,8 +25,22 @@ const CreateTask = () => {
         setCarouselVisible(false);
     };
 
+
+    // update Task carousel
+        // store Task Id
+        const [taskId, setTaskId] = useState("");
+        
+    const showUpdate = (id)=>{
+        setTaskId(id);
+        setUpadateCarousel(true)
+    };
+
+    const hideUpdate = ()=>{
+        setUpadateCarousel(false)
+    };
+
     const todoDispatch = useDispatch();
-    const getTodo = useSelector((state)=>state.getTodo.todo)
+    const getTodo = useSelector((state)=>state.getTodo.todo);
     useEffect(()=>{
         (async()=>{
             let result = await getTaskRequest("TODO");
@@ -47,6 +67,11 @@ const CreateTask = () => {
         })()
     },[0])
 
+    // delete Task
+    const DeleteTaskHandler = async(id)=>{
+        let data = await DeleteTaskRequest(id);
+    }
+
     return (
         <div>
             <div className="">
@@ -60,6 +85,7 @@ const CreateTask = () => {
                         <LeftSideHome/>
                     </div>
                     <div className="col-lg-10">
+
                         <div className="row">
                             <div className="col-lg-10 taskText">
                                 <p>Tasks</p>
@@ -68,6 +94,7 @@ const CreateTask = () => {
                                 <button onClick={showCarousel}>+ Create Task</button>
                             </div>
                         </div>
+
                         <div className="row">
                             <div className="col-lg-4 todo">
                                 To-Do
@@ -88,7 +115,13 @@ const CreateTask = () => {
                                         getTodo.map((item, i)=>{
                                             return(
                                                 <div key={i} className="taxbox">
-                                                <p>{item.priority} <MdKeyboardDoubleArrowUp /></p>
+                                                   
+                                                <p>{item.priority} <MdKeyboardDoubleArrowUp />  
+                                                <LiaEditSolid  onClick={() => showUpdate(item._id)} 
+                                                 style={{color:"black", fontSize:"17px", cursor:"pointer", marginLeft:"13rem"}}/>
+                                                 <AiOutlineDelete onClick={()=> DeleteTaskHandler(item._id)} style={{color:"red", fontSize:"17px", cursor:"pointer", marginLeft:"10px"}}/>
+                                                 </p>
+
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#08A9F4", fontWeight:"600"}}>{item.status}</h4>
@@ -187,6 +220,7 @@ const CreateTask = () => {
                 </div>
             </div>
             {isCarouselVisible && <Carousel props={hideCarousel} />}
+            {isUpadateCarousel && <EditCarosal props={{hideUpdate, taskId}}/>}
         </div>
     );
 };

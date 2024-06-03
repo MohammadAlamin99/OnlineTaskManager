@@ -1,5 +1,5 @@
 
-const { DeleteTask, TaskStatusUpdate, ListTaskByStatus, ListTaskCount, TeamWorkList, getTaskService, CreateTask, getInprogressTaskService, getCompleteTaskService } = require("../services/TaskService");
+const { DeleteTask, TaskStatusUpdate, ListTaskByStatus, ListTaskCount, TeamWorkList, getTaskService, CreateTask, getInprogressTaskService, getCompleteTaskService, updaeTask, deleteTask } = require("../services/TaskService");
 
 exports.taskCreate = async (req, res) => {
     let result = await CreateTask(req);
@@ -48,5 +48,15 @@ exports.getInprogressController = async (req, res) => {
 //  get Inprogress Task
 exports.getCompleteController = async (req, res) => {
     let result = await getCompleteTaskService(req);
+    return res.status(200).json(result);
+ }
+//  Update Task
+exports.taskUpdate = async (req, res) => {
+    let result = await updaeTask(req);
+    return res.status(200).json(result);
+ }
+//  Delete Task
+exports.taskDelete = async (req, res) => {
+    let result = await deleteTask(req);
     return res.status(200).json(result);
  }
