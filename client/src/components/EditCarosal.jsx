@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { UpdateTaskRequest } from '../apiRequiest/apiRequiest';
+import Swal from 'sweetalert2'
+import React, { useEffect, useRef, useState } from 'react';
+import { UpdateTaskRequest, getUpdateTaskRequest } from '../apiRequiest/apiRequiest';
 
 
 const EditCarosal = ({props}) => {
@@ -12,6 +13,7 @@ const EditCarosal = ({props}) => {
     const statusRef = useRef();
     const priorityRef = useRef();
     const dueDateRef = useRef();
+    
     const onUpdateHandler = async()=>{
         const title = titleRef.current.value;
         const description = descriptionRef.current.value;
@@ -19,11 +21,20 @@ const EditCarosal = ({props}) => {
         const status = statusRef.current.value;
         const priority = priorityRef.current.value;
         const dueDate = dueDateRef.current.value;
-
-        let result = await UpdateTaskRequest(taskId,title, description, dueDate, priority, status, category);
-        console.log(result)
+        await UpdateTaskRequest(taskId,title, description, dueDate, priority, status, category);
         window.location.reload();
     }
+
+    // store update defult data
+    const [update, setUpdate] = useState([]);
+
+    useEffect(()=>{
+        (async()=>{
+            let result = await getUpdateTaskRequest(taskId);
+            setUpdate(result[0]);
+        })()
+    },[0])
+    
     
     return (
         <div>
@@ -31,28 +42,25 @@ const EditCarosal = ({props}) => {
                 <div className="carousel-content">
                     <button className="close-button" onClick={hideUpdate}>X</button>
                     <p>Title</p>
-                    <input ref={titleRef} type="text" style={{ width: "100%" }} />
+                    <input ref={titleRef} defaultValue={update.title} type="text" style={{ width: "100%" }} />
                     <p>Description</p>
-                    <textarea ref={descriptionRef} type="text" style={{ width: "100%" }} />
+                    <textarea ref={descriptionRef} defaultValue={update.description} type="text" style={{ width: "100%" }} />
                     <p>Category</p>
-                    <input ref={categoryRef} type="text" style={{ width: "100%" }} />
+                    <input ref={categoryRef} defaultValue={update.category} type="text" style={{ width: "100%" }} />
                     <p>Status</p>
-                    <select ref={statusRef} className="form-control">
+                    <select ref={statusRef} defaultValue={update.status} className="form-control">
                         <option value="TODO">TODO</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
                     </select>
                     <p>Priority</p>
-                    <select ref={priorityRef} className="form-control">
+                    <select ref={priorityRef} defaultValue={update.priority} className="form-control">
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <p>Due Date</p>
-                    <input ref={dueDateRef} type="date" className="form-control" style={{ width: "100%" }} />
-                    <p>Assign To</p>
-                    <div className="form-control" style={{ width: "100%" }}>
-                    </div>
+                    <input ref={dueDateRef} type="date" defaultValue={update.dueDate} className="form-control" style={{ width: "100%" }} />
                     <button onClick={onUpdateHandler} style={{ marginTop: "2px" }} className='btn btn-primary'>Update</button>
                 </div>
             </div>

@@ -150,7 +150,7 @@ export async function UserProfileUpdateRequest(email,firstName,lastName,mobile,p
  
  //  User profile details
 
-export  async function userDetailsRequest() {
+export async function userDetailsRequest() {
     try {
         let result = await axios.get(BaseURL+'/api/v1/profileDetails', Headers);
         let data = result['data'];
@@ -161,4 +161,15 @@ export  async function userDetailsRequest() {
     }
  }
 
+
+//  get Task 
+export async function getUpdateTaskRequest(id){
+    try {
+        let result = await axios.get(BaseURL+'/api/v1/getTask/'+id, Headers);
+        let data = result['data']['data'];
+        return data;
+    } catch (e) {
+        return false
+    }
+}
 

@@ -15,21 +15,6 @@ exports.CreateTask = async (req)=>{
 }
 
 
-// remove task
-exports.DeleteTask = async (req, res)=>{
-    try {
-        let id = req.params.id;
-        let matchItemDelete = {_id:id};
-        let data = await TasksModel.findByIdAndRemove(matchItemDelete)
-        return({status:"success", data:data});
-
-    } catch (e) {
-        console.log(e)
-        return {status:"fail", message:"something went wrong"}
-    }
-}
-
-
 // geting todo task
 exports.getTaskService = async (req) => {
     try {
@@ -62,6 +47,8 @@ exports.getInprogressTaskService = async (req) => {
         return {status:"fail", message:e}
     }
 }
+
+
 // geting Complete task
 exports.getCompleteTaskService = async (req) => {
     try {
@@ -88,7 +75,6 @@ exports.updaeTask = async (req)=>{
         return({status:"success", data:data});
     }
     catch(e){
-        console.log(e)
         return {status:"fail", message:"something went wrong"}
     }
 }
@@ -106,32 +92,28 @@ exports.deleteTask = async(req)=>{
     }
 }
 
+// Get Update Task
 
-
-
-
-
-
-
-
-
-
-
-// tasks status update
-exports.TaskStatusUpdate = async (req, res)=>{
-    try {
-        let id= req.params.id;
-        let status= req.params.status;
-        let Query={_id:id};
-        let reqBody = {status:status}
-        // id:id filtering status:status set in database
-        let data = await TasksModel.updateOne(Query,reqBody)
+exports.getUpdateTask = async(req)=>{
+    try{
+        let id = req.params.id;
+        let Query = {_id:id};
+        let data = await TasksModel.find(Query)
         return({status:"success", data:data});
-
-    } catch (e) {
-        return {status:"fail", message:"something went wrong"}
+    }
+    catch(e){
+        console.log(e)
+        return({status:"fail", message:"Something went wrong"})
     }
 }
+
+
+
+
+
+
+
+
 
 
 //  select task 
