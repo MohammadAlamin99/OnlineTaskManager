@@ -11,6 +11,8 @@ import { setTodo } from '../redux/state-slice/todoTask-slice';
 import { LiaEditSolid } from "react-icons/lia";
 import EditCarosal from './EditCarosal';
 import { AiOutlineDelete } from "react-icons/ai";
+import Swal from 'sweetalert2'
+import moment from 'moment';
 
 const CreateTask = () => {
     const [isCarouselVisible, setCarouselVisible] = useState(false);
@@ -69,7 +71,27 @@ const CreateTask = () => {
 
     // delete Task
     const DeleteTaskHandler = async(id)=>{
-        let data = await DeleteTaskRequest(id);
+       
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+              await DeleteTaskRequest(id);
+              window.location.reload();
+            }
+          });
+
     }
 
     return (
@@ -125,7 +147,7 @@ const CreateTask = () => {
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#08A9F4", fontWeight:"600"}}>{item.status}</h4>
-                                                <h4>{item.dueDate}</h4>
+                                                <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
                                                             item.assignInfo.map((assignee, index) => (
@@ -162,7 +184,7 @@ const CreateTask = () => {
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#FF7800", fontWeight:"600"}}>{item.status}</h4>
-                                                <h4>{item.dueDate}</h4>
+                                                <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
                                                             item.assignInfo.map((assignee, index) => (
@@ -199,7 +221,7 @@ const CreateTask = () => {
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#2ECD6E", fontWeight:"600"}}>{item.status}</h4>
-                                                <h4>{item.dueDate}</h4>
+                                                <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
                                                             item.assignInfo.map((assignee, index) => (

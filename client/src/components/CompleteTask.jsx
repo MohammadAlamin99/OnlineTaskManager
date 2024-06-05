@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { getCompletedRequest } from '../apiRequiest/apiRequiest';
 import { setComplete } from '../redux/state-slice/completeTask-slice';
+import moment from 'moment';
 const CompleteTask = () => {
 
     const comDispatch = useDispatch();
@@ -25,7 +26,7 @@ const CompleteTask = () => {
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"#2ECD6E", fontWeight:"600"}}>{item.status}</h4>
-                                                <h4>{item.dueDate}</h4>
+                                                <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
                                                             item.assignInfo.map((assignee, index) => (

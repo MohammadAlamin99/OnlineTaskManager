@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInProgressRequest } from '../apiRequiest/apiRequiest';
 import { setInProgress } from '../redux/state-slice/inProgressTask-slice';
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+import moment from 'moment';
 const InProgress = () => {
     const inDisPatch = useDispatch();
     const getInPro = useSelector((state)=>state.getInProgress.inProgress);
@@ -25,7 +26,7 @@ const InProgress = () => {
                                                 <span>{item.title} </span>
                                                 <h5>{item.description}</h5>
                                                 <h4 style={{color:"rgb(255, 120, 0)", fontWeight:"600"}}>{item.status}</h4>
-                                                <h4>{item.dueDate}</h4>
+                                                <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
                                                 <h4>Category : {item.category}</h4>
                                                 {item.assignInfo.length > 0 ? (
                                                             item.assignInfo.map((assignee, index) => (

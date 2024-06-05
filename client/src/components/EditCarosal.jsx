@@ -1,4 +1,3 @@
-import Swal from 'sweetalert2'
 import React, { useEffect, useRef, useState } from 'react';
 import { UpdateTaskRequest, getUpdateTaskRequest } from '../apiRequiest/apiRequiest';
 
@@ -21,6 +20,7 @@ const EditCarosal = ({props}) => {
         const status = statusRef.current.value;
         const priority = priorityRef.current.value;
         const dueDate = dueDateRef.current.value;
+
         await UpdateTaskRequest(taskId,title, description, dueDate, priority, status, category);
         window.location.reload();
     }
