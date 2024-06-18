@@ -157,8 +157,22 @@ exports.ListTaskCount = async(req, res)=>{
         return({status:"success", data:result});
 
     } catch (e) {
-        console.log(e)
         return {status:"fail", message:"something went wrong"}
     }
     
+}
+
+// Total task Count
+exports.TotalTaskCount = async(req,res)=>{
+    try {
+        let email = req.headers['email'];
+        let status = req.params.status;
+        let result = await TasksModel.aggregate([
+            {$match:{email:email, status:status}},
+            {$group:{_id:"$status", total:{$count:{}}}}  
+        ])
+        return({status:"Success", data:result})
+    } catch (e) {
+        return {status:"fail", message:"something went wrong"}  
+    }
 }

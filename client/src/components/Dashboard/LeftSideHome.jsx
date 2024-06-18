@@ -7,8 +7,6 @@ import { FaUsers } from "react-icons/fa";
 import { Link, useLocation } from 'react-router-dom';
 const LeftSideHome = () => {
     const path = useLocation().pathname;
-
-
     return (
         <div>
             <div className="manuLeft">
@@ -32,8 +30,10 @@ const LeftSideHome = () => {
                     <Link style={{textDecoration:"none"}} to={"/todo"}>
                         <li className={`${path === "/todo" ? "activeSideMenu" : "Not_active_sidemenu"}`}><RiTodoLine/> To Do</li>
                     </Link>
+                    <Link style={{textDecoration:"none"}} to={"/teamTasks"}>
+                        <li className={`${path === "/teamTasks" ? "activeSideMenu" : "Not_active_sidemenu"}`}><FaUsers/> Team Tasks</li>
+                    </Link>
 
-                    <li><FaUsers/> Member</li>
                 </ul>
             </div>
         </div>

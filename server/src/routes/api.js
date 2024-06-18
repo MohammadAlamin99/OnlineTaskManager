@@ -20,6 +20,7 @@ router.get("/getComplete/:status",AuthVerificationMiddleware, TasksController.ge
 router.post("/taskUpdate",AuthVerificationMiddleware, TasksController.taskUpdate)
 router.delete("/taskDelete/:id",AuthVerificationMiddleware, TasksController.taskDelete)
 router.get("/getTask/:id",AuthVerificationMiddleware, TasksController.getTask)
+router.get("/totalCounTask/:status",AuthVerificationMiddleware, TasksController.totalCounTask)
 
 
 router.get("/teamWorkList/:id",AuthVerificationMiddleware, TasksController.teamWorkList)

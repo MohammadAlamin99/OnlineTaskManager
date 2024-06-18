@@ -35,7 +35,6 @@ const EditCarosal = ({props}) => {
         })()
     },[0])
     
-    
     return (
         <div>
             <div className="carousel-overlay">

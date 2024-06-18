@@ -1,6 +1,7 @@
 import React from 'react';
 import LeftSideHome from './LeftSideHome';
 import Header from './Header';
+import Dashboard from '../Dashboard';
 
 const Home = () => {
   return (
@@ -16,7 +17,7 @@ const Home = () => {
            <LeftSideHome/>
           </div>
           <div className="col-lg-10">
-             <h1>this is Dashboard</h1>
+             <Dashboard/>
           </div>
         </div>
       </div>

@@ -99,11 +99,11 @@ export  async function ListByStatusRequiest(status) {
  }
 
 //  Task list count
- export async function ListTaskCountRequiest() {
+ export async function ListTaskCountRequiest(status) {
     try {
-        let result = await axios.get(BaseURL+'/api/v1/listTaskCount',Headers);
+        let result = await axios.get(BaseURL+'/api/v1/totalCounTask/'+status,Headers);
         let data = result.data["data"];
-        return data
+        return data;
     }
     catch (e) {
         return false
@@ -132,6 +132,17 @@ export  async function UpdateTaskRequest (id,title,description,dueDate,priority,
         return false
     }
  }
+
+// Total Task Count
+    
+    export async function totalTaskCountRequest(status){
+        try {
+            let result = await axios.get(BaseURL+'/api/v1/totalCounTask/'+status,Headers);
+            return result['data']['data'];
+        } catch (e) {
+            return false
+        }
+    }
 
 //  User profile update
 

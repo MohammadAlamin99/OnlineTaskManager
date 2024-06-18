@@ -371,46 +371,62 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 5px;
 }
 
+
 .mainHoverAssign p{
   color: #1C1E21;
-}
-
-.mainHoverAssign{
-  display: none;
-}
-
-
-.todo {
+  }
+  
+  .mainHoverAssign{
+    display: none;
+    }
+    
+    
+    .todo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      background: #08A9F4;
+      color: white;
+      padding: 10px;
+      }
+      .inPro {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        background: #FF7800;
+        color: white;
+        padding: 10px;
+        }
+        .comp {
+          font-family: 'Poppins', sans-serif;
+          font-size: 16px;
+          font-weight: 600;
+          background: #2ECD6E;
+          color: white;
+          padding: 10px;
+          }
+          
+          
+          /* left side menu */
+          .activeSideMenu{
+            background: #0866FF;
+            color: white !important;
+            }
+            
+            
+            
+            
+/* dash Borad section css start */
+.DashCommon p{
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  background: #08A9F4;
-  color: white;
-  padding: 10px;
+  font-weight: 400;
+  color: #000;
+  margin: 0;
 }
-.inPro {
+.DashCommon span{
   font-family: 'Poppins', sans-serif;
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 600;
-  background: #FF7800;
-  color: white;
-  padding: 10px;
+  color: #000;
 }
-.comp {
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  background: #2ECD6E;
-  color: white;
-  padding: 10px;
-}
-
-
-/* left side menu */
-.activeSideMenu{
-  background: #0866FF;
-  color: white !important;
-}
-
-
-

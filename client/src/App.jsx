@@ -8,6 +8,7 @@ import TaskPage from "./pages/TaskPage";
 import CompletePage from "./pages/CompletePage";
 import InProgressPage from "./pages/InProgressPage";
 import TodoPage from "./pages/TodoPage";
+import TeamTaskPage from "./pages/TeamTaskPage";
 
 
 function App() {
@@ -22,6 +23,7 @@ if(getToken()){
         <Route path="/complete" element={<CompletePage/>} />
         <Route path="/inprogress" element={<InProgressPage/>} />
         <Route path="/todo" element={<TodoPage/>} />
+        <Route path="/teamTasks" element={<TeamTaskPage/>} />
       </Routes>
     </BrowserRouter>
   );
