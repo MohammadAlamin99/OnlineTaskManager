@@ -108,14 +108,6 @@ exports.getUpdateTask = async(req)=>{
 }
 
 
-
-
-
-
-
-
-
-
 //  select task 
  
 exports.ListTaskByStatus = async (req, res)=>{
@@ -176,3 +168,18 @@ exports.TotalTaskCount = async(req,res)=>{
         return {status:"fail", message:"something went wrong"}  
     }
 }
+
+
+// Team task get
+ exports.TeamTaskGet = async(req)=>{
+    try {
+       let id = req.params.id;
+       let ObjectId = new mongoose.Types.ObjectId(id);
+       let result = await TasksModel.aggregate([
+            {$match:{"users":{$elemMatch:{$eq:ObjectId}}}}
+       ]);
+       return({ status: "success", message: result });
+    } catch (e) {
+      return({ status: "fail", message: "something went wrong" });
+    }
+ }

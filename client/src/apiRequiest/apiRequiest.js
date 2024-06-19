@@ -184,3 +184,15 @@ export async function getUpdateTaskRequest(id){
     }
 }
 
+// get team task
+export async function getTeamTaskRequest(id){
+    try {
+        let result = await axios.get(BaseURL+'/api/v1/getTeamTask/'+id, Headers);
+        let data = result['data']['message'];
+        return data;
+    } catch (e) {
+        return false;
+    }
+}
+
+

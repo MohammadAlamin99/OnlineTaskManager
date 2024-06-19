@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { totalTaskCountRequest } from '../apiRequiest/apiRequiest';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { RiTodoLine } from "react-icons/ri";
+import { FcProcess } from "react-icons/fc";
+import { IoCloudDoneSharp } from "react-icons/io5";
 const Dashboard = () => {
     const [data, setData] = useState([]);
     const status="In Progress";
@@ -33,31 +36,31 @@ const Dashboard = () => {
         <div>
             <div className="row">
                 <div className="col-4 DashCommon">
-                    <p>Total To Do</p>
+               <p>  <span style={{fontSize:"16px", color:"#08A9F4"}}><RiTodoLine /></span>  Total To Do</p>
                     {
                         todo.map((item, i)=>{
                             return(
-                                <span key={i}>{item.total}</span>
+                                <p style={{fontSize:"24px", fontWeight:"700", paddingLeft:"3rem"}} key={i}>{item.total}</p>
                             )
                         })
                 }
                 </div>
                 <div className="col-4 DashCommon">
-                <p>In Progress</p>
+                <p> <span style={{fontSize:"18px", color:"#08A9F4"}}><FcProcess /></span> In Progress</p>
                 {
                         data.map((item, i)=>{
                             return(
-                                <span key={i}>{item.total}</span>
+                                <p style={{fontSize:"24px", fontWeight:"700", paddingLeft:"3rem"}} key={i}>{item.total}</p>
                             )
                         })
                 }
                 </div>
                 <div className="col-4 DashCommon">
-                <p>Complete</p>
+                <p> <span style={{fontSize:"18px", color:"rgb(46, 205, 110)"}}><IoCloudDoneSharp /></span> Complete</p>
                 {
                         com.map((item, i)=>{
                             return(
-                                <span key={i}>{item.total}</span>
+                                <p style={{fontSize:"24px", fontWeight:"700", paddingLeft:"3rem"}} key={i}>{item.total}</p>
                             )
                         })
                 }
@@ -68,7 +71,7 @@ const Dashboard = () => {
          <BarChart
                 xAxis={[{ scaleType: 'band', data: ['Total TODO', 'Total In Progress', 'Total Completed'] }]}
                 series={[{ data: [todo.length>0?todo[0].total:0,data.length>0?data[0].total:0,com.length>0?com[0].total:0] }]}
-                width={700}
+                width={1150}
                 height={300}
             />
          </div>
