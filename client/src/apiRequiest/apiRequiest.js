@@ -121,10 +121,21 @@ export async function DeleteTaskRequest(id) {
     }
  }
 
-//  update status task
+//  update task
 export  async function UpdateTaskRequest (id,title,description,dueDate,priority,status,category) {
     try {
         let reqBody ={id:id, title:title, description:description, dueDate:dueDate, priority:priority, status:status, category:category};
+        let result = await axios.post(BaseURL+'/api/v1/taskUpdate',reqBody,Headers);
+        return result 
+    }
+    catch (e) {
+        return false
+    }
+ }
+//  status update task
+export  async function StatusUpdateRequest (id, status) {
+    try {
+        let reqBody ={id:id,status:status};
         let result = await axios.post(BaseURL+'/api/v1/taskUpdate',reqBody,Headers);
         return result 
     }

@@ -5,6 +5,7 @@ import { TbProgress } from "react-icons/tb";
 import { RiTodoLine } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
 import { Link, useLocation } from 'react-router-dom';
+import { FiUserPlus } from "react-icons/fi";
 const LeftSideHome = () => {
     const path = useLocation().pathname;
     return (
@@ -13,6 +14,9 @@ const LeftSideHome = () => {
                 <ul className='p-0'>
                     <Link style={{textDecoration:"none"}} to={"/"}>
                         <li className={`${path === "/" ? "activeSideMenu" : "Not_active_sidemenu"}`}><RxDashboard/> Dashboard</li>
+                    </Link>
+                    <Link style={{textDecoration:"none"}} to={"/profile"}>
+                        <li className={`${path === "/profile" ? "activeSideMenu" : "Not_active_sidemenu"}`}><FiUserPlus/> Profile</li>
                     </Link>
 
                     <Link style={{textDecoration:"none"}} to={"/task"}>
@@ -31,7 +35,7 @@ const LeftSideHome = () => {
                         <li className={`${path === "/todo" ? "activeSideMenu" : "Not_active_sidemenu"}`}><RiTodoLine/> To Do</li>
                     </Link>
                     <Link style={{textDecoration:"none"}} to={"/teamTasks"}>
-                        <li className={`${path === "/teamTasks" ? "activeSideMenu" : "Not_active_sidemenu"}`}><FaUsers/> Team Tasks</li>
+                        <li className={`${path === "/teamTasks" ? "activeSideMenu" : "Not_active_sidemenu"}`}><FaUsers/> Assign Tasks</li>
                     </Link>
 
                 </ul>

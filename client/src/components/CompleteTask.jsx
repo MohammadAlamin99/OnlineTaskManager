@@ -38,7 +38,7 @@ const CompleteTask = () => {
                                                                     src={assignee.photo}  
                                                                 /> 
                                                                 <h6 style={{paddingLeft:"3px", fontSize:"13px", fontWeight:"400"}}>{assignee.firstName+" "+ assignee.lastName}</h6>     
-                                                                  </div>
+                                                                </div>
                                                             ))
                                                         ) : (
                                                             <span>No Assignee</span>

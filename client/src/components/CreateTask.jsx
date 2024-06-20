@@ -27,7 +27,6 @@ const CreateTask = () => {
         setCarouselVisible(false);
     };
 
-
     // update Task carousel
         // store Task Id
         const [taskId, setTaskId] = useState("");
