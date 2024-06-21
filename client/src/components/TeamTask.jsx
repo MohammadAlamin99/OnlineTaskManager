@@ -56,7 +56,7 @@ const TeamTask = () => {
                                         <RxUpdate onClick={()=>showCarousel(item._id)} style={{color:"red", cursor:"pointer", marginLeft:"5px"}}/></h4>
                                     <h4 className='m-0'>Category : {item.category}</h4>
                                     <h4>Due Date : {moment(item.dueDate).format('ll')}</h4>
-                                    <h4>Assignment From : {item.email}</h4>
+                                    <h4>Assign By : {item.email}</h4>
                                 </div>
                         </div>
                         )

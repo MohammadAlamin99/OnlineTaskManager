@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UpdateTaskRequest, getUpdateTaskRequest } from '../apiRequiest/apiRequiest';
+import { useSelector } from 'react-redux';
 
 
 const EditCarosal = ({props}) => {
@@ -34,6 +35,25 @@ const EditCarosal = ({props}) => {
             setUpdate(result[0]);
         })()
     },[0])
+
+    useEffect(() => {
+        if (update) {
+            statusRef.current.value = update.status;
+            priorityRef.current.value = update.priority;
+            dueDateRef.current.value = update.dueDate?new Date(update.dueDate).toISOString().split('T')[0]:"";
+        }
+    }, [update]);
+
+    // show all user
+    // const handleUserSelection = (userId) => {
+    //     setSelectedUsers(prevSelectedUsers => 
+    //         prevSelectedUsers.includes(userId)
+    //             ? prevSelectedUsers.filter(id => id !== userId)
+    //             : [...prevSelectedUsers, userId]
+    //     );
+    // };
+
+    // const SearchUser = useSelector((state)=>state.users.user);
     
     return (
         <div>
@@ -47,19 +67,35 @@ const EditCarosal = ({props}) => {
                     <p>Category</p>
                     <input ref={categoryRef} defaultValue={update.category} type="text" style={{ width: "100%" }} />
                     <p>Status</p>
-                    <select ref={statusRef} defaultValue={update.status} className="form-control">
+                    <select ref={statusRef} className="form-control">
                         <option value="TODO">TODO</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
                     </select>
                     <p>Priority</p>
-                    <select ref={priorityRef} defaultValue={update.priority} className="form-control">
+                    <select ref={priorityRef} className="form-control">
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <p>Due Date</p>
-                    <input ref={dueDateRef} type="date" defaultValue={update.dueDate} className="form-control" style={{ width: "100%" }} />
+                    <input ref={dueDateRef} type="date" className="form-control" style={{ width: "100%" }} />
+                    {/* <p>Assign To</p>
+                    <div className="form-control" style={{ width: "100%" }}>
+                        {
+                        SearchUser.filter(f=> f._id !==myId).map((user) => (
+                            <div key={user._id}>
+                                <input
+                                    type="checkbox"
+                                    value={user._id}
+                                    onChange={() => handleUserSelection(user._id)}
+                                />
+                                <img style={{width:"20px", height:"20px", borderRadius:"50%", marginLeft:"5px", marginRight:"5px"}} src={user.photo} alt="" />
+                                <label style={{fontSize:"13px", fontFamily:"'Poppins', sans-serif"}}>{user.firstName+" "+user.lastName}</label>
+                            </div>
+                        ))}
+                    </div> */}
+
                     <button onClick={onUpdateHandler} style={{ marginTop: "2px" }} className='btn btn-primary'>Update</button>
                 </div>
             </div>
