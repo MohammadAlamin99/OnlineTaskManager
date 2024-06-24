@@ -9,7 +9,6 @@ exports.CreateTask = async (req)=>{
         let data = await TasksModel.create(reqBody)
         return({status:"success", data:data});
     } catch (e) {
-        console.log(e)
         return {status:"fail", message:"something went wrong"}
     }
 }
@@ -102,7 +101,6 @@ exports.getUpdateTask = async(req)=>{
         return({status:"success", data:data});
     }
     catch(e){
-        console.log(e)
         return({status:"fail", message:"Something went wrong"})
     }
 }
@@ -133,7 +131,6 @@ exports.ListTaskByStatus = async (req, res)=>{
         return({status:"success", data:result});
 
     } catch (e) {
-        console.log(e)
         return {status:"fail", message:"something went wrong"}
     }
 }
