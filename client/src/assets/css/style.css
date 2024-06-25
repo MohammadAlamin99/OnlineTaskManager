@@ -281,9 +281,10 @@ h1,h2,h3,h4,h5,h6,button,input,textarea{
   border-radius: 10px;
   position: relative;
   width: 400px;
+  height: 95%;
   max-width: 90%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .close-button {
@@ -329,7 +330,44 @@ h1,h2,h3,h4,h5,h6,button,input,textarea{
 }
 
 
-/* task create page css */
+/* task create page css end*/
+
+/* team task page css start */
+.mainOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.teamTask {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  width: 400px;
+  height: auto;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+.teamCloseBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+/* team task page css end */
 .taxbox{
 margin: 15px;
 padding: 5px;
@@ -430,3 +468,11 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   font-weight: 600;
   color: #000;
 }
+
+
+
+
+
+
+
+

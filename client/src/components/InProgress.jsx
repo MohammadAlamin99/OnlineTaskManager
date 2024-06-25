@@ -46,7 +46,7 @@ const InProgress = () => {
                                             </div>
                                             )
                                         })
-                                    ):("No Task Found")
+                                    ):("No In-Progress Tasks")
                                  }
                         </div>
         </div>

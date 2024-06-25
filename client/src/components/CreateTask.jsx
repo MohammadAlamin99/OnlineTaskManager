@@ -166,7 +166,7 @@ const CreateTask = () => {
                                             </div>
                                             )
                                         })
-                                    ):("No Task Found")
+                                    ):("No ToDo Task")
                                  }
                                 </div>
                                 <div className="col-lg-4">
@@ -203,7 +203,7 @@ const CreateTask = () => {
                                             </div>
                                             )
                                         })
-                                    ):("No Task Found")
+                                    ):("No In-Progress Task")
                                  }
                                 </div>
                                 <div className="col-lg-4">
@@ -240,7 +240,7 @@ const CreateTask = () => {
                                             </div>
                                             )
                                         })
-                                    ):("No Task Found")
+                                    ):("No Complete Task")
                                  }
                                 </div>
                             </div>

@@ -44,7 +44,7 @@ const TaskCarosal = ({ props }) => {
         })();
     }, []);
 
-// assign to 
+    // assign to 
         const [assign, setAssign] = useState("");
         const assignToUser = SearchUser.filter(user=>(user.firstName.toLowerCase()+ "" +user.lastName.toLowerCase()).includes(assign.toLowerCase()))
     return (
@@ -73,7 +73,7 @@ const TaskCarosal = ({ props }) => {
                     <p>Due Date</p>
                     <input ref={dueDateRef} type="date" className="form-control" style={{ width: "100%" }} />
                     <p>Assign To</p>
-                    <input type="text" 
+                    <input placeholder='User Name or Email' type="text" style={{ width: "100%", fontSize:"14px" }} 
                     onChange={(e)=>setAssign(e.target.value)}
                     />
                     {
@@ -107,7 +107,7 @@ const TaskCarosal = ({ props }) => {
                                         const user = SearchUser.find(user=>user._id===item)
                                         return(
                                             <div key={i} className="selected-users" style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                                            <div style={{ display: "flex", alignItems: "center",padding: "5px 10px",background:"rgba(202, 196, 196, 0.5)", borderRadius: "20px" }}>
+                                            <div style={{ display: "flex", alignItems: "center",padding: "5px 10px",background:"rgba(202, 196, 196, 0.5)", borderRadius: "20px"}}>
                                                 <img style={{ width: "20px", height: "20px", borderRadius: "50%", marginRight: "5px" }} src={user.photo} alt="" />
                                                 <span style={{ fontSize: "13px", fontFamily: "'Poppins', sans-serif" }}>{user.firstName+" "+user.lastName}</span>
                                                 <button style={{ marginLeft: "5px", background:"0",border:"none" }} onClick={()=>handleUserSelection(item)}>X</button>
@@ -119,7 +119,7 @@ const TaskCarosal = ({ props }) => {
                        </div>
                         )
                     }
-                    <button style={{ marginTop: "2px" }} className='btn btn-primary' onClick={onBtnClick}> Submit</button>
+                    <button style={{ marginTop: "10px" }} className='btn btn-primary' onClick={onBtnClick}> Submit</button>
                 </div>
             </div>
         </div>

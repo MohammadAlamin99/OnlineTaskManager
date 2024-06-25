@@ -12,9 +12,9 @@ const StatusUpadateCarosal = ({props}) => {
     }
     return (
         <div>
-            <div className="carousel-overlay">
-                <div className="carousel-content">
-                    <button className="close-button"onClick={hideCarousel}>X</button>
+            <div className="carousel-overlay mainOverlay">
+                <div className="carousel-content teamTask">
+                    <button className="close-button teamCloseBtn"onClick={hideCarousel}>X</button>
                     <p>Update Status</p>
                     <select ref={statusRef} className="form-control">
                         <option value="TODO">TODO</option>
