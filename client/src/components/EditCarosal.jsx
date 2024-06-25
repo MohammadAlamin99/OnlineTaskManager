@@ -44,17 +44,7 @@ const EditCarosal = ({props}) => {
         }
     }, [update]);
 
-    // show all user
-    // const handleUserSelection = (userId) => {
-    //     setSelectedUsers(prevSelectedUsers => 
-    //         prevSelectedUsers.includes(userId)
-    //             ? prevSelectedUsers.filter(id => id !== userId)
-    //             : [...prevSelectedUsers, userId]
-    //     );
-    // };
-
-    // const SearchUser = useSelector((state)=>state.users.user);
-    
+ 
     return (
         <div>
             <div className="carousel-overlay">
@@ -80,23 +70,8 @@ const EditCarosal = ({props}) => {
                     </select>
                     <p>Due Date</p>
                     <input ref={dueDateRef} type="date" className="form-control" style={{ width: "100%" }} />
-                    {/* <p>Assign To</p>
-                    <div className="form-control" style={{ width: "100%" }}>
-                        {
-                        SearchUser.filter(f=> f._id !==myId).map((user) => (
-                            <div key={user._id}>
-                                <input
-                                    type="checkbox"
-                                    value={user._id}
-                                    onChange={() => handleUserSelection(user._id)}
-                                />
-                                <img style={{width:"20px", height:"20px", borderRadius:"50%", marginLeft:"5px", marginRight:"5px"}} src={user.photo} alt="" />
-                                <label style={{fontSize:"13px", fontFamily:"'Poppins', sans-serif"}}>{user.firstName+" "+user.lastName}</label>
-                            </div>
-                        ))}
-                    </div> */}
 
-                    <button onClick={onUpdateHandler} style={{ marginTop: "2px" }} className='btn btn-primary'>Update</button>
+                    <button onClick={onUpdateHandler} style={{ marginTop: "2px", marginTop:"1rem"}} className='btn btn-primary'>Update</button>
                 </div>
             </div>
         </div>
