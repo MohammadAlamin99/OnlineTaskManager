@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { UserProfileUpdateRequest, userDetailsRequest } from '../apiRequiest/apiRequiest';
 import { useDispatch, useSelector } from 'react-redux';
 import { setuserDetails } from '../redux/state-slice/getUserDetails-slice';
-
+import { TbLogout } from "react-icons/tb";
 const Profile = () => {
     const dispatch = useDispatch();
     const userGet = useSelector((state)=> state.userGet.userDetails);
@@ -35,25 +35,61 @@ const Profile = () => {
     return (
         <div>
            <div className="container">
-            <div className="row">
-                <div className="col-12 profileP">
-                    <img src={userGet.photo} alt="" />
-                    <p>Change photo:</p>
-                    <input ref={photoRef} type="text" placeholder='Image URL' defaultValue={userGet.photo}/>
-                    <p>First Name:</p>
-                    <input ref={firstNameRef} type="text" defaultValue={userGet.firstName}/>
-                    <p>Last Name:</p>
-                    <input ref={lastNameRef} type="text" defaultValue={userGet.lastName}/>
-                    <p>Email:</p>
-                    <input ref={emailRef} type="text" defaultValue={userGet.email} readOnly/>
-                    <p>Phone:</p>
-                    <input ref={mobileRef} type="text" defaultValue={userGet.mobile}/>
-                    <p>Set New Password:</p>
-                    <input ref={passwordRef} type="password" defaultValue={userGet.password}/>
+                    <div className="myInformation d-flex">
+                       <div className="myIm pt-3">
+                       <img src={userGet.photo} alt="" />
+                       </div>
+                       <div className="myIn">
+                       <p>{userGet.firstName+" "+ userGet.lastName}</p>
+                       <span>{userGet.email}</span>
+                       <h5>{userGet.mobile}</h5>
+                       <h6>Log Out <TbLogout /></h6>
+                       </div>
+                    </div>
+
+            <div className="container pt-4">
+    <div className="row d-flex justify-content-center">
+      <div className="col-md-12">
+        <div className="card">
+          <div className="card-body">
+            <div className="container-fluid">
+              <div className="row profileInside">   
+                <div className="col-4 p-2">
+                <label>Profile Picture</label>
+                 <input ref={photoRef} defaultValue={userGet.photo} placeholder="Image URL" className="form-control animated fadeInUp" type="text"/>
                 </div>
-                <button onClick={onSubmitHanler} className='btn btn-primary w-auto mt-3' 
-                style={{marginLeft:"11px"}}>Update</button>
+                <div className="col-4 p-2">
+                  <label>Email Address</label>
+                  <input ref={emailRef} readOnly defaultValue={userGet.email} placeholder="User Email" className="form-control animated fadeInUp" type="email" />
+                </div>
+                <div className="col-4 p-2">
+                  <label>First Name</label>
+                  <input ref={firstNameRef} defaultValue={userGet.firstName} placeholder="First Name" className="form-control animated fadeInUp" type="text" />
+                </div>
+                <div className="col-4 p-2">
+                  <label>Last Name</label>
+                  <input ref={lastNameRef} defaultValue={userGet.lastName} className="form-control animated fadeInUp" type="text" />
+                </div>
+                <div className="col-4 p-2">
+                  <label>Mobile</label>
+                  <input ref={mobileRef} defaultValue={userGet.mobile} className="form-control animated fadeInUp" type="mobile" />
+                </div>
+                <div className="col-4 p-2">
+                  <label>Password</label>
+                  <input ref={passwordRef} defaultValue={userGet.password} placeholder="User Password" className="form-control animated fadeInUp" type="password" />
+                </div>
+                <div className="col-4 p-2 ProfileUpdateBtn">
+                  <button onClick={onSubmitHanler} style={{border:"0", background:"#0866FF"}} className="w-100 float-end animated fadeInUp rounded">
+                    Update
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
            </div>
         </div>
     );

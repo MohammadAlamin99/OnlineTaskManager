@@ -478,20 +478,60 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
 
 /* Profile page css start */
-img {
-  max-width: 150px;
-  border-radius: 50%;
-  margin-bottom: 20px;
+
+.myInformation img{
+  width: 180px;
+  height: 180px;
+  border-radius: .75rem;
 }
+
 .profileP p{
-  font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: 500;
-    color: #000;
+    color: #212529;
     margin: 10px 0 5px;
 }
-
-
+.myIn p{
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #212529;
+  margin: 0;
+}
+.myIn{
+  padding-left: 3rem;
+  padding-top: 3rem;
+}
+.myIn span{
+  font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+}
+.myIn h5{
+  font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+    padding-top: 5px;
+    margin: 0;
+}
+.myIn h6{
+  font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #212529;
+    padding-top: 8px;
+    cursor: pointer;
+    transition: all linear .3s;
+}
+.myIn h6:hover{
+  color: red;
+}
+.myIm img{
+  margin-left: 14px;
+}
 /* Profile page css end */
 
 
