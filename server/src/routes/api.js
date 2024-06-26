@@ -11,6 +11,7 @@ router.post("/upadateProfile",AuthVerificationMiddleware, UsersController.upadat
 router.get("/userDetails",AuthVerificationMiddleware, UsersController.userDetails)
 // profile details
 router.get("/profileDetails",AuthVerificationMiddleware, UsersController.profileDetails)
+router.post("/upadateProfile",AuthVerificationMiddleware, UsersController.upadateProfile)
 
 // createing task
 router.post("/createTask",AuthVerificationMiddleware, TasksController.taskCreate)

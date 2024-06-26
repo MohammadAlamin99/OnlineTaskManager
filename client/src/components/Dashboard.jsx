@@ -15,7 +15,6 @@ const Dashboard = () => {
         })()
     },[])
     const [todo, setTodo] = useState([]);
-    console.log(todo)
     const totdo="TODO";
     useEffect(()=>{
         (async()=>{
