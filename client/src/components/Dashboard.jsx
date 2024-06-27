@@ -5,12 +5,17 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { RiTodoLine } from "react-icons/ri";
 import { FcProcess } from "react-icons/fc";
 import { IoCloudDoneSharp } from "react-icons/io5";
+import BeatLoader  from "react-spinners/BeatLoader";
+
 const Dashboard = () => {
+    const [load, setLoaded] = useState(false);
     const [data, setData] = useState([]);
     const status="In Progress";
     useEffect(()=>{
         (async()=>{
+            setLoaded(true)
             let result = await totalTaskCountRequest(status);
+            setLoaded(false)
             setData(result)
         })()
     },[])
@@ -18,7 +23,9 @@ const Dashboard = () => {
     const totdo="TODO";
     useEffect(()=>{
         (async()=>{
+            setLoaded(true)
             let result = await totalTaskCountRequest(totdo);
+            setLoaded(false)
             setTodo(result)
         })()
     },[])
@@ -26,13 +33,25 @@ const Dashboard = () => {
     const complete="Completed";
     useEffect(()=>{
         (async()=>{
+            setLoaded(true)
             let result = await totalTaskCountRequest(complete);
+            setLoaded(false)
             setCom(result)
         })()
     },[])
 
     return (
-        <div>
+        load?(
+            <div className="loader-container">
+                <BeatLoader
+                    color="#0866FF"
+                    size={20}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                />
+            </div>
+        ):(
+            <div>
             <div className="row">
                 <div className="col-4 DashCommon">
                <p>  <span style={{fontSize:"16px", color:"#08A9F4"}}><RiTodoLine /></span>  Total To Do</p>
@@ -76,6 +95,7 @@ const Dashboard = () => {
          </div>
             </div>
         </div>
+        )
     );
 };
 

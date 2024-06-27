@@ -1,14 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UserProfileUpdateRequest, userDetailsRequest } from '../apiRequiest/apiRequiest';
 import { useDispatch, useSelector } from 'react-redux';
 import { setuserDetails } from '../redux/state-slice/getUserDetails-slice';
 import { TbLogout } from "react-icons/tb";
+import BeatLoader  from "react-spinners/BeatLoader";
+
 const Profile = () => {
+    const [load, setLoaded] = useState(false);
     const dispatch = useDispatch();
     const userGet = useSelector((state)=> state.userGet.userDetails);
     useEffect(() => {
         (async () => {
+            setLoaded(true)
             let result = await userDetailsRequest();
+            setLoaded(false)
             dispatch(setuserDetails(result['data'][0]))
         })();
     }, [0]);
@@ -33,7 +38,17 @@ const Profile = () => {
         window.location.reload();
     }
     return (
-        <div>
+        load?(
+          <div className="loader-container">
+          <BeatLoader
+              color="#0866FF"
+              size={20}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+          />
+      </div>
+        ):(
+          <div>
            <div className="container">
                     <div className="myInformation d-flex">
                        <div className="myIm pt-3">
@@ -92,6 +107,7 @@ const Profile = () => {
   </div>
            </div>
         </div>
+        )
     );
 };
 

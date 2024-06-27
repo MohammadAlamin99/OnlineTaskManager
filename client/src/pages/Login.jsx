@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { UserLoginRequiest } from "../apiRequiest/apiRequiest";
 import { IsEmpty } from "../Helper/FormHelper";
 import { setToken, setUserDetails } from "../Helper/SessionHelper";
-import Loading from 'react-fullscreen-loading';
+import BeatLoader  from "react-spinners/BeatLoader";
 import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
@@ -44,7 +44,16 @@ const Login = () => {
   };
 
   return (
-    load?(  <Loading loading={true} loaderColor="#419CA6" />):(
+    load?( 
+      <div className="loader-container">
+      <BeatLoader
+          color="#0866FF"
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+      />
+  </div>
+    ):(
       <Fragment>
             <div className="container">
                 <div className="row justify-content-center">
@@ -57,7 +66,7 @@ const Login = () => {
                                 <br/>
                                 <input ref={passRef} placeholder="User Password" className="form-control animated fadeInUp" type="password"/>
                                 <br/>
-                                <button onClick={onLogin} style={{fontFamily:"'Poppins', sans-serif;", fontWeight:"400", background:"#419CA6", color:"#fff"}} className="btn w-100 animated fadeInUp float-end">Next</button>
+                                <button onClick={onLogin} style={{fontFamily:"'Poppins', sans-serif;", fontWeight:"400", background:"#0866FF", color:"#fff"}} className="btn w-100 animated fadeInUp float-end">Next</button>
                                 <hr/>
                                 <div className="float-end mt-3 forgoteBtn">
 

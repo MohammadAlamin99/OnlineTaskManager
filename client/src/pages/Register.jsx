@@ -107,7 +107,7 @@ const Register = () => {
                 className="btn text-white"
              
                 onClick={onRegistration}
-                style={{fontFamily:"'Poppins', sans-serif;", fontWeight:"400", background:"#419CA6", color:"#fff"}} 
+                style={{fontFamily:"'Poppins', sans-serif;", fontWeight:"400", background:"#0866FF", color:"#fff"}} 
               >
                 Sign Up
               </button>
@@ -116,7 +116,7 @@ const Register = () => {
           <p className="mt-3 profileInside">
             Already have an account?
             <span className="text-orange-500">
-              <Link to="/login" style={{ color: "#419CA6" }}>
+              <Link to="/login" style={{ color: "#0866FF" }}>
                 {" "}
                 Login
               </Link>

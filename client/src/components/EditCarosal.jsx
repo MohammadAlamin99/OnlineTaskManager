@@ -71,7 +71,7 @@ const EditCarosal = ({props}) => {
                     <p>Due Date</p>
                     <input ref={dueDateRef} type="date" className="form-control" style={{ width: "100%" }} />
 
-                    <button onClick={onUpdateHandler} style={{ marginTop: "2px", marginTop:"1rem"}} className='btn btn-primary'>Update</button>
+                    <button onClick={onUpdateHandler} style={{ marginTop: "1rem"}} className='btn btn-primary'>Update</button>
                 </div>
             </div>
         </div>

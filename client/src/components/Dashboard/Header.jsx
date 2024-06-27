@@ -19,7 +19,7 @@ const Header = () => {
                 <div className="col-lg-2">
                 <div className="MainHeader d-flex">
                 <span><FaTasks style={{marginLeft:"6px", marginBottom:"3px", fontSize:"16px"}}/></span>
-              <p>Online Task</p>
+              <p> Dashboard</p>
            </div>
                 </div>
                 <div className="col-lg-9">
