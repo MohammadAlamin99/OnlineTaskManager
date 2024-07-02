@@ -3,6 +3,7 @@ import { CreateTaskRequiest, getUsersRequest } from '../../apiRequiest/apiRequie
 import { getUserDetails } from '../../Helper/SessionHelper';
 import {useSelector, useDispatch } from "react-redux";
 import { setUser } from '../../redux/state-slice/user-slice';
+import toast, { Toaster } from 'react-hot-toast';
 
 const TaskCarosal = ({ props }) => {
     const titleRef = useRef();
@@ -23,6 +24,7 @@ const TaskCarosal = ({ props }) => {
         const priority = priorityRef.current.value;
         const dueDate = dueDateRef.current.value;
         await CreateTaskRequiest(selectedUsers, title, description, dueDate, priority, status, category);
+        toast.success("Task Create Successfully!");
         window.location.reload();
     }
 
@@ -122,6 +124,10 @@ const TaskCarosal = ({ props }) => {
                 <button style={{ marginTop: "10px" }} className='btn btn-primary' onClick={onBtnClick}> Submit</button>
             </div>
         </div>
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+            />
     </div>
     );
 };

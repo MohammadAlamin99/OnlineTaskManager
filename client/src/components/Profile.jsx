@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setuserDetails } from '../redux/state-slice/getUserDetails-slice';
 import { TbLogout } from "react-icons/tb";
 import BeatLoader  from "react-spinners/BeatLoader";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Profile = () => {
     const [load, setLoaded] = useState(false);
@@ -35,6 +36,7 @@ const Profile = () => {
         const password = passwordRef.current.value;
         const photo = photoRef.current.value;
         await UserProfileUpdateRequest(email, firstName, lastName, mobile, password, photo);
+        toast.success("Profile Update Successfully!");
         window.location.reload();
     }
     return (
@@ -104,6 +106,10 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    <Toaster
+      position="top-right"
+      reverseOrder={false}
+    />
   </div>
            </div>
         </div>
