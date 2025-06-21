@@ -17,7 +17,7 @@ const mongoose =require('mongoose');
 
 //  database connecting (mongodb)
 let URL = "mongodb+srv://<username>:<password>@cluster0.lduuwua.mongodb.net/Excell-Task?retryWrites=true&w=majority";
-let option = {user:'hamim338838', pass:'hamim338838', autoIndex:true}
+let option = {user:'alamin1234', pass:'alamin1234', autoIndex:true}
 mongoose.connect(URL, option).then(()=>{
     console.log('Database connected');
 }).catch((err)=>{

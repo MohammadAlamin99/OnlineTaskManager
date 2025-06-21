@@ -1,23 +1,23 @@
-import React from 'react';
-import LeftSideHome from './LeftSideHome';
-import Header from './Header';
-import Dashboard from '../Dashboard';
+import React from "react";
+import LeftSideHome from "./LeftSideHome";
+import Header from "./Header";
+import Dashboard from "../Dashboard";
 
 const Home = () => {
   return (
     <div>
-      <div className="">
-        <div className="row">
-          <div className="col-lg-12 pt-3">
-            <Header/>
+      <div className="MainContainer w-100 m-0 p-0">
+        <div className="row g-0">
+          <div className="col-lg-12 p-0"> 
+            <Header />
           </div>
         </div>
-        <div className="row">
-          <div className="col-lg-2">
-           <LeftSideHome/>
+        <div className="rightSide row g-0 w-100 m-0">
+          <div className="col-lg-2 p-0">
+            <LeftSideHome />
           </div>
           <div className="col-lg-10">
-             <Dashboard/>
+            <Dashboard />
           </div>
         </div>
       </div>
