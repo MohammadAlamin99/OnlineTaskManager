@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { totalTaskCountRequest } from "../apiRequiest/apiRequiest";
-import { RiTodoLine } from "react-icons/ri";
-import { FcProcess } from "react-icons/fc";
-import { IoCloudDoneSharp } from "react-icons/io5";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const Dashboard = () => {
@@ -63,7 +60,7 @@ const Dashboard = () => {
               <h4 className="card-title">Total To Do</h4>
               <div className="card-number ms-auto">
                 {todo?.map((item, i) => {
-                  return <p className="m-0" key={i}>{item.total}</p>;
+                  return <p className="m-0" key={i}>{item.total < 10 ? `0${item.total}` : item.total}</p>;
                 })}
               </div>
             </div>
@@ -104,7 +101,7 @@ const Dashboard = () => {
               <h2 className="card-number ms-auto">
                 <div className="card-number ms-auto">
                   {data?.map((item, i) => {
-                    return <p className="m-0" key={i}>{item.total}</p>;
+                    return <p className="m-0" key={i}>{item.total < 10 ? `0${item.total}` : item.total}</p>;
                   })}
                 </div>
               </h2>
@@ -146,7 +143,7 @@ const Dashboard = () => {
               <h2 className="card-number ms-auto">
                 <div className="card-number ms-auto">
                   {com?.map((item, i) => {
-                    return <p className="m-0" key={i}>{item.total}</p>;
+                    return <p className="m-0" key={i}>{item.total < 10 ? `0${item.total}` : item.total}</p>;
                   })}
                 </div>
               </h2>
