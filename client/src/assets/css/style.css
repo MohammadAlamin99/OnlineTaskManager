@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -7,10 +8,13 @@
 
 :root {
   --bg-color: #F3F4F8;
-  --active-bg-color:#5051F9;
+  --active-bg-color: #5051F9;
   --active-text-color: #fff;
   --text-color: #232360;
   --dm-sans: "DM Sans", sans-serif;
+  --card-title-color: #8C97A8;
+  --card-number-color: #1E1E1E;
+  --border-color: #E8EDF1;
 }
 
 body {
@@ -43,6 +47,7 @@ body {
   display: block;
   color: white;
 }
+
 .profile {
   color: #402C3C;
   font-size: 16px;
@@ -50,6 +55,7 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
+
 .navbar-brand {
   font-size: 22px;
   font-weight: 500;
@@ -154,10 +160,74 @@ body {
 /* =============== */
 
 /*DashBoard Page css start*/
-.manuLeft{
+.card_wrapper{
+  gap: 24px;
+  padding-left: 40px;
+  padding-top: 30px;
+}
+.card_wrapper .card {
+  width: 274px;
+  height: auto;
+  max-width: 100%;
+  padding: 20px;
+  border: 0;
+  border-radius: 16px;
+}
+
+.card_wrapper .card .card_top {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 24px;
+}
+
+.card_wrapper .card .card_top .icon_box {
+  width: 34px;
+  height: 34px;
+  background: #F3F7FD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.card_wrapper .card .card_top .card-title {
+  color: var(--card-title-color);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+.card_wrapper .card .card_top .card-number {
+  color: var(--card-number-color);
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 0;
+}
+.card_wrapper .card .card_bottom{
+  padding-top: 30px;
+}
+.card_wrapper .card .card_bottom .text_content .card_subtext {
+  color: var(--card-title-color);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: end;
+}
+.card_wrapper .card .card_bottom .text_content .card_subtext span{
+  color: #299702;
+  font-weight: 700;
+}
+
+.manuLeft {
   background: var(--active-text-color);
   height: 100vh;
 }
+
 .manuLeft ul li {
   list-style: none;
   border-radius: 20px;
@@ -167,11 +237,13 @@ body {
   color: #1C1E21;
   padding: 8px;
 }
+
 .manuLeft ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .manuLeft ul li {
   padding-left: 18px;
 }
@@ -180,7 +252,8 @@ body {
   background: var(--active-bg-color);
   color: var(--active-text-color);
 }
-.header_wrapper{
+
+.header_wrapper {
   background: var(--active-text-color);
 }
 
@@ -306,7 +379,8 @@ body {
   max-width: 100%;
   padding: 8px;
 }
-.header_right svg{
+
+.header_right svg {
   width: 24px;
   height: 24px;
 }
