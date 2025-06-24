@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import ApexCharts from "apexcharts";
 import { totalTaskCountRequest } from "../apiRequiest/apiRequiest";
@@ -370,8 +370,35 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="row g-0">
-        <div className="chart_wrapper">
-          <div id="chart"></div>
+        <div className="custom_container">
+          <div className="chart_wrapper">
+            <div id="chart"></div>
+          </div>
+          <div className="team_member">
+            <h2 className="team_title">Member</h2>
+            <div className="user d-flex align-items-center gap-3 mb-3">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWv_STBznwf1s9iwfhZ6qvvPEl4JzJ9BqxO2UifmICbuc2xlEeDuBUBalzsJtPhcZG4o&usqp=CAU"
+                alt=""
+                className="user_img"
+              />
+              <div className="user_text">
+                <h4 className="member_name m-0">Cris Morich</h4>
+                <p className="member_email m-0">alamin@gmail.com</p>
+              </div>
+            </div>
+            <div className="user d-flex align-items-center gap-3 mb-3">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWv_STBznwf1s9iwfhZ6qvvPEl4JzJ9BqxO2UifmICbuc2xlEeDuBUBalzsJtPhcZG4o&usqp=CAU"
+                alt=""
+                className="user_img"
+              />
+              <div className="user_text">
+                <h4 className="member_name m-0">Cris Morich</h4>
+                <p className="member_email m-0">alamin@gmail.com</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
