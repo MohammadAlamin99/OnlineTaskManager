@@ -116,12 +116,32 @@ const CreateTask = () => {
             <LeftSideHome />
           </div>
           <div className="col-lg-10">
-            <div className="row g-0">
-              <div className="col-lg-10 taskText">
+            <div className="row g-0 justify-content-between">
+              <div className="col-lg-8 taskText">
                 <p>🔥 Task</p>
               </div>
-              <div className="col-lg-2 createTask">
-                <button onClick={showCarousel}>+ Create Task</button>
+              <div className="col-lg-4 createTask">
+                <button onClick={showCarousel}>
+                  Create Task
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <rect width="24" height="24" rx="7" fill="#E8EAFF" />
+                    <rect x="11" y="7" width="2" height="10" fill="#6772FE" />
+                    <rect
+                      x="7"
+                      y="13"
+                      width="2"
+                      height="10"
+                      transform="rotate(-90 7 13)"
+                      fill="#6772FE"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
             {load ? (

@@ -316,15 +316,23 @@ body {
 }
 
 /* crate task page css start */
+.createTask {
+  padding-right: 24px;
+  margin-top: 24px;
+}
 .createTask button {
-  border: none;
-  background: #0866FF;
-  color: white;
-  width: 113px;
-  height: 37px;
+  color: var(--text-color);
+  font-size: 17px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 0;
+  background: var(--active-text-color);
   border-radius: 10px;
-  font-size: 13px;
-  font-weight: 400;
+  margin-left: auto;
+  gap: 16px;
 }
 
 .taskText p {
@@ -334,20 +342,23 @@ body {
   font-weight: 500;
   padding-left: 24px;
   padding-top: 24px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
-.card-container{
+
+.card-container {
   padding: 0 24px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   width: 100%;
 }
+
 .card-container .task-card {
   padding: 16px;
   background: var(--active-text-color);
   border-radius: 12px;
 }
+
 .card-container .task-card .tag {
   font-size: 12px;
   color: var(--active-text-color);
