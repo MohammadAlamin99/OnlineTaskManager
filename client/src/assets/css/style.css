@@ -163,8 +163,8 @@ body {
 /*DashBoard Page css start*/
 .card_wrapper {
   gap: 24px;
-  padding-left: 40px;
-  padding-top: 30px;
+  padding-left: 24px;
+  padding-top: 24px;
 }
 
 .card_wrapper .card {
@@ -328,11 +328,60 @@ body {
 }
 
 .taskText p {
-  color: #1C1E21;
-  font-size: 18px;
+  color: var(--card-number-color);
+  font-family: var(--dm-sans);
+  font-size: 30px;
+  font-weight: 500;
+  padding-left: 24px;
+  padding-top: 24px;
+  margin-bottom: 16px;
+}
+.card-container{
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+.card-container .task-card {
+  padding: 16px;
+  background: var(--active-text-color);
+  border-radius: 12px;
+}
+.card-container .task-card .tag {
+  font-size: 12px;
+  color: var(--active-text-color);
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--active-bg-color);
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+.card-container .task-card .task-title {
+  color: var(--text-color);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.card-container .task-card .task-description {
+  color: var(--subtext-color);
+  font-size: 12px;
   font-weight: 500;
 }
 
+.card-container .task-card .task-date {
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  width: fit-content;
+  padding: 3px 8px;
+}
 
 .taskcarosul {
   background: green;
@@ -525,32 +574,6 @@ body {
   display: none;
 }
 
-
-.todo {
-  font-size: 16px;
-  font-weight: 600;
-  background: #08A9F4;
-  color: white;
-  padding: 10px;
-}
-
-.inPro {
-  font-size: 16px;
-  font-weight: 600;
-  background: #FF7800;
-  color: white;
-  padding: 10px;
-}
-
-.comp {
-  font-size: 16px;
-  font-weight: 600;
-  background: #2ECD6E;
-  color: white;
-  padding: 10px;
-}
-
-
 /* left side menu */
 .manuLeft .activeSideMenu {
   background: var(--active-bg-color);
@@ -566,24 +589,28 @@ body {
   margin-top: 10px;
   overflow-x: auto;
 }
-.custom_container{
+
+.custom_container {
   gap: 24px;
   display: grid;
   grid-template-columns: 2fr 1fr;
 }
+
 .custom_container .team_member .user .user_img {
   width: 56px;
   height: 56px;
   object-fit: cover;
   border-radius: 50%;
 }
-.custom_container .team_member{
+
+.custom_container .team_member {
   margin-top: 30px;
   background: var(--active-text-color);
   padding: 24px;
   border-radius: 16px;
   margin-right: 24px;
 }
+
 .custom_container .team_member .team_title {
   color: var(--text-color);
   font-size: 20px;
@@ -605,7 +632,7 @@ body {
 
 .chart_wrapper {
   margin-top: 30px;
-  margin-left: 40px;
+  margin-left: 24px;
   background: var(--active-text-color);
   border-radius: 16px;
   padding: 24px;
