@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import ApexCharts from "apexcharts";
 import { totalTaskCountRequest } from "../apiRequiest/apiRequiest";
 import BeatLoader from "react-spinners/BeatLoader";
+import { IoIosArrowRoundForward } from "react-icons/io";
 
 const Dashboard = () => {
   const [load, setLoaded] = useState(false);
@@ -399,6 +400,48 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="row g-0">
+        <div className="recent-task-wrapper">
+          <div className="recent-top d-flex justify-content-between align-items-center">
+            <h2 className="recent-title">Recent Tasks</h2>
+            <button>
+              See All
+              <IoIosArrowRoundForward/>
+            </button>
+          </div>
+          <table className="recent-table">
+            <thead>
+              <tr className="recent-table-header">
+                <th>Name</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Created On</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="recent-table-body">
+                <td>Web development</td>
+                <td>Pending</td>
+                <td>High priority</td>
+                <td>17 March 2025</td>
+              </tr>
+              <tr className="recent-table-body">
+                <td>Web development</td>
+                <td>Pending</td>
+                <td>High priority</td>
+                <td>17 March 2025</td>
+              </tr>
+              <tr className="recent-table-body">
+                <td>Web development</td>
+                <td>Pending</td>
+                <td>High priority</td>
+                <td>17 March 2025</td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>

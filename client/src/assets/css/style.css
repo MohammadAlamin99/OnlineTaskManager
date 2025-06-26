@@ -9,6 +9,7 @@
 :root {
   --bg-color: #F3F4F8;
   --active-bg-color: #5051F9;
+  --color-blue: #1EA7FF;
   --active-text-color: #fff;
   --text-color: #232360;
   --dm-sans: "DM Sans", sans-serif;
@@ -679,6 +680,57 @@ body {
   align-items: center;
 }
 
+.recent-task-wrapper {
+  background: var(--active-text-color);
+  margin-top: 30px;
+  margin-left: 24px;
+  width: calc(100% - 48px);
+  padding: 24px;
+  border-radius: 10px;
+  margin-right: 24px;
+}
+
+.recent-task-wrapper .recent-table .recent-table-header,
+.recent-task-wrapper .recent-table .recent-table-body {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.recent-task-wrapper .recent-table {
+  width: 100%;
+}
+
+.recent-task-wrapper .recent-top button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-blue);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.recent-task-wrapper .recent-top .recent-title {
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.recent-task-wrapper .recent-table .recent-table-header th {
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 16px;
+}
+
+.recent-task-wrapper .recent-table .recent-table-body td {
+  color: var(--subtext-color);
+  font-size: 16px;
+  font-weight: 400;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* 
 table {
   width: 100%;
   border-collapse: collapse;
@@ -713,7 +765,7 @@ table tbody tr:last-of-type {
 table tbody tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
-}
+} */
 
 .DashCommon p {
   font-size: 16px;
