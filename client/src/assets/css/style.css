@@ -320,6 +320,7 @@ body {
   padding-right: 24px;
   margin-top: 24px;
 }
+
 .createTask button {
   color: var(--text-color);
   font-size: 17px;
@@ -359,6 +360,32 @@ body {
   border-radius: 12px;
 }
 
+.card-container .task-card .task-assignee {
+  margin-left: 30px;
+  padding-top: 18px;
+}
+
+.card-container .task-card .task-assignee .assignee-photo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--active-text-color);
+  margin-right: -35px;
+}
+
+.card-container .task-card .task-complete-status .status-text {
+  color: var(--subtext-color);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.card-container .task-card .attachment span {
+  color: var(--subtext-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .card-container .task-card .tag {
   font-size: 12px;
   color: var(--active-text-color);
@@ -367,7 +394,7 @@ body {
   border-radius: 4px;
   background-color: var(--active-bg-color);
   width: fit-content;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .card-container .task-card .task-title {
