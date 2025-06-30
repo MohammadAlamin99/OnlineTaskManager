@@ -16,6 +16,7 @@ router.post("/upadateProfile",AuthVerificationMiddleware, UsersController.upadat
 // createing task
 router.post("/createTask",AuthVerificationMiddleware, TasksController.taskCreate)
 router.get("/getTaskController/:status",AuthVerificationMiddleware, TasksController.getTaskController)
+router.get("/getAllTask",AuthVerificationMiddleware, TasksController.getAllTaskController)
 router.get("/getInprogress/:status",AuthVerificationMiddleware, TasksController.getInprogressController)
 router.get("/getComplete/:status",AuthVerificationMiddleware, TasksController.getCompleteController)
 router.post("/taskUpdate",AuthVerificationMiddleware, TasksController.taskUpdate)

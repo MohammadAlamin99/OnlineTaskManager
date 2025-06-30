@@ -98,7 +98,7 @@ const Register = () => {
                         id="email"
                         type="email"
                         className="form-control w-100 fs-6 form-control-lg"
-                        placeholder="Enter your email"
+                        placeholder="Email"
                         required
                       />
                     </div>
@@ -141,7 +141,7 @@ const Register = () => {
                         id="mobile"
                         type="tel"
                         className="form-control w-100 fs-6 form-control-lg"
-                        placeholder="Enter your mobile number"
+                        placeholder="Phone number"
                         required
                       />
                     </div>
@@ -155,7 +155,7 @@ const Register = () => {
                         id="password"
                         type="password"
                         className="form-control w-100 fs-6 form-control-lg"
-                        placeholder="Create a password"
+                        placeholder="Password"
                         required
                       />
                     </div>
