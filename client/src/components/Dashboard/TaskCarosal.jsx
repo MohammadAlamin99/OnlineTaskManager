@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CreateTaskRequiest,
   getUsersRequest,
@@ -15,10 +15,11 @@ const TaskCarosal = ({ props }) => {
   const statusRef = useRef();
   const priorityRef = useRef();
   const dueDateRef = useRef();
-
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const myInfo = getUserDetails();
   const myId = myInfo._id;
+
   const onBtnClick = async () => {
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
@@ -26,17 +27,39 @@ const TaskCarosal = ({ props }) => {
     const status = statusRef.current.value;
     const priority = priorityRef.current.value;
     const dueDate = dueDateRef.current.value;
-    await CreateTaskRequiest(
-      selectedUsers,
-      title,
-      description,
-      dueDate,
-      priority,
-      status,
-      category
-    );
-    toast.success("Task Create Successfully!");
-    window.location.reload();
+
+    // Validate required fields
+    if (!title) {
+      toast.error("Title is required!");
+      return;
+    }
+    if (!status) {
+      toast.error("Status is required!");
+      return;
+    }
+    if (!priority) {
+      toast.error("Priority is required!");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await CreateTaskRequiest(
+        selectedUsers,
+        title,
+        description,
+        dueDate,
+        priority,
+        status,
+        category
+      );
+      toast.success("Task Created Successfully!");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Failed to create task");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUserSelection = (userId) => {
@@ -52,7 +75,7 @@ const TaskCarosal = ({ props }) => {
 
   useEffect(() => {
     (async () => {
-      let result = await getUsersRequest();
+      const result = await getUsersRequest();
       dispatch(setUser(result.data));
     })();
   }, []);
@@ -64,84 +87,111 @@ const TaskCarosal = ({ props }) => {
       assign.toLowerCase()
     )
   );
+
   return (
     <div>
-      <div className="carousel-overlay">
-        <div className="carousel-content">
-          <button className="close-button" onClick={props}>
-            X
-          </button>
-          <p>Title</p>
-          <input ref={titleRef} type="text" style={{ width: "100%" }} />
-          <p>Description</p>
-          <textarea
-            ref={descriptionRef}
-            type="text"
-            style={{ width: "100%" }}
-          />
-          <p>Category</p>
-          <input ref={categoryRef} type="text" style={{ width: "100%" }} />
-          <p>Status</p>
-          <select ref={statusRef} className="form-control">
-            <option value="TODO">TODO</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-          <p>Priority</p>
-          <select ref={priorityRef} className="form-control">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-          <p>Due Date</p>
-          <input
-            ref={dueDateRef}
-            type="date"
-            className="form-control"
-            style={{ width: "100%" }}
-          />
-          <p>Assign To</p>
-          <input
-            placeholder="User Name or Email"
-            type="text"
-            style={{ width: "100%", fontSize: "14px" }}
-            onChange={(e) => setAssign(e.target.value)}
-          />
+      <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50">
+        <div className="main_overlay bg-white rounded p-4 position-relative">
+          <button
+            className="btn-close position-absolute top-0 end-0 m-3"
+            onClick={props}
+            aria-label="Close"
+          ></button>
+
+          <div className="mb-3">
+            <label className="form-label">Title</label>
+            <input
+              ref={titleRef}
+              type="text"
+              className="form-control w-100"
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Description</label>
+            <textarea
+              ref={descriptionRef}
+              className="form-control w-100"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Category</label>
+            <input
+              ref={categoryRef}
+              type="text"
+              className="form-control w-100"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Status</label>
+            <select ref={statusRef} className="form-select" required>
+              <option value="">Select Status</option>
+              <option value="TODO">TODO</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Priority</label>
+            <select ref={priorityRef} className="form-select" required>
+              <option value="">Select Priority</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Due Date</label>
+            <input
+              ref={dueDateRef}
+              type="date"
+              className="form-control w-100"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Assign To</label>
+            <input
+              placeholder="User Name or Email"
+              type="text"
+              className="form-control w-100 small"
+              onChange={(e) => setAssign(e.target.value)}
+            />
+          </div>
+
           {assign && (
             <div
-              className="form-control"
-              style={{ width: "100%", maxHeight: "150px", overflowY: "auto" }}
+              className="border rounded p-2 mb-3"
+              style={{ maxHeight: "150px", overflowY: "auto" }}
             >
               {assignToUser
                 .filter((user) => user._id !== myId)
                 .map((item, i) => {
                   return (
-                    <div
-                      key={item}
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
+                    <div key={item} className="d-flex align-items-center mb-2">
                       <input
                         type="checkbox"
+                        className="form-check-input me-2"
                         value={item._id}
                         onChange={() => handleUserSelection(item._id)}
-                        checked={selectedUsers.includes(item._id)} //multiple user cheaked
+                        checked={selectedUsers.includes(item._id)}
                       />
                       <img
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "50%",
-                          marginLeft: "5px",
-                          marginRight: "5px",
-                        }}
-                        src={item.photo}
+                        className="rounded-circle me-2"
+                        src={item.photo || "/placeholder.svg"}
                         alt=""
+                        width="20"
+                        height="20"
                       />
                       <label
-                        style={{
-                          fontSize: "13px",
-                          fontFamily: "'Poppins', sans-serif",
-                        }}
+                        className="small"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {item.firstName + " " + item.lastName}
                       </label>
@@ -152,69 +202,62 @@ const TaskCarosal = ({ props }) => {
           )}
 
           {selectedUsers.length > 0 && (
-            <div>
-              {selectedUsers.map((item, i) => {
-                const user = SearchUser.find((user) => user._id === item);
-                return (
-                  <div
-                    key={i}
-                    className="selected-users"
-                    style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}
-                  >
+            <div className="mb-3">
+              <div className="d-flex flex-wrap gap-2">
+                {selectedUsers.map((item, i) => {
+                  const user = SearchUser.find((user) => user._id === item);
+                  return (
                     <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "5px 10px",
-                        background: "rgba(202, 196, 196, 0.5)",
-                        borderRadius: "20px",
-                      }}
+                      key={i}
+                      className="d-flex align-items-center px-3 py-1 bg-light rounded-pill"
                     >
                       <img
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "50%",
-                          marginRight: "5px",
-                        }}
-                        src={user.photo}
+                        className="rounded-circle me-2"
+                        src={user.photo || "/placeholder.svg"}
                         alt=""
+                        width="20"
+                        height="20"
                       />
                       <span
-                        style={{
-                          fontSize: "13px",
-                          fontFamily: "'Poppins', sans-serif",
-                        }}
+                        className="small"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {user.firstName + " " + user.lastName}
                       </span>
                       <button
-                        style={{
-                          marginLeft: "5px",
-                          background: "0",
-                          border: "none",
-                        }}
+                        className="btn btn-sm ms-2 p-0 border-0 bg-transparent"
                         onClick={() => handleUserSelection(item)}
                       >
-                        X
+                        ×
                       </button>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
+
           <button
-            style={{ marginTop: "10px" }}
-            className="btn btn-primary"
+            className="commonBtn mt-3"
             onClick={onBtnClick}
+            disabled={isLoading}
           >
-            {" "}
-            Submit
+            {isLoading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Creating...
+              </>
+            ) : (
+              "Create Task"
+            )}
           </button>
         </div>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

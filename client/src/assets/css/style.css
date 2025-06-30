@@ -17,6 +17,7 @@
   --card-number-color: #1E1E1E;
   --border-color: #E8EDF1;
   --subtext-color: #768396;
+  --l-menu-list-color: #1C1E21;
 }
 
 body {
@@ -25,6 +26,26 @@ body {
   font-family: var(--dm-sans);
 }
 
+/* commmon css */
+.commonBtn {
+  padding: 14px 20px;
+  background: var(--active-bg-color);
+  color: var(--active-text-color);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 23px;
+}
+.main_overlay{
+  width: 500px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.main_overlay::-webkit-scrollbar {
+  display: none;
+}
 .center-screen {
   display: flex;
   flex-direction: column;
@@ -32,62 +53,6 @@ body {
   align-items: center;
   min-height: 85vh;
 }
-
-.active {
-  color: #fff;
-  background: #419CA6;
-  border-left: 5px solid #1E758F;
-  cursor: pointer;
-}
-
-.customHover:hover {
-  background: #419CA6;
-  padding: 5px;
-  border-left: 5px solid #1E758F;
-  cursor: pointer;
-  transition: all linear .3s;
-  display: block;
-  color: white;
-}
-
-.profile {
-  color: #402C3C;
-  font-size: 16px;
-  font-weight: 400;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.navbar-brand {
-  font-size: 22px;
-  font-weight: 500;
-}
-
-.homeCard card {
-  color: red;
-}
-
-/* Responsive */
-
-@media (min-width: 361px) and (max-width: 575.98px) {
-  .left-area {
-    width: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-  }
-}
-
-
-.Profile h6 {
-  color: #402C3C;
-  font-size: 16px;
-  font-weight: 500;
-
-}
-
-
 
 .sidemenu {
   color: var(--active-text-color);
@@ -106,59 +71,6 @@ body {
   font-size: 15px;
   font-weight: 400;
 }
-
-.sideLogo {
-  color: #402C3C;
-  font-size: 15px;
-  font-weight: 400;
-}
-
-
-.CreateJSX {
-  color: #402C3C;
-  font-size: 20px;
-  font-weight: 500;
-  padding-bottom: 10px;
-}
-
-.newJSX h5 {
-  color: #402C3C;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-
-.profileInside {
-  color: #402C3C;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.ProfileUpdateBtn button {
-  background: #419CA6;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 500;
-  padding: 6px;
-  transition: all linear .3s;
-}
-
-.ProfileUpdateBtn button:hover {
-  background: #1E758F;
-}
-
-
-.Loginpage {
-  color: #402C3C;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.forgoteBtn {
-  padding-right: 43px;
-
-}
-
 /* =============== */
 
 /*DashBoard Page css start*/
@@ -240,7 +152,8 @@ body {
   cursor: pointer;
   transition: all linear .3s;
   font-size: 16px;
-  color: #1C1E21;
+  font-weight: 400;
+  color: var(--l-menu-list-color);
   padding: 8px;
 }
 
@@ -316,7 +229,7 @@ body {
   cursor: pointer;
 }
 
-/* crate task page css start */
+/* crate task page css start */ 
 .createTask {
   padding-right: 24px;
   margin-top: 24px;
@@ -422,196 +335,30 @@ body {
   padding: 3px 8px;
 }
 
-.taskcarosul {
-  background: green;
-  width: 400px;
-  height: 400px;
-}
-
-.taskcarosul p {
-  font-size: 16px;
-  font-weight: 500;
-  color: #1C1E21;
-}
-
-.taskcarosul input {
-  border: 1px solid #1C1E21;
-  border-radius: 5px;
-}
-
-.taskcarosul span {
-  font-size: 14px;
-  font-weight: 400;
-  color: #1C1E21;
-}
-
-
-.blurred {
-  filter: blur(5px);
-  pointer-events: none;
-}
-
-.carousel-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.carousel-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  width: 400px;
-  height: 95%;
-  max-width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
 .form-control {
   width: 290px;
   max-width: 100%;
   padding: 8px;
+  border: 1px solid var(--border-color);
 }
 
-.header_right svg {
-  width: 24px;
-  height: 24px;
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid var(--border-color);
 }
 
-.btn {
-  padding: 10px 20px;
-  margin-right: 10px;
+.form-label {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
 }
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-}
-
 
 /* task create page css end*/
 
 /* team task page css start */
-.mainOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.teamTask {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  width: 400px;
-  height: auto;
-  max-width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-}
-
-.teamCloseBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
 
 /* team task page css end */
-.taxbox {
-  margin: 15px;
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.taxbox p {
-  font-size: 16px;
-  font-weight: 400;
-  color: #ff4618;
-  padding: 5px;
-}
-
-.taxbox span {
-  font-size: 16px;
-  font-weight: 500;
-  color: #1C1E21;
-  padding: 5px;
-}
-
-.taxbox h5 {
-  font-size: 13px;
-  font-weight: 400;
-  color: #1C1E21;
-  padding: 5px;
-}
-
-.taxbox h4 {
-  font-size: 15px;
-  font-weight: 400;
-  padding: 5px;
-}
-
-.taxbox h3 {
-  font-size: 15px;
-  font-weight: 400;
-  color: #1C1E21;
-  padding: 5px;
-}
-
-
-.mainHoverAssign p {
-  color: #1C1E21;
-}
-
-.mainHoverAssign {
-  display: none;
-}
 
 /* left side menu */
 .manuLeft .activeSideMenu {
@@ -619,15 +366,7 @@ body {
   color: var(--active-text-color);
 }
 
-
-
-
 /* dash Borad section css start */
-
-.dashInfo {
-  margin-top: 10px;
-  overflow-x: auto;
-}
 
 .custom_container {
   gap: 24px;
@@ -730,120 +469,8 @@ body {
   padding-bottom: 16px;
 }
 
-/* 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
-  font-size: 18px;
-  text-align: left;
-}
-
-table th,
-table td {
-  padding: 4px 34px;
-}
-
-table thead th {
-  background-color: #0866FF;
-  color: #ffffff;
-  text-align: left;
-}
-
-table tbody tr {
-  border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-  border-bottom: 2px solid #0866FF;
-}
-
-table tbody tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-} */
-
-.DashCommon p {
-  font-size: 16px;
-  font-weight: 400;
-  color: #000;
-  margin: 0;
-}
-
-.DashCommon span {
-  font-size: 22px;
-  font-weight: 600;
-  color: #000;
-}
-
-.dash h3 {
-  font-size: 18px;
-  font-weight: 500;
-  color: #000;
-}
-
 
 /* Profile page css start */
-
-.myInformation img {
-  width: 180px;
-  height: 180px;
-  border-radius: .75rem;
-}
-
-.profileP p {
-  font-size: 16px;
-  font-weight: 500;
-  color: #212529;
-  margin: 10px 0 5px;
-}
-
-.myIn p {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #212529;
-  margin: 0;
-}
-
-.myIn {
-  padding-left: 3rem;
-  padding-top: 3rem;
-}
-
-.myIn span {
-  font-size: 16px;
-  font-weight: 400;
-  color: #212529;
-}
-
-.myIn h5 {
-  font-size: 16px;
-  font-weight: 400;
-  color: #212529;
-  padding-top: 5px;
-  margin: 0;
-}
-
-.myIn h6 {
-  font-size: 15px;
-  font-weight: 400;
-  color: #212529;
-  padding-top: 8px;
-  cursor: pointer;
-  transition: all linear .3s;
-}
-
-.myIn h6:hover {
-  color: red;
-}
-
-.myIm img {
-  margin-left: 14px;
-}
 
 /* Profile page css end */
 
