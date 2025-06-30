@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserLoginRequiest } from "../apiRequiest/apiRequiest";
 import { IsEmpty } from "../Helper/FormHelper";
@@ -8,7 +8,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [load, setLoaded] = useState(false);
-
   const emailRef = useRef();
   const passRef = useRef();
 
@@ -17,14 +16,15 @@ const Login = () => {
     const pass = passRef.current.value;
 
     if (IsEmpty(email)) {
-      toast.error("Invalid email address !");
+      toast.error("Invalid email address!");
     } else if (IsEmpty(pass)) {
-      toast.error("Password Required !");
+      toast.error("Password Required!");
     } else {
       try {
         setLoaded(true);
         const res = await UserLoginRequiest(email, pass);
         setLoaded(false);
+
         if (res.status === 200) {
           if (res.data.status === "fail") {
             toast.error("Wrong Password or Email");
@@ -38,72 +38,103 @@ const Login = () => {
       } catch (error) {
         console.error("Error during login:", error);
         toast.error("Something went wrong");
+        setLoaded(false);
       }
     }
   };
 
-  return load ? (
-    <div className="loader-container">
-      <BeatLoader
-        color="#0866FF"
-        size={20}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-  ) : (
+  if (load) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <BeatLoader
+          color="#0866FF"
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
+
+  return (
     <Fragment>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-7 col-lg-6 center-screen">
-            <div className="card w-90  p-4">
-              <div className="card-body">
-                <h4 className="Loginpage">SIGN IN</h4>
-                <br />
-                <input
-                  ref={emailRef}
-                  placeholder="User Email"
-                  className="form-control animated fadeInUp"
-                  type="email"
-                />
-                <br />
-                <input
-                  ref={passRef}
-                  placeholder="User Password"
-                  className="form-control animated fadeInUp"
-                  type="password"
-                />
-                <br />
-                <button
-                  onClick={onLogin}
-                  style={{
-                    fontFamily: "'Poppins', sans-serif;",
-                    fontWeight: "400",
-                    background: "#0866FF",
-                    color: "#fff",
-                  }}
-                  className="btn w-100 animated fadeInUp float-end"
-                >
-                  Next
-                </button>
-                <hr />
-                <div className="float-end mt-3 forgoteBtn">
-                  <span>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-center ms-3 h6 animated fadeInUp"
-                      to="/register"
-                    >
-                      Sign Up{" "}
-                    </Link>
-                    <span className="ms-2">|</span>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="text-center ms-3 h6 animated fadeInUp"
-                    >
-                      Forget Password
-                    </Link>
-                  </span>
+      <Toaster position="top-right" />
+      <div className="min-vh-100 d-flex align-items-center bg-light">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div className="card shadow-lg border-0">
+                <div className="card-body p-5">
+                  <div className="text-center mb-4">
+                    <h2 className="login__heading mb-2">Welcome Back</h2>
+                    <p className="text-muted">Sign in to your account</p>
+                  </div>
+
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      onLogin();
+                    }}
+                  >
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label fw-semibold">
+                        Email Address
+                      </label>
+                      <input
+                        ref={emailRef}
+                        id="email"
+                        type="email"
+                        className="form-control w-100 form-control-lg fs-6"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label
+                        htmlFor="password"
+                        className="form-label fw-semibold"
+                      >
+                        Password
+                      </label>
+                      <input
+                        ref={passRef}
+                        id="password"
+                        type="password"
+                        className="form-control w-100 form-control-lg fs-6"
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+
+                    <div className="d-grid mb-4">
+                      <button
+                        type="submit"
+                        className="commonBtn fs-6"
+                        disabled={load}
+                      >
+                        {load ? "Signing In..." : "Sign In"}
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="text-center">
+                    <div className="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                      <Link
+                        to="/register"
+                        className="text-decoration-none text-dark fw-semibold"
+                      >
+                        Create Account
+                      </Link>
+                      <span className="text-muted">|</span>
+                      <Link
+                        to="/forgot-password"
+                        className="text-decoration-none text-dark fw-semibold"
+                      >
+                        Forgot Password?
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -37,15 +37,18 @@ body {
   cursor: pointer;
   border-radius: 23px;
 }
-.main_overlay{
+
+.main_overlay {
   width: 500px;
   max-width: 100%;
   max-height: 90vh;
   overflow-y: auto;
 }
+
 .main_overlay::-webkit-scrollbar {
   display: none;
 }
+
 .center-screen {
   display: flex;
   flex-direction: column;
@@ -71,6 +74,7 @@ body {
   font-size: 15px;
   font-weight: 400;
 }
+
 /* =============== */
 
 /*DashBoard Page css start*/
@@ -229,7 +233,7 @@ body {
   cursor: pointer;
 }
 
-/* crate task page css start */ 
+/* crate task page css start */
 .createTask {
   padding-right: 24px;
   margin-top: 24px;
@@ -469,12 +473,14 @@ body {
   padding-bottom: 16px;
 }
 
+/* log in page css start */
+.login__heading {
+  color: var(--active-bg-color);
+  font-size: 30px;
+  font-weight: 700;
+}
 
-/* Profile page css start */
-
-/* Profile page css end */
-
-
+/* log in page css end */
 
 
 /* css for loader */

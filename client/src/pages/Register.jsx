@@ -1,131 +1,188 @@
-import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { IsEmpty } from "../Helper/FormHelper";
-import { UserRegistrationRequiest } from "../apiRequiest/apiRequiest"; 
-import toast, { Toaster } from 'react-hot-toast';
+"use client"
+
+import { useRef, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { IsEmpty } from "../Helper/FormHelper"
+import { UserRegistrationRequiest } from "../apiRequiest/apiRequiest"
+import toast, { Toaster } from "react-hot-toast"
+import BeatLoader from "react-spinners/BeatLoader"
+
 const Register = () => {
-  const emailRef = useRef();
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const mobileRef = useRef();
-  const passwordRef = useRef();
-  const navigate = useNavigate();
+  const [load, setLoaded] = useState(false)
+  const emailRef = useRef()
+  const firstNameRef = useRef()
+  const lastNameRef = useRef()
+  const mobileRef = useRef()
+  const passwordRef = useRef()
+  const navigate = useNavigate()
 
   const onRegistration = async () => {
-    const email = emailRef.current.value;
-    const firstName = firstNameRef.current.value;
-    const lastName = lastNameRef.current.value;
-    const mobile = mobileRef.current.value;
-    const password = passwordRef.current.value;
-    let photo="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg"
+    const email = emailRef.current.value
+    const firstName = firstNameRef.current.value
+    const lastName = lastNameRef.current.value
+    const mobile = mobileRef.current.value
+    const password = passwordRef.current.value
+    const photo =
+      "https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg"
 
     if (IsEmpty(email)) {
-      toast.error("Valid Email Required !");
+      toast.error("Valid Email Required!")
     } else if (IsEmpty(firstName)) {
-      toast.error("First Name Required !");
+      toast.error("First Name Required!")
     } else if (IsEmpty(lastName)) {
-      toast.error("Last Name Required !");
+      toast.error("Last Name Required!")
     } else if (IsEmpty(mobile)) {
-      toast.error("Valid Mobile Number Required !");
+      toast.error("Valid Mobile Number Required!")
     } else if (IsEmpty(password)) {
-      toast.error("Password Required !");
+      toast.error("Password Required!")
     } else {
       try {
-        const res = await UserRegistrationRequiest(email, firstName, lastName, mobile, password,photo);
+        setLoaded(true)
+        const res = await UserRegistrationRequiest(email, firstName, lastName, mobile, password, photo)
+        setLoaded(false)
+
         if (res.status === 200) {
-          if (res.data.status === 'success') {
-            toast.success("Registration has been successful");
-            navigate("/login");
-          } else if (res.data.status === 'fail') {
-            if (res.data.message.keyPattern.email === 1) {
-              toast.error("Email Already Exists");
+          if (res.data.status === "success") {
+            toast.success("Registration has been successful")
+            navigate("/login")
+          } else if (res.data.status === "fail") {
+            if (res.data.message.keyPattern && res.data.message.keyPattern.email === 1) {
+              toast.error("Email Already Exists")
             } else {
-              toast.error("Something Went Wrong");
+              toast.error("Something Went Wrong")
             }
           }
         }
       } catch (error) {
-        console.error("Error during registration:", error);
-        toast.error("Something Went Wrong");
+        console.error("Error during registration:", error)
+        toast.error("Something Went Wrong")
+        setLoaded(false)
       }
     }
-  };
+  }
+
+  if (load) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <BeatLoader color="#0866FF" size={20} aria-label="Loading Spinner" data-testid="loader" />
+      </div>
+    )
+  }
 
   return (
-    <div className="vh-100 vw-100 bg-body-secondary d-flex justify-content-center align-items-center">
-      <div className="p-3">
-        <div
-          className="bg-body p-5 rounded shadow mx-auto "
-          style={{ maxWidth: "35rem" }}
-        >
-          <h3 className="text-muted pb-3 Loginpage">Sign Up</h3>
-          <form className="row g-3">
-            <div className="col-12">
-              <input
-                type="email"
-                className="form-control focus-ring custom"
-                placeholder="Your Email"
-                ref={emailRef}
-              />
-            </div>
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control focus-ring custom"
-                placeholder="Your First Name"
-                ref={firstNameRef}
-              />
-            </div>
-            <div className="col-12">
-              <input
-                type="text"
-                className="form-control focus-ring custom"
-                placeholder="Your Last Name"
-                ref={lastNameRef}
-              />
-            </div>
-            <div className="col-12">
-              <input
-                type="number"
-                className="form-control focus-ring custom"
-                placeholder="Your Mobile"
-                ref={mobileRef}
-              />
-            </div>
-            <div className="col-12">
-              <input
-                type="password"
-                className="form-control focus-ring custom"
-                placeholder="Your Password"
-                ref={passwordRef}
-              />
-            </div>
+    <>
+      <Toaster position="top-right" />
+      <div className="min-vh-100 d-flex align-items-center bg-light">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div className="card shadow-lg border-0">
+                <div className="card-body p-5">
+                  <div className="text-center mb-4">
+                    <h2 className="fw-bold text-primary mb-2">Create Account</h2>
+                    <p className="text-muted">Join us today and get started</p>
+                  </div>
 
-            <div className="col-12">
-              <button
-                type="button" 
-                className="btn text-white"
-             
-                onClick={onRegistration}
-                style={{fontFamily:"'Poppins', sans-serif;", fontWeight:"400", background:"#0866FF", color:"#fff"}} 
-              >
-                Sign Up
-              </button>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      onRegistration()
+                    }}
+                  >
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label fw-semibold">
+                        Email Address
+                      </label>
+                      <input
+                        ref={emailRef}
+                        id="email"
+                        type="email"
+                        className="form-control form-control-lg"
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label htmlFor="firstName" className="form-label fw-semibold">
+                          First Name
+                        </label>
+                        <input
+                          ref={firstNameRef}
+                          id="firstName"
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="First name"
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="lastName" className="form-label fw-semibold">
+                          Last Name
+                        </label>
+                        <input
+                          ref={lastNameRef}
+                          id="lastName"
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Last name"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="mobile" className="form-label fw-semibold">
+                        Mobile Number
+                      </label>
+                      <input
+                        ref={mobileRef}
+                        id="mobile"
+                        type="tel"
+                        className="form-control form-control-lg"
+                        placeholder="Enter your mobile number"
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label htmlFor="password" className="form-label fw-semibold">
+                        Password
+                      </label>
+                      <input
+                        ref={passwordRef}
+                        id="password"
+                        type="password"
+                        className="form-control form-control-lg"
+                        placeholder="Create a password"
+                        required
+                      />
+                    </div>
+
+                    <div className="d-grid mb-4">
+                      <button type="submit" className="btn btn-primary btn-lg fw-semibold" disabled={load}>
+                        {load ? "Creating Account..." : "Create Account"}
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="text-center">
+                    <p className="mb-0 text-muted">
+                      Already have an account?{" "}
+                      <Link to="/login" className="text-decoration-none fw-semibold text-primary">
+                        Sign In
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
-          <p className="mt-3 profileInside">
-            Already have an account?
-            <span className="text-orange-500">
-              <Link to="/login" style={{ color: "#0866FF" }}>
-                {" "}
-                Login
-              </Link>
-            </span>
-          </p>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default Register;
+export default Register
