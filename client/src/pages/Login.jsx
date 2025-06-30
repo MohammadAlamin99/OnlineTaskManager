@@ -64,7 +64,7 @@ const Login = () => {
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="card shadow-lg border-0">
-                <div className="card-body p-5">
+                <div className="login__body card-body p-5">
                   <div className="text-center mb-4">
                     <h2 className="login__heading mb-2">Welcome Back</h2>
                     <p className="text-muted">Sign in to your account</p>
@@ -84,7 +84,7 @@ const Login = () => {
                         ref={emailRef}
                         id="email"
                         type="email"
-                        className="form-control w-100 form-control-lg fs-6"
+                        className="input__login form-control w-100 form-control-lg fs-6"
                         placeholder="Email"
                         required
                       />
@@ -101,7 +101,7 @@ const Login = () => {
                         ref={passRef}
                         id="password"
                         type="password"
-                        className="form-control w-100 form-control-lg fs-6"
+                        className="input__login form-control w-100 form-control-lg fs-6"
                         placeholder="Password"
                         required
                       />

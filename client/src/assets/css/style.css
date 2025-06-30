@@ -360,10 +360,6 @@ body {
 
 /* task create page css end*/
 
-/* team task page css start */
-
-/* team task page css end */
-
 /* left side menu */
 .manuLeft .activeSideMenu {
   background: var(--active-bg-color);
@@ -479,7 +475,17 @@ body {
   font-size: 30px;
   font-weight: 700;
 }
-
+.input__login{
+  padding: 0 16px;
+}
+@media only screen and (max-width: 576px) {
+  .login__heading {
+    font-size: 24px;
+  }
+  .login__body{
+    padding: 24px !important;
+  }
+}
 /* log in page css end */
 
 

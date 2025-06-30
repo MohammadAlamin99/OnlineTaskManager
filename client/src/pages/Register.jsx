@@ -77,9 +77,9 @@ const Register = () => {
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="card shadow-lg border-0">
-                <div className="card-body p-5">
+                <div className="login__body card-body p-5">
                   <div className="text-center mb-4">
-                    <h2 className="fw-bold text-primary mb-2">Create Account</h2>
+                    <h2 className="login__heading mb-2">Create Account</h2>
                     <p className="text-muted">Join us today and get started</p>
                   </div>
 
@@ -97,7 +97,7 @@ const Register = () => {
                         ref={emailRef}
                         id="email"
                         type="email"
-                        className="form-control form-control-lg"
+                        className="form-control w-100 fs-6 form-control-lg"
                         placeholder="Enter your email"
                         required
                       />
@@ -112,7 +112,7 @@ const Register = () => {
                           ref={firstNameRef}
                           id="firstName"
                           type="text"
-                          className="form-control form-control-lg"
+                          className="form-control w-100 fs-6 form-control-lg"
                           placeholder="First name"
                           required
                         />
@@ -125,7 +125,7 @@ const Register = () => {
                           ref={lastNameRef}
                           id="lastName"
                           type="text"
-                          className="form-control form-control-lg"
+                          className="form-control fs-6 w-100 form-control-lg"
                           placeholder="Last name"
                           required
                         />
@@ -140,7 +140,7 @@ const Register = () => {
                         ref={mobileRef}
                         id="mobile"
                         type="tel"
-                        className="form-control form-control-lg"
+                        className="form-control w-100 fs-6 form-control-lg"
                         placeholder="Enter your mobile number"
                         required
                       />
@@ -154,14 +154,14 @@ const Register = () => {
                         ref={passwordRef}
                         id="password"
                         type="password"
-                        className="form-control form-control-lg"
+                        className="form-control w-100 fs-6 form-control-lg"
                         placeholder="Create a password"
                         required
                       />
                     </div>
 
                     <div className="d-grid mb-4">
-                      <button type="submit" className="btn btn-primary btn-lg fw-semibold" disabled={load}>
+                      <button type="submit" className="commonBtn fs-6" disabled={load}>
                         {load ? "Creating Account..." : "Create Account"}
                       </button>
                     </div>
@@ -170,7 +170,7 @@ const Register = () => {
                   <div className="text-center">
                     <p className="mb-0 text-muted">
                       Already have an account?{" "}
-                      <Link to="/login" className="text-decoration-none fw-semibold text-primary">
+                      <Link to="/login" className="text-decoration-none fw-semibold text-dark">
                         Sign In
                       </Link>
                     </p>
