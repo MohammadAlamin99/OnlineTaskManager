@@ -28,7 +28,6 @@ const EditCarosal = ({ props, updateTask }) => {
         const result = await getUpdateTaskRequest(taskId);
         setUpdate(result[0]);
       } catch (error) {
-        console.error("Error fetching task data:", error);
         toast.error("Failed to load task data.");
       }
     })();
@@ -52,7 +51,7 @@ const EditCarosal = ({ props, updateTask }) => {
     try {
       setIsLoading(true);
       const updatedTask = {
-        _id: taskId, // Make sure to include the ID
+        _id: taskId,
         title: titleRef.current.value,
         description: descriptionRef.current.value,
         category: categoryRef.current.value,
@@ -70,10 +69,9 @@ const EditCarosal = ({ props, updateTask }) => {
         updatedTask.status,
         updatedTask.category
       );
-
       if (response.data.status === "success") {
         toast.success("Task updated successfully!");
-        if (updateTask) updateTask(updatedTask); 
+        if (updateTask) updateTask(updatedTask);
       }
     } catch (error) {
       toast.error("Failed to update task.");

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteTaskRequest, getCompletedRequest } from "../apiRequiest/apiRequiest";
+import {
+  DeleteTaskRequest,
+  getCompletedRequest,
+} from "../apiRequiest/apiRequiest";
 import { setComplete } from "../redux/state-slice/completeTask-slice";
 import { AiOutlineDelete } from "react-icons/ai";
 import { LiaEditSolid } from "react-icons/lia";
@@ -23,8 +26,6 @@ const CompleteTask = () => {
     })();
   }, [0]);
 
-
-
   // update Task carousel
   // store Task Id
   const [taskId, setTaskId] = useState("");
@@ -35,6 +36,15 @@ const CompleteTask = () => {
 
   const hideUpdate = () => {
     setUpadateCarousel(false);
+  };
+
+  // when update task... updated data without reload
+  const handleUpdateTask = (newTask) => {
+    comDispatch(
+      setComplete(
+        getComplete.map((task) => (task._id === newTask._id ? newTask : task))
+      )
+    );
   };
   // delete Task
   const DeleteTaskHandler = async (id) => {
@@ -53,8 +63,11 @@ const CompleteTask = () => {
           text: "Your file has been deleted.",
           icon: "success",
         });
-        await DeleteTaskRequest(id);
-        window.location.reload();
+        const isDelete = await DeleteTaskRequest(id);
+        if (isDelete) {
+          const updatedTask = getComplete.filter((task) => task._id !== id);
+          comDispatch(setComplete(updatedTask));
+        }
       }
     });
   };
@@ -76,37 +89,46 @@ const CompleteTask = () => {
         </div>
         <div className="getTask d-flex pb-2">
           <div className="card-container">
-            {getComplete && getComplete.length > 0
-              ? getComplete &&
+            {getComplete && getComplete.length > 0 ? (
+              getComplete &&
               getComplete.map((item, i) => {
                 return (
                   <div key={i} className="task-card">
                     <div className="tag-wrapper d-flex align-items-center gap-2">
                       {/* Status Tags */}
-                      {item?.status === "TODO" && <div className="tag status-todo">ToDo</div>}
-                      {item?.status === "In Progress" && <div className="tag status-in-progress">In Progress</div>}
-                      {item?.status === "Completed" && <div className="tag status-completed">Completed</div>}
+                      {item?.status === "TODO" && (
+                        <div className="tag status-todo">ToDo</div>
+                      )}
+                      {item?.status === "In Progress" && (
+                        <div className="tag status-in-progress">
+                          In Progress
+                        </div>
+                      )}
+                      {item?.status === "Completed" && (
+                        <div className="tag status-completed">Completed</div>
+                      )}
 
                       {/* Priority Tags */}
-                      {item?.priority === "Low" && <div className="tag priority-low">Low</div>}
-                      {item?.priority === "Medium" && <div className="tag priority-medium">Medium</div>}
-                      {item?.priority === "High" && <div className="tag priority-high">High</div>}
+                      {item?.priority === "Low" && (
+                        <div className="tag priority-low">Low</div>
+                      )}
+                      {item?.priority === "Medium" && (
+                        <div className="tag priority-medium">Medium</div>
+                      )}
+                      {item?.priority === "High" && (
+                        <div className="tag priority-high">High</div>
+                      )}
                     </div>
 
                     <h3 className="task-title">{item?.title}</h3>
-                    <p className="task-description">
-                      {item?.description}
-                    </p>
+                    <p className="task-description">{item?.description}</p>
                     <h5 className="task-date">
                       {item?.dueDate
-                        ? new Date(item.dueDate).toLocaleDateString(
-                          "en-US",
-                          {
+                        ? new Date(item.dueDate).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
-                          }
-                        )
+                          })
                         : "No Due Date"}
                     </h5>
                     <div className="d-flex justify-content-between align-items-center">
@@ -179,12 +201,19 @@ const CompleteTask = () => {
                   </div>
                 );
               })
-              : <p className="no-data-found">No Task Found</p>}
+            ) : (
+              <p className="no-data-found">No Task Found</p>
+            )}
           </div>
         </div>
       </div>
       {isCarouselVisible && <Carousel props={hideCarousel} />}
-      {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} />}
+      {isUpadateCarousel && (
+        <EditCarosal
+          props={{ hideUpdate, taskId }}
+          updateTask={handleUpdateTask}
+        />
+      )}
     </>
   );
 };

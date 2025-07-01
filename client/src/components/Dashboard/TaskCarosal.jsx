@@ -9,7 +9,6 @@ import { setUser } from "../../redux/state-slice/user-slice";
 import toast, { Toaster } from "react-hot-toast";
 
 const TaskCarosal = ({ props, onTaskCreated  }) => {
-  const { hideCarousel } = props;
   const titleRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
@@ -61,7 +60,7 @@ const TaskCarosal = ({ props, onTaskCreated  }) => {
       toast.error("Failed to create task");
     } finally {
       setIsLoading(false);
-      // hideCarousel();
+      props();
     }
   };
 
@@ -85,7 +84,7 @@ const TaskCarosal = ({ props, onTaskCreated  }) => {
 
   // assign to
   const [assign, setAssign] = useState("");
-  const assignToUser = SearchUser.filter((user) =>
+  const assignToUser = SearchUser?.filter((user) =>
     (user.firstName.toLowerCase() + "" + user.lastName.toLowerCase()).includes(
       assign.toLowerCase()
     )
