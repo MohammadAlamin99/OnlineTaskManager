@@ -18,6 +18,12 @@
   --border-color: #E8EDF1;
   --subtext-color: #768396;
   --l-menu-list-color: #1C1E21;
+  --todo-c: #5BBFFF;
+  --done-c: #0ACF83;
+  --in-p-c: #FC9858;
+  --high-c: #F87171;
+  --medium-c: #F59E0B;
+  --low-c: #2CDE9A;
 }
 
 body {
@@ -36,6 +42,23 @@ body {
   border: none;
   cursor: pointer;
   border-radius: 23px;
+}
+
+.cencell_common_btn {
+  padding: 14px 20px;
+  background: var(--border-color);
+  color: var(--card-number-color);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 23px;
+}
+
+.no-data-found {
+  color: var(--card-title-color);
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .main_overlay {
@@ -290,6 +313,7 @@ body {
   border: 1px solid var(--active-text-color);
   margin-left: -8px;
 }
+
 .card-container .task-card .task-assignee .assignee-photo:first-child {
   margin-left: 0;
 }
@@ -309,13 +333,12 @@ body {
 
 .card-container .task-card .tag {
   font-size: 12px;
-  color: var(--active-text-color);
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: var(--active-bg-color);
   width: fit-content;
   margin-bottom: 16px;
+  color: var(--active-text-color);
 }
 
 .card-container .task-card .task-title {
@@ -478,18 +501,49 @@ body {
   font-size: 30px;
   font-weight: 700;
 }
-.input__login{
+
+.input__login {
   padding: 0 16px;
 }
+
 @media only screen and (max-width: 576px) {
   .login__heading {
     font-size: 24px;
   }
-  .login__body{
+
+  .login__body {
     padding: 24px !important;
   }
 }
+
 /* log in page css end */
+
+
+/* STATUS COLORS */
+.tag.status-todo {
+  background-color: var(--todo-c);
+}
+
+.tag.status-in-progress {
+  background-color: var(--in-p-c);
+}
+
+.tag.status-completed {
+  background-color: var(--done-c);
+}
+
+/* PRIORITY COLORS */
+.tag.priority-low {
+  background-color: var(--low-c);
+}
+
+.tag.priority-medium {
+  background-color: var(--medium-c);
+}
+
+.tag.priority-high {
+  background-color: var(--high-c);
+}
 
 
 /* css for loader */
