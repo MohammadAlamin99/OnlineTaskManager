@@ -161,8 +161,8 @@ const CreateTask = () => {
                                   : "No Due Date"}
                               </h5>
                               <div className="d-flex justify-content-between align-items-center">
-                                <div className="task-assignee d-flex align-items-center">
-                                  {/* {item?.assignInfo &&
+                                <div className="task-assignee">
+                                  {item?.assignInfo &&
                                     item?.assignInfo.map((item, i) => {
                                       return (
                                         <img
@@ -172,23 +172,7 @@ const CreateTask = () => {
                                           className="assignee-photo"
                                         />
                                       );
-                                    })} */}
-
-                                  <img
-                                    src="https://i.pravatar.cc/150?img=3"
-                                    alt="Assignee"
-                                    className="assignee-photo"
-                                  />
-                                  <img
-                                    src="https://i.pravatar.cc/150?img=3"
-                                    alt="Assignee"
-                                    className="assignee-photo"
-                                  />
-                                  <img
-                                    src="https://i.pravatar.cc/150?img=3"
-                                    alt="Assignee"
-                                    className="assignee-photo"
-                                  />
+                                    })}
                                 </div>
                                 <div className="task-complete-status d-flex align-items-center gap-2">
                                   <svg

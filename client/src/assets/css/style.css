@@ -279,8 +279,7 @@ body {
 }
 
 .card-container .task-card .task-assignee {
-  margin-left: 16px;
-  padding-top: 18px;
+  padding-top: 16px;
 }
 
 .card-container .task-card .task-assignee .assignee-photo {
@@ -289,7 +288,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--active-text-color);
-  margin-left: -30px;
+  margin-left: -8px;
 }
 .card-container .task-card .task-assignee .assignee-photo:first-child {
   margin-left: 0;
