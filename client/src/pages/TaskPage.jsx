@@ -3,9 +3,9 @@ import CreateTask from '../components/CreateTask';
 
 const TaskPage = () => {
     return (
-        <div>
+        <>
             <CreateTask/>
-        </div>
+        </>
     );
 };
 

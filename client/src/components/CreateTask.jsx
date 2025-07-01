@@ -53,6 +53,11 @@ const CreateTask = () => {
     })();
   }, [0]);
 
+  // when create task... updated data without reload
+const handleTaskCreated = (newTask) => {
+  dispatch(setAlltask([newTask, ...getTasks])); 
+};
+
   // delete Task
   const DeleteTaskHandler = async (id) => {
     Swal.fire({
@@ -243,7 +248,7 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
-      {isCarouselVisible && <Carousel props={hideCarousel} />}
+      {isCarouselVisible && <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />}
       {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} />}
     </>
   );

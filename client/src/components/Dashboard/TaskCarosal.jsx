@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../redux/state-slice/user-slice";
 import toast, { Toaster } from "react-hot-toast";
 
-const TaskCarosal = ({ props }) => {
+const TaskCarosal = ({ props, onTaskCreated  }) => {
   const titleRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
@@ -54,7 +54,7 @@ const TaskCarosal = ({ props }) => {
         category
       );
       toast.success("Task Created Successfully!");
-      // window.location.reload();
+      if (onTaskCreated) onTaskCreated(createTask.data); 
       
     } catch (error) {
       toast.error("Failed to create task");
