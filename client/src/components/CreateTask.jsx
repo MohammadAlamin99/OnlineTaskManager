@@ -54,9 +54,13 @@ const CreateTask = () => {
   }, [0]);
 
   // when create task... updated data without reload
-const handleTaskCreated = (newTask) => {
-  dispatch(setAlltask([newTask, ...getTasks])); 
-};
+  const handleTaskCreated = (newTask) => {
+    dispatch(setAlltask([newTask, ...getTasks]));
+  };
+  // when create task... updated data without reload
+  const handleUpdateTask = (newTask) => {
+    dispatch(setAlltask([newTask, ...getTasks]));
+  };
 
   // delete Task
   const DeleteTaskHandler = async (id) => {
@@ -249,7 +253,7 @@ const handleTaskCreated = (newTask) => {
         </div>
       </div>
       {isCarouselVisible && <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />}
-      {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} />}
+      {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} updateTask={handleUpdateTask} />}
     </>
   );
 };

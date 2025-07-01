@@ -1,4 +1,3 @@
-"use client"
 
 import { useEffect, useRef, useState } from "react"
 import { UpdateTaskRequest, getUpdateTaskRequest } from "../apiRequiest/apiRequiest"
@@ -44,16 +43,13 @@ const EditCarosal = ({ props }) => {
     const onUpdateHandler = async () => {
         try {
             setIsLoading(true)
-
             const title = titleRef.current.value
             const description = descriptionRef.current.value
             const category = categoryRef.current.value
             const status = statusRef.current.value
             const priority = priorityRef.current.value
             const dueDate = dueDateRef.current.value
-
-            await UpdateTaskRequest(taskId, title, description, dueDate, priority, status, category)
-
+            await UpdateTaskRequest(taskId, title, description, dueDate, priority, status, category);
             toast.success("Task updated successfully!")
 
             // Delay the reload to show the toast
@@ -82,7 +78,6 @@ const EditCarosal = ({ props }) => {
                 role="dialog"
                 aria-labelledby="editTaskModal"
                 aria-hidden="true"
-                style={{ overflowY: 'auto' }}
             >
                 <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div className="modal-content">
