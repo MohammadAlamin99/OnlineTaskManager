@@ -44,7 +44,7 @@ const TaskCarosal = ({ props }) => {
 
     setIsLoading(true);
     try {
-      await CreateTaskRequiest(
+      const createTask = await CreateTaskRequiest(
         selectedUsers,
         title,
         description,
@@ -54,7 +54,8 @@ const TaskCarosal = ({ props }) => {
         category
       );
       toast.success("Task Created Successfully!");
-      window.location.reload();
+      // window.location.reload();
+      
     } catch (error) {
       toast.error("Failed to create task");
     } finally {
@@ -168,7 +169,6 @@ const TaskCarosal = ({ props }) => {
           {assign && (
             <div
               className="border rounded p-2 mb-3"
-              style={{ maxHeight: "150px", overflowY: "auto" }}
             >
               {assignToUser
                 .filter((user) => user._id !== myId)
@@ -191,7 +191,6 @@ const TaskCarosal = ({ props }) => {
                       />
                       <label
                         className="small"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {item.firstName + " " + item.lastName}
                       </label>
@@ -220,7 +219,6 @@ const TaskCarosal = ({ props }) => {
                       />
                       <span
                         className="small"
-                        style={{ fontFamily: "'Poppins', sans-serif" }}
                       >
                         {user.firstName + " " + user.lastName}
                       </span>

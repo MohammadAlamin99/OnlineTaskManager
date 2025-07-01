@@ -11,12 +11,16 @@ import EditCarosal from "./EditCarosal";
 import { AiOutlineDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
 import BeatLoader from "react-spinners/BeatLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { setAlltask } from "../redux/state-slice/allTask-slice";
 
 const CreateTask = () => {
   const [load, setLoaded] = useState(false);
   const [isCarouselVisible, setCarouselVisible] = useState(false);
   const [isUpadateCarousel, setUpadateCarousel] = useState(false);
-  const [getData, setData] = useState([]);
+
+  const getTasks = useSelector((state) => state.getAllTask.alltask);
+  const dispatch = useDispatch();
 
   // create task carousel
   const showCarousel = () => {
@@ -45,7 +49,7 @@ const CreateTask = () => {
       setLoaded(true);
       let result = await getAllTaskRequest();
       setLoaded(false);
-      setData(result);
+      dispatch(setAlltask(result))
     })();
   }, [0]);
 
@@ -66,13 +70,14 @@ const CreateTask = () => {
           text: "Your file has been deleted.",
           icon: "success",
         });
-        await DeleteTaskRequest(id);
-        window.location.reload();
+        const isDelete = await DeleteTaskRequest(id);
+        if (isDelete) {
+          const updatedTask = getTasks.filter((task) => task._id !== id)
+          dispatch(setAlltask(updatedTask));
+        }
       }
     });
   };
-
-  // console.log(getData);
   return (
     <>
       <div className="">
@@ -127,9 +132,9 @@ const CreateTask = () => {
               <div className="row g-0">
                 <div className="getTask d-flex pb-2">
                   <div className="card-container">
-                    {getData && getData.length > 0
-                      ? getData &&
-                      getData.map((item, i) => {
+                    {getTasks && getTasks.length > 0
+                      ? getTasks &&
+                      getTasks.map((item, i) => {
                         return (
                           <div key={i} className="task-card">
                             <div className="tag-wrapper d-flex align-items-center gap-2">
