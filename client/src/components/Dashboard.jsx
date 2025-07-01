@@ -48,7 +48,7 @@ const Dashboard = () => {
         width: 380,
         type: "pie",
       },
-      colors: ["#5051F9", "#36A2EB", "#FF614C"],
+      colors: ["#5BBFFF", "#FC9858", "#0ACF83"],
       labels: ["To Do", "In Progress", "Complete"],
       responsive: [
         {

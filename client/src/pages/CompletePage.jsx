@@ -1,34 +1,32 @@
-import React from 'react';
 import Header from '../components/Dashboard/Header';
 import LeftSideHome from '../components/Dashboard/LeftSideHome';
 import CompleteTask from '../components/CompleteTask';
 
 const CompletePage = () => {
     return (
-        <div>
+        <>
             <div className="">
-                <div className="row">
+                <div className="row g-0">
                     <div className="col-lg-12 pt-3">
-                        <Header/>
+                        <Header />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-lg-2">
-                        <LeftSideHome/>
+                <div className="row g-0">
+                    <div className="col-lg-2 p-0">
+                        <LeftSideHome />
                     </div>
                     <div className="col-lg-10">
-
-                        <div className="row">
-                            <div className="getTask d-flex pb-2">
+                        <div className="row g-0">
+                            <div className="getTask d-flex pb-2 mt-4">
                                 <div className="col-lg-12">
-                                <CompleteTask/>
+                                    <CompleteTask />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

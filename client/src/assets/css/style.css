@@ -280,7 +280,7 @@ body {
 .taskText p {
   color: var(--card-number-color);
   font-family: var(--dm-sans);
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 500;
   padding-left: 24px;
   padding-top: 24px;
