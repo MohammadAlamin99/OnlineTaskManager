@@ -5,30 +5,29 @@ import Profile from '../components/Profile';
 
 const ProfilePage = () => {
     return (
-        <div>
-           <div className="">
+        <>
+            <div className="">
                 <div className="row g-0">
-                    <div className="col-lg-12 pt-3">
-                        <Header/>
+                    <div className="col-lg-12">
+                        <Header />
                     </div>
                 </div>
                 <div className="row g-0">
                     <div className="col-lg-2 p-0">
-                        <LeftSideHome/>
+                        <LeftSideHome />
                     </div>
                     <div className="col-lg-10">
-
                         <div className="row g-0">
                             <div className="getTask d-flex pb-2">
                                 <div className="col-lg-12">
-                                    <Profile/>
+                                    <Profile />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> 
-        </div>
+            </div>
+        </>
     );
 };
 

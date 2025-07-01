@@ -254,6 +254,7 @@ body {
   height: 38px;
   border-radius: 50%;
   cursor: pointer;
+  object-fit: cover;
 }
 
 /* crate task page css start */
@@ -317,7 +318,6 @@ body {
 .card-container .task-card .task-assignee .assignee-photo:first-child {
   margin-left: 0;
 }
-
 
 .card-container .task-card .task-complete-status .status-text {
   color: var(--subtext-color);
@@ -517,6 +517,16 @@ body {
 }
 
 /* log in page css end */
+
+/* profile page css start */
+.profile_image{
+  border: 1px solid var(--active-bg-color);
+}
+.profile__settings{
+  padding: 16px 24px;
+  background: var(--active-bg-color);
+}
+/* profile page css end */
 
 
 /* STATUS COLORS */

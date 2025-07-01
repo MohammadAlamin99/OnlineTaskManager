@@ -7,7 +7,7 @@ const CompletePage = () => {
         <>
             <div className="">
                 <div className="row g-0">
-                    <div className="col-lg-12 pt-3">
+                    <div className="col-lg-12">
                         <Header />
                     </div>
                 </div>
@@ -17,7 +17,7 @@ const CompletePage = () => {
                     </div>
                     <div className="col-lg-10">
                         <div className="row g-0">
-                            <div className="getTask d-flex pb-2 mt-4">
+                            <div className="getTask d-flex pb-2">
                                 <div className="col-lg-12">
                                     <CompleteTask />
                                 </div>

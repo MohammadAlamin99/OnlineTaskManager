@@ -9,7 +9,7 @@ const InProgressPage = () => {
         <div>
             <div className="">
                 <div className="row g-0">
-                    <div className="col-lg-12 pt-3">
+                    <div className="col-lg-12">
                         <Header/>
                     </div>
                 </div>
