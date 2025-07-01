@@ -26,17 +26,17 @@ const InProgress = () => {
 
     // loader css
 
-  // update Task carousel
-  // store Task Id
-  const [taskId, setTaskId] = useState("");
-  const showUpdate = (id) => {
-    setTaskId(id);
-    setUpadateCarousel(true);
-  };
+    // update Task carousel
+    // store Task Id
+    const [taskId, setTaskId] = useState("");
+    const showUpdate = (id) => {
+        setTaskId(id);
+        setUpadateCarousel(true);
+    };
 
-  const hideUpdate = () => {
-    setUpadateCarousel(false);
-  };
+    const hideUpdate = () => {
+        setUpadateCarousel(false);
+    };
     // delete Task
     const DeleteTaskHandler = async (id) => {
         Swal.fire({
