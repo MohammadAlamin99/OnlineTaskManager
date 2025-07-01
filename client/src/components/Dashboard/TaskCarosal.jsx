@@ -9,6 +9,7 @@ import { setUser } from "../../redux/state-slice/user-slice";
 import toast, { Toaster } from "react-hot-toast";
 
 const TaskCarosal = ({ props, onTaskCreated  }) => {
+  const { hideCarousel } = props;
   const titleRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
@@ -54,12 +55,13 @@ const TaskCarosal = ({ props, onTaskCreated  }) => {
         category
       );
       toast.success("Task Created Successfully!");
-      if (onTaskCreated) onTaskCreated(createTask.data); 
+      if (onTaskCreated) onTaskCreated(createTask?.data?.data); 
       
     } catch (error) {
       toast.error("Failed to create task");
     } finally {
       setIsLoading(false);
+      // hideCarousel();
     }
   };
 

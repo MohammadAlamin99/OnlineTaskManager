@@ -57,9 +57,12 @@ const CreateTask = () => {
   const handleTaskCreated = (newTask) => {
     dispatch(setAlltask([newTask, ...getTasks]));
   };
-  // when create task... updated data without reload
+
+  // when update task... updated data without reload
   const handleUpdateTask = (newTask) => {
-    dispatch(setAlltask([newTask, ...getTasks]));
+    dispatch(setAlltask(
+      getTasks.map((task)=> task._id === newTask._id ? newTask : task)
+    ));
   };
 
   // delete Task
