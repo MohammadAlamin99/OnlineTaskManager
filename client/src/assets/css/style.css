@@ -555,7 +555,22 @@ body {
   padding: 16px 24px;
   background: var(--active-bg-color);
 }
-
+.adminTag{
+  padding: 5px 10px;
+  background: var(--active-bg-color);
+  color: var(--active-text-color);
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+}
+.Varification__badge{
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
 /* profile page css end */
 
 

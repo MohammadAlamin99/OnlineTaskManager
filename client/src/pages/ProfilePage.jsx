@@ -12,7 +12,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
                 <div className="row g-0">
-                    <div className="col-lg-2 p-0">
+                    <div className="col-lg-2 p-0 bg-white">
                         <LeftSideHome />
                     </div>
                     <div className="col-lg-10">

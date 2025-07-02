@@ -1,51 +1,67 @@
-
-import { useEffect, useRef, useState } from "react"
-import { UserProfileUpdateRequest, userDetailsRequest } from "../apiRequiest/apiRequiest"
-import { useDispatch, useSelector } from "react-redux"
-import { setuserDetails } from "../redux/state-slice/getUserDetails-slice"
-import { TbLogout } from "react-icons/tb"
-import BeatLoader from "react-spinners/BeatLoader"
-import toast, { Toaster } from "react-hot-toast"
+import { useEffect, useRef, useState } from "react";
+import {
+  UserProfileUpdateRequest,
+  userDetailsRequest,
+} from "../apiRequiest/apiRequiest";
+import { useDispatch, useSelector } from "react-redux";
+import { setuserDetails } from "../redux/state-slice/getUserDetails-slice";
+import { TbLogout } from "react-icons/tb";
+import BeatLoader from "react-spinners/BeatLoader";
+import toast, { Toaster } from "react-hot-toast";
+import badge from "../assets/images/adminVarificationBadge.png";
 
 const Profile = () => {
-  const [load, setLoaded] = useState(false)
-  const dispatch = useDispatch()
-  const userGet = useSelector((state) => state.userGet.userDetails)
+  const [load, setLoaded] = useState(false);
+  const dispatch = useDispatch();
+  const userGet = useSelector((state) => state.userGet.userDetails);
+  console.log("userGet", userGet);
 
   useEffect(() => {
-    ; (async () => {
-      setLoaded(true)
-      const result = await userDetailsRequest()
-      setLoaded(false)
-      dispatch(setuserDetails(result["data"][0]))
-    })()
-  }, [0])
+    (async () => {
+      setLoaded(true);
+      const result = await userDetailsRequest();
+      setLoaded(false);
+      dispatch(setuserDetails(result["data"][0]));
+    })();
+  }, [0]);
 
   // update api call
-  const emailRef = useRef()
-  const firstNameRef = useRef()
-  const lastNameRef = useRef()
-  const mobileRef = useRef()
-  const passwordRef = useRef()
-  const photoRef = useRef()
+  const emailRef = useRef();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const mobileRef = useRef();
+  const passwordRef = useRef();
+  const photoRef = useRef();
 
   const onSubmitHanler = async () => {
-    const email = emailRef.current.value
-    const firstName = firstNameRef.current.value
-    const lastName = lastNameRef.current.value
-    const mobile = mobileRef.current.value
-    const password = passwordRef.current.value
-    const photo = photoRef.current.value
+    const email = emailRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const mobile = mobileRef.current.value;
+    const password = passwordRef.current.value;
+    const photo = photoRef.current.value;
 
-    await UserProfileUpdateRequest(email, firstName, lastName, mobile, password, photo)
-    toast.success("Profile Update Successfully!")
-    window.location.reload()
-  }
+    await UserProfileUpdateRequest(
+      email,
+      firstName,
+      lastName,
+      mobile,
+      password,
+      photo
+    );
+    toast.success("Profile Update Successfully!");
+    window.location.reload();
+  };
 
   return load ? (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="text-center">
-        <BeatLoader color="#0866FF" size={20} aria-label="Loading Spinner" data-testid="loader" />
+        <BeatLoader
+          color="#0866FF"
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
         <p className="mt-3 text-muted">Loading profile...</p>
       </div>
     </div>
@@ -60,7 +76,10 @@ const Profile = () => {
                 <div className="d-flex align-items-center flex-column flex-md-row text-center text-md-start">
                   <div className="mb-3 mb-md-0  me-md-4">
                     <img
-                      src={userGet?.photo || "/placeholder.svg?height=100&width=100"}
+                      src={
+                        userGet?.photo ||
+                        "/placeholder.svg?height=100&width=100"
+                      }
                       alt="Profile"
                       className="rounded-circle profile_image object-fit-cover"
                       width="100"
@@ -68,17 +87,21 @@ const Profile = () => {
                     />
                   </div>
                   <div className="flex-grow-1">
-                    <h3 className="mb-2 fw-bold text-dark fs-5">{userGet?.firstName + " " + userGet?.lastName}</h3>
-                    <p className="text-muted mb-1 fs-6">
-                      {userGet?.email}
-                    </p>
-                    <p className="text-muted mb-3 fs-6">
-                      {userGet?.mobile}
-                    </p>
-                    <button className="btn btn-outline-danger btn-sm">
-                      <TbLogout className="me-2" />
-                      Log Out
-                    </button>
+                    <h3 className="fw-bold text-dark fs-5 mb-0 d-flex align-items-center gap-2">
+                      {userGet?.name}                     
+                      <img className={`Varification__badge ${userGet.role==="admin"? "":"d-none"}`} src={badge} alt="" />
+                    </h3>
+                    <p className="text-muted mb-0 fs-6">{userGet?.email}</p>
+                    <p className="text-muted mb-0 fs-6">{userGet?.mobile}</p>
+                  </div>
+                  <div>
+                    <div className="d-flex gap-2">
+                      <p className="adminTag m-0">{userGet?.role}</p>
+                      <button className="btn btn-outline-danger btn-sm">
+                        <TbLogout className="me-2" />
+                        Log Out
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -178,8 +201,10 @@ const Profile = () => {
                   <div className="col-12">
                     <br />
                     <div className="d-flex justify-content-end gap-3">
-
-                      <button onClick={onSubmitHanler} className="commonBtn px-4">
+                      <button
+                        onClick={onSubmitHanler}
+                        className="commonBtn px-4"
+                      >
                         Update Profile
                       </button>
                     </div>
@@ -200,8 +225,8 @@ const Profile = () => {
                   <div>
                     <h6 className="mb-1 text-primary">Security Notice</h6>
                     <small className="text-muted">
-                      Your profile information is encrypted and secure. Changes will be reflected immediately after
-                      update.
+                      Your profile information is encrypted and secure. Changes
+                      will be reflected immediately after update.
                     </small>
                   </div>
                 </div>
@@ -213,7 +238,7 @@ const Profile = () => {
         <Toaster position="top-right" reverseOrder={false} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
