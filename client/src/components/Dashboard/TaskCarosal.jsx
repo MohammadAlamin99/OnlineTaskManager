@@ -213,11 +213,11 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                 }
               />
               <button
-                className="commonBtn"
+                className="checklistBtn"
                 type="button"
                 onClick={handleAddChecklistItem}
               >
-                Add
+                Add +
               </button>
             </div>
 

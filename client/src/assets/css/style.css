@@ -45,6 +45,17 @@ body {
   border-radius: 23px;
 }
 
+.checklistBtn {
+  padding: 14px 20px;
+  background: var(--active-bg-color);
+  color: var(--active-text-color);
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
 .cencell_common_btn {
   padding: 14px 20px;
   background: var(--border-color);
