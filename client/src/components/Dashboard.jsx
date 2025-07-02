@@ -103,7 +103,7 @@ const Dashboard = () => {
                   />
                 </svg>
               </div>
-              <h4 className="card-title">Total To Do</h4>
+              <h4 className="card-title">Pending</h4>
               <div className="card-number ms-auto">
                 {todo && todo.length > 0 ? (
                   todo.map((item, i) => (
@@ -408,7 +408,7 @@ const Dashboard = () => {
             <h2 className="recent-title">Recent Tasks</h2>
             <button>
               See All
-              <IoIosArrowRoundForward/>
+              <IoIosArrowRoundForward />
             </button>
           </div>
           <table className="recent-table">
@@ -441,7 +441,6 @@ const Dashboard = () => {
               </tr>
             </tbody>
           </table>
-
         </div>
       </div>
     </div>

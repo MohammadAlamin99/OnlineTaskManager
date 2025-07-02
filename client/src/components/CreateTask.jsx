@@ -21,6 +21,7 @@ const CreateTask = () => {
   const [isUpadateCarousel, setUpadateCarousel] = useState(false);
 
   const getTasks = useSelector((state) => state.getAllTask.alltask);
+  console.log(getTasks, "getTasks");
   const dispatch = useDispatch();
 
   // create task carousel
@@ -50,7 +51,7 @@ const CreateTask = () => {
       setLoaded(true);
       let result = await getAllTaskRequest();
       setLoaded(false);
-      dispatch(setAlltask(result))
+      dispatch(setAlltask(result));
     })();
   }, [0]);
 
@@ -61,9 +62,11 @@ const CreateTask = () => {
 
   // when update task... updated data without reload
   const handleUpdateTask = (newTask) => {
-    dispatch(setAlltask(
-      getTasks.map((task) => task._id === newTask._id ? newTask : task)
-    ));
+    dispatch(
+      setAlltask(
+        getTasks.map((task) => (task._id === newTask._id ? newTask : task))
+      )
+    );
   };
 
   // delete Task
@@ -85,7 +88,7 @@ const CreateTask = () => {
         });
         const isDelete = await DeleteTaskRequest(id);
         if (isDelete) {
-          const updatedTask = getTasks.filter((task) => task._id !== id)
+          const updatedTask = getTasks.filter((task) => task._id !== id);
           dispatch(setAlltask(updatedTask));
         }
       }
@@ -145,21 +148,39 @@ const CreateTask = () => {
               <div className="row g-0">
                 <div className="getTask d-flex pb-2">
                   <div className="card-container">
-                    {getTasks && getTasks.length > 0
-                      ? getTasks &&
+                    {getTasks && getTasks.length > 0 ? (
+                      getTasks &&
                       getTasks.map((item, i) => {
                         return (
                           <div key={i} className="task-card">
                             <div className="tag-wrapper d-flex align-items-center gap-2">
                               {/* Status Tags */}
-                              {item?.status === "TODO" && <div className="tag status-todo">ToDo</div>}
-                              {item?.status === "In Progress" && <div className="tag status-in-progress">In Progress</div>}
-                              {item?.status === "Completed" && <div className="tag status-completed">Completed</div>}
+                              {item?.status === "Pending" && (
+                                <div className="tag status-todo">Pending</div>
+                              )}
+                              {item?.status === "In Progress" && (
+                                <div className="tag status-in-progress">
+                                  In Progress
+                                </div>
+                              )}
+                              {item?.status === "Completed" && (
+                                <div className="tag status-completed">
+                                  Completed
+                                </div>
+                              )}
 
                               {/* Priority Tags */}
-                              {item?.priority === "Low" && <div className="tag priority-low">Low</div>}
-                              {item?.priority === "Medium" && <div className="tag priority-medium">Medium</div>}
-                              {item?.priority === "High" && <div className="tag priority-high">High</div>}
+                              {item?.priority === "Low" && (
+                                <div className="tag priority-low">Low</div>
+                              )}
+                              {item?.priority === "Medium" && (
+                                <div className="tag priority-medium">
+                                  Medium
+                                </div>
+                              )}
+                              {item?.priority === "High" && (
+                                <div className="tag priority-high">High</div>
+                              )}
                             </div>
 
                             <h3 className="task-title">{item?.title}</h3>
@@ -168,32 +189,40 @@ const CreateTask = () => {
                             </p>
                             <div className="d-flex justify-content-between items-center">
                               <div>
-                                <div className="pb-1"><small>Start Date</small></div>
+                                <div className="pb-1">
+                                  <small>Start Date</small>
+                                </div>
                                 <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
                                   <FaRegCalendarAlt />
                                   <span>
-                                    {item?.startDate
-                                      ? new Date(item.startDate).toLocaleDateString()
+                                    {item?.createdDate
+                                      ? new Date(
+                                          item.createdDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
                               </div>
                               <div>
-                               <div className="pb-1"><small>End Date</small></div>
+                                <div className="pb-1">
+                                  <small>End Date</small>
+                                </div>
                                 <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
                                   <FaRegCalendarAlt />
                                   <span>
-                                    {item?.endDate
-                                      ? new Date(item.endDate).toLocaleDateString()
+                                    {item?.dueDate
+                                      ? new Date(
+                                          item.dueDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
                               </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center">
-                              <div className="task-assignee">
-                                {item?.assignInfo &&
-                                  item?.assignInfo.map((item, i) => {
+                              <div className="task-assignee pt-0">
+                                {item?.assignTo &&
+                                  item?.assignTo.map((item, i) => {
                                     return (
                                       <img
                                         key={i}
@@ -204,23 +233,34 @@ const CreateTask = () => {
                                     );
                                   })}
                               </div>
-                              <div className="task-complete-status d-flex align-items-center gap-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="17"
-                                  height="17"
-                                  viewBox="0 0 17 17"
-                                  fill="none"
-                                >
-                                  <path
-                                    d="M10.812 5.7715L7.1655 9.4265L5.763 8.024C5.6868 7.93502 5.59303 7.86275 5.48758 7.81173C5.38212 7.76071 5.26726 7.73204 5.1502 7.72752C5.03314 7.723 4.9164 7.74272 4.80733 7.78546C4.69825 7.82819 4.59919 7.89301 4.51635 7.97584C4.43351 8.05868 4.36869 8.15775 4.32596 8.26682C4.28323 8.3759 4.2635 8.49263 4.26802 8.60969C4.27255 8.72675 4.30122 8.84162 4.35224 8.94707C4.40326 9.05253 4.47552 9.1463 4.5645 9.2225L6.562 11.2285C6.64143 11.3073 6.73562 11.3696 6.83918 11.4119C6.94274 11.4542 7.05364 11.4756 7.1655 11.475C7.38849 11.4741 7.60218 11.3855 7.7605 11.2285L12.0105 6.9785C12.0902 6.89948 12.1534 6.80547 12.1966 6.70189C12.2397 6.59831 12.2619 6.48721 12.2619 6.375C12.2619 6.26279 12.2397 6.15169 12.1966 6.04811C12.1534 5.94453 12.0902 5.85052 12.0105 5.7715C11.8512 5.61319 11.6358 5.52432 11.4113 5.52432C11.1867 5.52432 10.9713 5.61319 10.812 5.7715ZM8.5 0C6.81886 0 5.17547 0.498516 3.77766 1.43251C2.37984 2.3665 1.29037 3.69402 0.647028 5.24719C0.00368291 6.80036 -0.164645 8.50943 0.163329 10.1583C0.491303 11.8071 1.30085 13.3217 2.4896 14.5104C3.67834 15.6992 5.1929 16.5087 6.84173 16.8367C8.49057 17.1646 10.1996 16.9963 11.7528 16.353C13.306 15.7096 14.6335 14.6202 15.5675 13.2223C16.5015 11.8245 17 10.1811 17 8.5C17 7.38376 16.7801 6.27846 16.353 5.24719C15.9258 4.21592 15.2997 3.27889 14.5104 2.48959C13.7211 1.70029 12.7841 1.07419 11.7528 0.647024C10.7215 0.219859 9.61624 0 8.5 0ZM8.5 15.3C7.15509 15.3 5.84038 14.9012 4.72212 14.154C3.60387 13.4068 2.7323 12.3448 2.21762 11.1022C1.70295 9.85971 1.56828 8.49245 1.83066 7.17338C2.09304 5.85431 2.74068 4.64267 3.69168 3.69167C4.64267 2.74068 5.85432 2.09304 7.17339 1.83066C8.49246 1.56828 9.85971 1.70294 11.1022 2.21762C12.3448 2.73229 13.4068 3.60387 14.154 4.72212C14.9012 5.84037 15.3 7.15509 15.3 8.5C15.3 10.3035 14.5836 12.0331 13.3083 13.3083C12.0331 14.5836 10.3035 15.3 8.5 15.3Z"
-                                    fill="#768396"
-                                  />
-                                </svg>
+                            </div>
+                            <div className="task-complete-status d-flex flex-column mt-2 gap-2">
+                              <div className="d-flex align-items-center gap-2">
                                 <span className="status-text">
-                                  {item?.subtasks?.filter(subtask => subtask.completed).length || 0}/
-                                  {item?.subtasks?.length || 0}
+                                  <span>Task done : </span>
+                                  {item?.todoCheckList?.filter(
+                                    (subtask) => subtask.completed
+                                  ).length || 0}
+                                  /{item?.todoCheckList?.length || 0}
                                 </span>
+                              </div>
+
+                              {/* Progress Bar */}
+                              <div className="progress-container custom-progress-bar">
+                                <div
+                                  className="progress-fill"
+                                  style={{
+                                    width: `${
+                                      item?.todoCheckList?.length
+                                        ? (item?.todoCheckList?.filter(
+                                            (s) => s.completed
+                                          ).length /
+                                            item?.todoCheckList?.length) *
+                                          100
+                                        : 0
+                                    }%`,
+                                  }}
+                                ></div>
                               </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center pt-3">
@@ -237,7 +277,7 @@ const CreateTask = () => {
                                     fill="#768396"
                                   />
                                 </svg>
-                                <span>11 file</span>
+                                <span>{item?.attachments?.length} file</span>
                               </div>
                               <div className="d-flex align-items-center gap-2">
                                 <AiOutlineDelete
@@ -263,7 +303,9 @@ const CreateTask = () => {
                           </div>
                         );
                       })
-                      : <p className="no-data-found">No Task Found</p>}
+                    ) : (
+                      <p className="no-data-found">No Task Found</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -271,11 +313,17 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
-      {isCarouselVisible && <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />}
-      {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} updateTask={handleUpdateTask} />}
+      {isCarouselVisible && (
+        <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />
+      )}
+      {isUpadateCarousel && (
+        <EditCarosal
+          props={{ hideUpdate, taskId }}
+          updateTask={handleUpdateTask}
+        />
+      )}
     </>
   );
 };
 
 export default CreateTask;
-

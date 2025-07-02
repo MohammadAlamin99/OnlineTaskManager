@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import {
   CreateTaskRequest,
@@ -16,14 +15,14 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const priorityRef = useRef();
   const statusRef = useRef();
   const dueDateRef = useRef();
-  const attachmentsRef = useRef(); 
+  const attachmentsRef = useRef();
 
   // State variables
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [todoCheckList, setTodoCheckList] = useState([]);
   const [newChecklistItem, setNewChecklistItem] = useState("");
-  const [attachments, setAttachments] = useState([]); 
+  const [attachments, setAttachments] = useState([]);
 
   const myInfo = getUserDetails();
   const myId = myInfo._id;
@@ -57,10 +56,10 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
         status,
         dueDate: dueDate ? new Date(dueDate) : null,
         assignTo: selectedUsers,
-        createdBy: [myId], 
+        createdBy: [myId],
         attachments,
         todoCheckList,
-        progress: 0 
+        progress: 0,
       };
 
       const createTask = await CreateTaskRequest(taskData);
@@ -79,10 +78,13 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   // Checklist functions
   const handleAddChecklistItem = () => {
     if (newChecklistItem.trim()) {
-      setTodoCheckList([...todoCheckList, {
-        title: newChecklistItem,
-        completed: false
-      }]);
+      setTodoCheckList([
+        ...todoCheckList,
+        {
+          title: newChecklistItem,
+          completed: false,
+        },
+      ]);
       setNewChecklistItem("");
     }
   };
@@ -102,7 +104,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   // Attachment functions
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    const fileUrls = files.map(file => URL.createObjectURL(file));
+    const fileUrls = files.map((file) => URL.createObjectURL(file));
     setAttachments([...attachments, ...fileUrls]);
   };
 
@@ -135,9 +137,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   // assign to
   const [assign, setAssign] = useState("");
   const assignToUser = SearchUser?.filter((user) =>
-    (user.name.toLowerCase()).includes(
-      assign.toLowerCase()
-    )
+    user.name.toLowerCase().includes(assign.toLowerCase())
   );
 
   return (
@@ -208,7 +208,9 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                 placeholder="Add checklist item"
                 value={newChecklistItem}
                 onChange={(e) => setNewChecklistItem(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleAddChecklistItem()}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && handleAddChecklistItem()
+                }
               />
               <button
                 className="commonBtn"
@@ -222,7 +224,10 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
             {todoCheckList.length > 0 && (
               <div className="border rounded p-2 mb-3">
                 {todoCheckList.map((item, index) => (
-                  <div key={index} className="d-flex align-items-center justify-content-between mb-2">
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-between mb-2"
+                  >
                     <div className="d-flex align-items-center">
                       <input
                         type="checkbox"
@@ -230,7 +235,11 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                         checked={item.completed}
                         onChange={() => handleToggleChecklistItem(index)}
                       />
-                      <span className={item.completed ? "text-decoration-line-through" : ""}>
+                      <span
+                        className={
+                          item.completed ? "text-decoration-line-through" : ""
+                        }
+                      >
                         {item.title}
                       </span>
                     </div>
@@ -258,9 +267,12 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
             {attachments.length > 0 && (
               <div className="mt-2">
                 {attachments.map((url, index) => (
-                  <div key={index} className="d-flex align-items-center justify-content-between mb-2">
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-between mb-2"
+                  >
                     <span className="text-truncate">
-                      {url.split('/').pop()}
+                      {url.split("/").pop()}
                     </span>
                     <button
                       className="btn btn-sm btn-outline-danger"
@@ -277,7 +289,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
           <div className="mb-3">
             <label className="form-label">Assign To</label>
             <input
-              placeholder="User Name or Email"
+              placeholder="User Name"
               type="text"
               className="form-control w-100 small"
               onChange={(e) => setAssign(e.target.value)}
@@ -306,7 +318,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                         height="20"
                       />
                       <label className="small">
-                        {item.firstName + " " + item.lastName}
+                        {item?.name}
                       </label>
                     </div>
                   );
@@ -331,9 +343,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                         width="20"
                         height="20"
                       />
-                      <span className="small">
-                        {user?.name}
-                      </span>
+                      <span className="small">{user?.name}</span>
                       <button
                         className="btn btn-sm ms-2 p-0 border-0 bg-transparent"
                         onClick={() => handleUserSelection(item)}

@@ -46,22 +46,22 @@ exports.getTaskService = async (req) => {
 // getting all task
 exports.getAllTask = async (req) => {
   try {
-    let email = req.headers["email"];
+    // let email = req.headers["email"];
     let data = await TasksModel.aggregate([
-      { $match: { email: email } },
+      // { $match: { email: email } },
       {
         $lookup: {
           from: "users",
-          localField: "users",
+          localField: "assignTo",
           foreignField: "_id",
-          as: "assignInfo",
+          as: "assignTo",
         },
       },
       {
         $project: {
-          "assignInfo._id": 0,
-          "assignInfo.password": 0,
-          "assignInfo.createdDate": 0,
+          "assignTo._id": 0,
+          "assignTo.password": 0,
+          "assignTo.createdDate": 0,
         },
       },
     ]);

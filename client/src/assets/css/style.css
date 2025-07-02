@@ -33,6 +33,7 @@ body {
 }
 
 /* commmon css */
+
 .commonBtn {
   padding: 14px 20px;
   background: var(--active-bg-color);
@@ -325,6 +326,22 @@ body {
   font-weight: 700;
 }
 
+.card-container .task-card .custom-progress-bar {
+  height: 8px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.card-container .task-card .custom-progress-bar .progress-fill {
+  height: 100%;
+  background: var(--color-blue);
+  border-radius: inherit;
+  transition: width 0.4s ease-in-out;
+}
+
+
 .card-container .task-card .attachment span {
   color: var(--subtext-color);
   font-size: 14px;
@@ -519,13 +536,15 @@ body {
 /* log in page css end */
 
 /* profile page css start */
-.profile_image{
+.profile_image {
   border: 1px solid var(--active-bg-color);
 }
-.profile__settings{
+
+.profile__settings {
   padding: 16px 24px;
   background: var(--active-bg-color);
 }
+
 /* profile page css end */
 
 
