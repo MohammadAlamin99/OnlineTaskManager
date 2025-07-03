@@ -168,7 +168,7 @@ const CreateTask = () => {
                             </p>
                             <div className="d-flex justify-content-between items-center">
                               <div>
-                                <small>Start Date</small>
+                                <div className="pb-1"><small>Start Date</small></div>
                                 <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
                                   <FaRegCalendarAlt />
                                   <span>
@@ -179,7 +179,7 @@ const CreateTask = () => {
                                 </div>
                               </div>
                               <div>
-                                <small>End Date</small>
+                               <div className="pb-1"><small>End Date</small></div>
                                 <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
                                   <FaRegCalendarAlt />
                                   <span>
