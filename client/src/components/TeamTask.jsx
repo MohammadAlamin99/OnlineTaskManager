@@ -62,7 +62,7 @@ const TeamTask = () => {
            data.length>0?(
                data.map((item, i)=>{
                    return(
-                       <div className="row" key={i}>
+                       <div className="row g-0" key={i}>
                            <div className="taxbox text-center">
                                <p className='m-0'>High <MdKeyboardDoubleArrowUp /></p>
                                <span className='p-0'>{item.title}</span>

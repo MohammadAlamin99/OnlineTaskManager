@@ -7,18 +7,18 @@ const TeamTaskPage = () => {
     return (
         <div>
             <div className="">
-                <div className="row">
-                    <div className="col-lg-12 pt-3">
+                <div className="row g-0">
+                    <div className="col-lg-">
                         <Header/>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row g-0">
                     <div className="col-lg-2">
                         <LeftSideHome/>
                     </div>
                     <div className="col-lg-10">
 
-                        <div className="row">
+                        <div className="row g-0">
                             <div className="getTask d-flex pb-2">
                                 <div className="col-lg-12">
                                     <TeamTask/>

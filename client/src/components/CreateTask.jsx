@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Dashboard/Header";
 import LeftSideHome from "./Dashboard/LeftSideHome";
 import Carousel from "./Dashboard/TaskCarosal";
+import { FaRegCalendarAlt, FaRegCheckCircle } from "react-icons/fa";
 import {
   DeleteTaskRequest,
   getAllTaskRequest,
@@ -61,7 +62,7 @@ const CreateTask = () => {
   // when update task... updated data without reload
   const handleUpdateTask = (newTask) => {
     dispatch(setAlltask(
-      getTasks.map((task)=> task._id === newTask._id ? newTask : task)
+      getTasks.map((task) => task._id === newTask._id ? newTask : task)
     ));
   };
 
@@ -99,7 +100,7 @@ const CreateTask = () => {
           </div>
         </div>
         <div className="row g-0">
-          <div className="col-lg-2">
+          <div className="col-lg-2 bg-white">
             <LeftSideHome />
           </div>
           <div className="col-lg-10">
@@ -165,18 +166,30 @@ const CreateTask = () => {
                             <p className="task-description">
                               {item?.description}
                             </p>
-                            <h5 className="task-date">
-                              {item?.dueDate
-                                ? new Date(item.dueDate).toLocaleDateString(
-                                  "en-US",
-                                  {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  }
-                                )
-                                : "No Due Date"}
-                            </h5>
+                            <div className="d-flex justify-content-between items-center">
+                              <div>
+                                <small>Start Date</small>
+                                <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
+                                  <FaRegCalendarAlt />
+                                  <span>
+                                    {item?.startDate
+                                      ? new Date(item.startDate).toLocaleDateString()
+                                      : "No start date"}
+                                  </span>
+                                </div>
+                              </div>
+                              <div>
+                                <small>End Date</small>
+                                <div className="task-date d-flex align-items-center gap-2 text-muted small mb-3">
+                                  <FaRegCalendarAlt />
+                                  <span>
+                                    {item?.endDate
+                                      ? new Date(item.endDate).toLocaleDateString()
+                                      : "No start date"}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
                             <div className="d-flex justify-content-between align-items-center">
                               <div className="task-assignee">
                                 {item?.assignInfo &&
@@ -204,7 +217,10 @@ const CreateTask = () => {
                                     fill="#768396"
                                   />
                                 </svg>
-                                <span className="status-text">0/8</span>
+                                <span className="status-text">
+                                  {item?.subtasks?.filter(subtask => subtask.completed).length || 0}/
+                                  {item?.subtasks?.length || 0}
+                                </span>
                               </div>
                             </div>
                             <div className="d-flex justify-content-between align-items-center pt-3">
@@ -262,3 +278,356 @@ const CreateTask = () => {
 };
 
 export default CreateTask;
+
+
+// import { useEffect, useState } from "react";
+// import Header from "./Dashboard/Header";
+// import LeftSideHome from "./Dashboard/LeftSideHome";
+// import Carousel from "./Dashboard/TaskCarosal";
+// import {
+//   DeleteTaskRequest,
+//   getAllTaskRequest,
+// } from "../apiRequiest/apiRequiest";
+// import { LiaEditSolid } from "react-icons/lia";
+// import EditCarosal from "./EditCarosal";
+// import { AiOutlineDelete } from "react-icons/ai";
+// import Swal from "sweetalert2";
+// import BeatLoader from "react-spinners/BeatLoader";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setAlltask } from "../redux/state-slice/allTask-slice";
+// import { FaRegCalendarAlt, FaRegCheckCircle } from "react-icons/fa";
+
+// const CreateTask = () => {
+//   const [load, setLoaded] = useState(false);
+//   const [isCarouselVisible, setCarouselVisible] = useState(false);
+//   const [isUpdateCarousel, setUpdateCarousel] = useState(false);
+//   const [taskId, setTaskId] = useState("");
+
+//   const getTasks = useSelector((state) => state.getAllTask.alltask);
+//   const dispatch = useDispatch();
+
+//   // Toggle carousel visibility
+//   const showCarousel = () => setCarouselVisible(true);
+//   const hideCarousel = () => setCarouselVisible(false);
+
+//   // Update Task functions
+//   const showUpdate = (id) => {
+//     setTaskId(id);
+//     setUpdateCarousel(true);
+//   };
+//   const hideUpdate = () => setUpdateCarousel(false);
+
+//   // Get all tasks
+//   useEffect(() => {
+//     (async () => {
+//       setLoaded(true);
+//       let result = await getAllTaskRequest();
+//       setLoaded(false);
+//       dispatch(setAlltask(result));
+//     })();
+//   }, []);
+
+//   // Handle task creation/update
+//   const handleTaskCreated = (newTask) => {
+//     dispatch(setAlltask([newTask, ...getTasks]));
+//   };
+
+//   const handleUpdateTask = (updatedTask) => {
+//     dispatch(setAlltask(
+//       getTasks.map((task) => task._id === updatedTask._id ? updatedTask : task)
+//     ));
+//   };
+
+//   // Delete Task
+//   const DeleteTaskHandler = async (id) => {
+//     Swal.fire({
+//       title: "Are you sure?",
+//       text: "You won't be able to revert this!",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: "#3085d6",
+//       cancelButtonColor: "#d33",
+//       confirmButtonText: "Yes, delete it!",
+//     }).then(async (result) => {
+//       if (result.isConfirmed) {
+//         const isDelete = await DeleteTaskRequest(id);
+//         if (isDelete) {
+//           const updatedTask = getTasks.filter((task) => task._id !== id);
+//           dispatch(setAlltask(updatedTask));
+//           Swal.fire("Deleted!", "Your task has been deleted.", "success");
+//         }
+//       }
+//     });
+//   };
+
+//   // Calculate completed subtasks
+//   const getCompletedSubtasks = (subtasks) => {
+//     return subtasks ? subtasks.filter(subtask => subtask.completed).length : 0;
+//   };
+
+//   return (
+//     <>
+//       <div className="task-container">
+//         <div className="row g-0">
+//           <div className="col-lg-12">
+//             <Header />
+//           </div>
+//         </div>
+//         <div className="row g-0">
+//           <div className="col-lg-2 bg-white">
+//             <LeftSideHome />
+//           </div>
+//           <div className="col-lg-10 p-3">
+//             <div className="row g-0 justify-content-between mb-4">
+//               <div className="col-lg-8 taskText">
+//                 <h4 className="fw-bold">🔥 Tasks</h4>
+//               </div>
+//               <div className="col-lg-4 createTask text-end">
+//                 <button
+//                   onClick={showCarousel}
+//                   className="btn btn-primary d-inline-flex align-items-center"
+//                 >
+//                   Create Task
+//                   <svg
+//                     xmlns="http://www.w3.org/2000/svg"
+//                     width="24"
+//                     height="24"
+//                     viewBox="0 0 24 24"
+//                     fill="none"
+//                     className="ms-2"
+//                   >
+//                     <rect width="24" height="24" rx="7" fill="#E8EAFF" />
+//                     <rect x="11" y="7" width="2" height="10" fill="#6772FE" />
+//                     <rect
+//                       x="7"
+//                       y="13"
+//                       width="2"
+//                       height="10"
+//                       transform="rotate(-90 7 13)"
+//                       fill="#6772FE"
+//                     />
+//                   </svg>
+//                 </button>
+//               </div>
+//             </div>
+
+//             {load ? (
+//               <div className="loader-container d-flex justify-content-center align-items-center py-5">
+//                 <BeatLoader
+//                   color="#0866FF"
+//                   size={20}
+//                   aria-label="Loading Spinner"
+//                   data-testid="loader"
+//                 />
+//               </div>
+//             ) : (
+//               <div className="row g-0">
+//                 {getTasks && getTasks.length > 0 ? (
+//                   <div className="card-container d-flex flex-wrap gap-4">
+//                     {getTasks.map((task) => (
+//                       <div key={task._id} className="task-card p-3">
+//                         <div className="tag-wrapper d-flex align-items-center gap-2 mb-2">
+//                           {/* Status Tags */}
+//                           {task?.status === "TODO" && (
+//                             <div className="badge bg-warning text-dark">ToDo</div>
+//                           )}
+//                           {task?.status === "In Progress" && (
+//                             <div className="badge bg-info text-white">In Progress</div>
+//                           )}
+//                           {task?.status === "Completed" && (
+//                             <div className="badge bg-success text-white">Completed</div>
+//                           )}
+
+//                           {/* Priority Tags */}
+//                           {task?.priority === "Low" && (
+//                             <div className="badge bg-secondary text-white">Low</div>
+//                           )}
+//                           {task?.priority === "Medium" && (
+//                             <div className="badge bg-primary text-white">Medium</div>
+//                           )}
+//                           {task?.priority === "High" && (
+//                             <div className="badge bg-danger text-white">High</div>
+//                           )}
+//                         </div>
+
+//                         <h5 className="task-title fw-bold mb-2">{task?.title}</h5>
+//                         <p className="task-description text-muted small mb-3">
+//                           {task?.description || "No description"}
+//                         </p>
+
+//                         {/* Date Information */}
+//                         <div className="date-info mb-3">
+//                           <div className="d-flex align-items-center gap-2 text-muted small mb-1">
+//                             <FaRegCalendarAlt />
+//                             <span>
+//                               {task?.startDate
+//                                 ? new Date(task.startDate).toLocaleDateString()
+//                                 : "No start date"}
+//                             </span>
+//                           </div>
+//                           <div className="d-flex align-items-center gap-2 text-muted small">
+//                             <FaRegCalendarAlt />
+//                             <span>
+//                               {task?.dueDate
+//                                 ? new Date(task.dueDate).toLocaleDateString()
+//                                 : "No due date"}
+//                             </span>
+//                           </div>
+//                         </div>
+
+//                         {/* Subtask Progress */}
+//                         {task?.subtasks?.length > 0 && (
+//                           <div className="subtask-progress mb-3">
+//                             <div className="d-flex align-items-center gap-2 small">
+//                               <FaRegCheckCircle className="text-primary" />
+//                               <span>
+//                                 {getCompletedSubtasks(task.subtasks)}/{task.subtasks.length} subtasks
+//                               </span>
+//                             </div>
+//                             <div className="progress mt-1" style={{ height: "5px" }}>
+//                               <div
+//                                 className="progress-bar bg-primary"
+//                                 role="progressbar"
+//                                 style={{
+//                                   width: `${(getCompletedSubtasks(task.subtasks) / task.subtasks.length) * 100}%`
+//                                 }}
+//                                 aria-valuenow={getCompletedSubtasks(task.subtasks)}
+//                                 aria-valuemin="0"
+//                                 aria-valuemax={task.subtasks.length}
+//                               ></div>
+//                             </div>
+//                           </div>
+//                         )}
+
+//                         {/* Assignees */}
+//                         <div className="d-flex justify-content-between align-items-center mb-3">
+//                           <div className="task-assignee d-flex">
+//                             {task?.usersInfo?.slice(0, 3).map((user, i) => (
+//                               <img
+//                                 key={i}
+//                                 src={user?.photo || "/placeholder.svg"}
+//                                 alt="Assignee"
+//                                 className="assignee-photo rounded-circle border border-white"
+//                                 style={{
+//                                   width: "28px",
+//                                   height: "28px",
+//                                   marginLeft: i > 0 ? "-10px" : "0",
+//                                   zIndex: i + 1
+//                                 }}
+//                               />
+//                             ))}
+//                             {task?.usersInfo?.length > 3 && (
+//                               <div
+//                                 className="rounded-circle bg-light d-flex justify-content-center align-items-center border border-white"
+//                                 style={{
+//                                   width: "28px",
+//                                   height: "28px",
+//                                   marginLeft: "-10px",
+//                                   zIndex: 4,
+//                                   fontSize: "10px"
+//                                 }}
+//                               >
+//                                 +{task.usersInfo.length - 3}
+//                               </div>
+//                             )}
+//                           </div>
+
+//                           <div className="task-actions d-flex gap-2">
+//                             <button
+//                               onClick={() => DeleteTaskHandler(task._id)}
+//                               className="btn btn-sm btn-outline-danger p-1"
+//                             >
+//                               <AiOutlineDelete size={16} />
+//                             </button>
+//                             <button
+//                               onClick={() => showUpdate(task._id)}
+//                               className="btn btn-sm btn-outline-primary p-1"
+//                             >
+//                               <LiaEditSolid size={16} />
+//                             </button>
+//                           </div>
+//                         </div>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 ) : (
+//                   <div className="no-tasks text-center py-5">
+//                     <img
+//                       src="/no-tasks.svg"
+//                       alt="No tasks"
+//                       style={{ width: "200px", opacity: "0.7" }}
+//                     />
+//                     <h5 className="mt-3 text-muted">No tasks found</h5>
+//                     <button
+//                       onClick={showCarousel}
+//                       className="btn btn-primary mt-3"
+//                     >
+//                       Create Your First Task
+//                     </button>
+//                   </div>
+//                 )}
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Modals */}
+//       {isCarouselVisible && (
+//         <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />
+//       )}
+//       {isUpdateCarousel && (
+//         <EditCarosal
+//           props={{ hideUpdate, taskId }}
+//           updateTask={handleUpdateTask}
+//         />
+//       )}
+
+//       <style jsx>{`
+//         .task-container {
+//           background-color: #f8f9fa;
+//           min-height: 100vh;
+//         }
+//         .task-card {
+//           background: white;
+//           border-radius: 10px;
+//           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+//           width: 100%;
+//           max-width: 350px;
+//           transition: transform 0.2s;
+//         }
+//         .task-card:hover {
+//           transform: translateY(-5px);
+//         }
+//         .task-title {
+//           font-size: 1.1rem;
+//           white-space: nowrap;
+//           overflow: hidden;
+//           text-overflow: ellipsis;
+//         }
+//         .task-description {
+//           display: -webkit-box;
+//           -webkit-line-clamp: 3;
+//           -webkit-box-orient: vertical;
+//           overflow: hidden;
+//         }
+//         .card-container {
+//           gap: 20px;
+//         }
+//         .assignee-photo {
+//           object-fit: cover;
+//         }
+//         @media (max-width: 768px) {
+//           .card-container {
+//             justify-content: center;
+//           }
+//           .task-card {
+//             max-width: 100%;
+//           }
+//         }
+//       `}</style>
+//     </>
+//   );
+// };
+
+// export default CreateTask;

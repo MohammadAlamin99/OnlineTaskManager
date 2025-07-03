@@ -178,9 +178,7 @@ const Profile = () => {
                   <div className="col-12">
                     <br />
                     <div className="d-flex justify-content-end gap-3">
-                      <button className="cencell_common_btn px-4">
-                        Reset
-                      </button>
+
                       <button onClick={onSubmitHanler} className="commonBtn px-4">
                         Update Profile
                       </button>

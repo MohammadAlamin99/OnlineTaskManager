@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from '../components/Dashboard/Header';
 import LeftSideHome from '../components/Dashboard/LeftSideHome';
 import Profile from '../components/Profile';
