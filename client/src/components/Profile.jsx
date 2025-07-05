@@ -24,6 +24,12 @@ const Profile = () => {
     })();
   }, [0]);
 
+  // Logout button function
+    const handleLogout = () => {
+      localStorage.clear();
+      window.location.href = "/login";
+    };
+
   // update api call
   const emailRef = useRef();
   const NameRef = useRef();
@@ -94,7 +100,7 @@ const Profile = () => {
                   <div>
                     <div className="d-flex gap-2">
                       <p className="adminTag m-0">{userGet?.role}</p>
-                      <button className="btn btn-outline-danger btn-sm">
+                      <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
                         <TbLogout className="me-2" />
                         Log Out
                       </button>
