@@ -41,31 +41,8 @@ export async function getUsersRequest() {
 }
 
 // create task 
-export async function CreateTaskRequest(
-    users,
-    title,
-    description,
-    startDate,
-    endDate,
-    priority,
-    status,
-    category,
-    subtasks = [],
-    files
-) {
+export async function CreateTaskRequest(reqBody) {
     try {
-        let reqBody = {
-            users: users,
-            title: title,
-            description: description,
-            startDate: startDate,
-            endDate: endDate,
-            priority: priority,
-            status: status,
-            category: category,
-            subtasks: subtasks,
-            files:files,
-        };
         let result = await axios.post(BaseURL + '/api/v1/createTask', reqBody, Headers);
         return result;
     } catch (e) {

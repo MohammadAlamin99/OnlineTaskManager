@@ -1,35 +1,19 @@
 const TasksModel = require("../models/TasksModel");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-// Create tasks
-// exports.CreateTask = async (req) => {
-//   try {
-//     let reqBody = req.body;
-//     reqBody.email = req.headers["email"];
-//     let data = await TasksModel.create(reqBody);
-//     return { status: "success", data: data };
-//   } catch (e) {
-//     return { status: "fail", message: "something went wrong" };
-//   }
-// };
 
+// Create tasks
 exports.CreateTask = async (req) => {
   try {
     let reqBody = req.body;
     reqBody.email = req.headers["email"];
-
-    if (reqBody.startDate && reqBody.endDate) {
-      if (new Date(reqBody.startDate) > new Date(reqBody.endDate)) {
-        return { status: "fail", message: "End date must be after start date" };
-      }
-    }
     let data = await TasksModel.create(reqBody);
     return { status: "success", data: data };
-
   } catch (e) {
-    return { status: "fail", message: e };
+    return { status: "fail", message: "something went wrong" };
   }
 };
+
 
 // geting todo task
 exports.getTaskService = async (req) => {

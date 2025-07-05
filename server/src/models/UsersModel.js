@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const dataSchema = mongoose.Schema({
     email: { type: String, unique: true },
-    firstName: { type: String },
-    lastName: { type: String },
+    name:{type: String, require:true},
     mobile: { type: String },
     password: { type: String },
     role: { type: String, enum: ["admin", "member"], default: "member" },
+    designation: { type: String },
     photo: { type: String },
     createdDate: { type: Date, default: Date.now() }
 }, { versionKey: false })

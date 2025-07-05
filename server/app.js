@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const router = require("./src/routes/api");
 const bodyParser =require('body-parser');
-
+require('dotenv').config()
 // security middleware import
 const rateLimit =require('express-rate-limit');
 const helmet =require('helmet');

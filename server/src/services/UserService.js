@@ -3,12 +3,11 @@ const UsersModel = require("../models/UsersModel");
 const jwt = require("jsonwebtoken")
 
 // Registration
-
 exports.UserRegistration = async (req) => {
     try {
         let reqBody = req.body;
         let adminCode = reqBody.adminCode;
-        const code = "admin1234";
+        const code = process.env.adminKey;
 
         let role = (adminCode === code) ? "admin" : "member";
         reqBody.role = role;
@@ -30,7 +29,7 @@ exports.UserLogin = async (req) => {
             { $project: { "password": 0, "createdDate": 0 } }
         ])
         if (data.length > 0) {
-            let payload = { exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), data: data[0]['email'] };  //token create process
+            let payload = { data: data[0]['email'] };  //token create process
             let token = jwt.sign(payload, 'bcd123');
             return ({ status: "success", token: token, data: data[0] })
         }
@@ -45,7 +44,7 @@ exports.UserLogin = async (req) => {
 }
 
 // Profile update
-exports.UpadateProfile = async (req, res) => {
+exports.UpadateProfile = async (req) => {
     try {
         let email = req.headers['email'];
         let reqBody = req.body;
@@ -75,7 +74,7 @@ exports.UserProfileDetails = async (req) => {
 }
 
 // Find user details
-exports.findUser = async (req) => {
+exports.findUser = async () => {
     try {
         let data = await UsersModel.find();
         return { status: "success", data: data }

@@ -1,53 +1,24 @@
-// const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
-// const ObjectId = Schema.Types.ObjectId;
-// const DataSchema = mongoose.Schema({
-//     users:{
-//         type:[ObjectId],
-//         default:[]
-//     },
-//     email:{type:String},
-//     title: { type: String, required: true },
-//     description: { type: String },
-//     dueDate: { type: Date },
-//     priority: { type: String},
-//     status: { type: String},
-//     category: { type: String },
-//     createdAt: { type: Date, default: Date.now }
-// },{versionKey: false})
-
-// const TasksModel = mongoose.model('tasks', DataSchema);
-// module.exports = TasksModel;
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const SubtaskSchema = new Schema({
-  title: { type: String},
+const todoSchema = new Schema({
+  title: { type: String, require: true },
   completed: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
 });
 
 const DataSchema = mongoose.Schema({
-  users: {
-    type: [ObjectId],
-    default: []
-  },
-  email: { type: String },
-  title: { type: String, required: true },
+  title: { type: String, require: true },
   description: { type: String },
-  startDate: { type: Date },
-  endDate: { type: Date },
-  priority: { type: String },
-  status: { type: String },
-  category: { type: String },
-  subtasks: {
-    type: [SubtaskSchema],
-    default: []
-  },
-  files: { type: String },
-  createdAt: { type: Date, default: Date.now }
+  priority: { type: String, enum: ["High", "Medium", "Low"], default: "Medium" },
+  status: { type: String, enum: ["Pending", "In Progress", "Completed"], default: "Pending" },
+  dueDate: { type: Date },
+  assignTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+  createdBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+  attachments: [{ type: String }],
+  todoCheckList: [todoSchema],
+  progress: { type: Number, default: 0 }
 }, { versionKey: false });
 
 const TasksModel = mongoose.model('tasks', DataSchema);
