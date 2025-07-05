@@ -14,7 +14,6 @@ const Profile = () => {
   const [load, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const userGet = useSelector((state) => state.userGet.userDetails);
-  console.log("userGet", userGet);
 
   useEffect(() => {
     (async () => {
@@ -27,24 +26,21 @@ const Profile = () => {
 
   // update api call
   const emailRef = useRef();
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
+  const NameRef = useRef();
   const mobileRef = useRef();
   const passwordRef = useRef();
   const photoRef = useRef();
 
   const onSubmitHanler = async () => {
     const email = emailRef.current.value;
-    const firstName = firstNameRef.current.value;
-    const lastName = lastNameRef.current.value;
+    const name = NameRef.current.value;
     const mobile = mobileRef.current.value;
     const password = passwordRef.current.value;
     const photo = photoRef.current.value;
 
     await UserProfileUpdateRequest(
       email,
-      firstName,
-      lastName,
+      name,
       mobile,
       password,
       photo
@@ -88,8 +84,14 @@ const Profile = () => {
                   </div>
                   <div className="flex-grow-1">
                     <h3 className="fw-bold text-dark fs-5 mb-0 d-flex align-items-center gap-2">
-                      {userGet?.name}                     
-                      <img className={`Varification__badge ${userGet.role==="admin"? "":"d-none"}`} src={badge} alt="" />
+                      {userGet?.name}
+                      <img
+                        className={`Varification__badge ${
+                          userGet.role === "admin" ? "" : "d-none"
+                        }`}
+                        src={badge}
+                        alt=""
+                      />
                     </h3>
                     <p className="text-muted mb-0 fs-6">{userGet?.email}</p>
                     <p className="text-muted mb-0 fs-6">{userGet?.mobile}</p>
@@ -114,7 +116,7 @@ const Profile = () => {
           <div className="col-lg-8">
             <div className="card shadow border-0">
               <div className="card-header profile__settings text-white">
-                <h4 className="mb-1 fw-semibold fs-5">Profile Settings</h4>
+                <h4 className="m-0 fw-semibold fs-5">Profile Settings</h4>
                 <small>Update your personal information</small>
               </div>
               <div className="card-body p-4">
@@ -132,7 +134,7 @@ const Profile = () => {
                     />
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-6 d-none">
                     <label className="form-label fw-semibold text-dark">
                       Email Address
                     </label>
@@ -145,33 +147,18 @@ const Profile = () => {
                       type="email"
                     />
                   </div>
-
                   <div className="col-md-6">
                     <label className="form-label fw-semibold text-dark">
-                      First Name
+                      Name
                     </label>
                     <input
-                      ref={firstNameRef}
-                      defaultValue={userGet?.firstName}
-                      placeholder="First Name"
+                      ref={NameRef}
+                      defaultValue={userGet?.name}
+                      placeholder="Name"
                       className="form-control w-100 form-control-lg fs-6 border-2"
                       type="text"
                     />
                   </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold text-dark">
-                      Last Name
-                    </label>
-                    <input
-                      ref={lastNameRef}
-                      defaultValue={userGet?.lastName}
-                      placeholder="Last Name"
-                      className="form-control w-100 form-control-lg fs-6 border-2"
-                      type="text"
-                    />
-                  </div>
-
                   <div className="col-md-6">
                     <label className="form-label fw-semibold text-dark">
                       Mobile Number
@@ -184,7 +171,6 @@ const Profile = () => {
                       type="tel"
                     />
                   </div>
-
                   <div className="col-md-6">
                     <label className="form-label fw-semibold text-dark">
                       Password

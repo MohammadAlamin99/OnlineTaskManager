@@ -49,7 +49,7 @@ const Dashboard = () => {
         type: "pie",
       },
       colors: ["#5BBFFF", "#FC9858", "#0ACF83"],
-      labels: ["To Do", "In Progress", "Complete"],
+      labels: ["Pending", "In Progress", "Completed"],
       responsive: [
         {
           breakpoint: 480,
