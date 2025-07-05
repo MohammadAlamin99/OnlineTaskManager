@@ -28,25 +28,20 @@ const Profile = () => {
   const emailRef = useRef();
   const NameRef = useRef();
   const mobileRef = useRef();
-  const passwordRef = useRef();
+  const designationRef = useRef();
   const photoRef = useRef();
 
   const onSubmitHanler = async () => {
     const email = emailRef.current.value;
     const name = NameRef.current.value;
     const mobile = mobileRef.current.value;
-    const password = passwordRef.current.value;
+    const designation = designationRef.current.value;
     const photo = photoRef.current.value;
+    console.log("designation", designation);
 
-    await UserProfileUpdateRequest(
-      email,
-      name,
-      mobile,
-      password,
-      photo
-    );
+    await UserProfileUpdateRequest(email, name, mobile, designation, photo);
     toast.success("Profile Update Successfully!");
-    window.location.reload();
+    // window.location.reload();
   };
 
   return load ? (
@@ -116,7 +111,7 @@ const Profile = () => {
           <div className="col-lg-8">
             <div className="card shadow border-0">
               <div className="card-header profile__settings text-white">
-                <h4 className="m-0 fw-semibold fs-5">Profile Settings</h4>
+                <h4 className="fw-semibold fs-5">Profile Settings</h4>
                 <small>Update your personal information</small>
               </div>
               <div className="card-body p-4">
@@ -173,14 +168,14 @@ const Profile = () => {
                   </div>
                   <div className="col-md-6">
                     <label className="form-label fw-semibold text-dark">
-                      Password
+                      Designation
                     </label>
                     <input
-                      ref={passwordRef}
-                      defaultValue={userGet?.password}
-                      placeholder="User Password"
+                      ref={designationRef}
+                      defaultValue={userGet?.designation}
+                      placeholder="Designation"
                       className="form-control w-100 form-control-lg fs-6 border-2"
-                      type="password"
+                      type="text"
                     />
                   </div>
 

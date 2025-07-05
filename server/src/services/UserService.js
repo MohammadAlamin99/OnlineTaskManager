@@ -65,7 +65,6 @@ exports.UserProfileDetails = async (req) => {
           photo: 1,
           role: 1,
           designation: 1,
-          password: 1,
         },
       },
     ]);

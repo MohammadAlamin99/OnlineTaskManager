@@ -23,7 +23,7 @@ const DataSchema = mongoose.Schema(
     },
     dueDate: { type: Date },
     assignTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-    createdBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     attachments: [{ type: String }],
     todoCheckList: [todoSchema],
     progress: { type: Number, default: 0 },

@@ -21,7 +21,6 @@ const CreateTask = () => {
   const [isUpadateCarousel, setUpadateCarousel] = useState(false);
 
   const getTasks = useSelector((state) => state.getAllTask.alltask);
-  console.log(getTasks, "getTasks");
   const dispatch = useDispatch();
 
   // create task carousel

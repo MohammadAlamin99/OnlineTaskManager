@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   CreateTaskRequest,
   getUsersRequest,
+  userDetailsRequest,
 } from "../../apiRequiest/apiRequiest";
 import { getUserDetails } from "../../Helper/SessionHelper";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,9 +24,13 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const [todoCheckList, setTodoCheckList] = useState([]);
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [attachments, setAttachments] = useState([]);
-
-  const myInfo = getUserDetails();
-  const myId = myInfo._id;
+  const [id, setId] = useState("");
+  useEffect(() => {
+    (async () => {
+      const result = await userDetailsRequest();
+      setId(result?.data?.[0]. _id);
+    })();
+  }, []);
 
   const onBtnClick = async () => {
     const title = titleRef.current.value;
@@ -56,19 +61,17 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
         status,
         dueDate: dueDate ? new Date(dueDate) : null,
         assignTo: selectedUsers,
-        createdBy: [myId],
+        createdBy: id,
         attachments,
         todoCheckList,
         progress: 0,
       };
 
       const createTask = await CreateTaskRequest(taskData);
-      console.log(createTask);
       toast.success("Task Created Successfully!");
       if (onTaskCreated) onTaskCreated(createTask?.data?.data);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to create task");
-      console.error("Create task error:", error);
     } finally {
       setIsLoading(false);
       props();
@@ -317,9 +320,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                         width="20"
                         height="20"
                       />
-                      <label className="small">
-                        {item?.name}
-                      </label>
+                      <label className="small">{item?.name}</label>
                     </div>
                   );
                 })}

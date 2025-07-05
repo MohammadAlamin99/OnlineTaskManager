@@ -164,10 +164,10 @@ export async function totalTaskCountRequest(status) {
 
 //  User profile update
 
-export async function UserProfileUpdateRequest(email, name, mobile, password, photo) {
+export async function UserProfileUpdateRequest(email, name, mobile, designation, photo) {
     try {
-        let reqBody = { email: email, name: name, mobile: mobile, password: password, photo: photo }
-        let UserDetails = { email: email, name: name, mobile: mobile, password: password, photo: photo  }
+        let reqBody = { email: email, name: name, mobile: mobile, designation: designation, photo: photo }
+        let UserDetails = { email: email, name: name, mobile: mobile, designation: designation, photo: photo  }
         let result = await axios.post(BaseURL + '/api/v1/upadateProfile', reqBody, Headers);
         setUserDetails(UserDetails);
         return result
