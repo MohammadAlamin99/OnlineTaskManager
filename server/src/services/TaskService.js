@@ -54,7 +54,15 @@ exports.getTaskService = async (req) => {
 
 exports.getAllTask = async (req) => {
   try {
+    let matchStage = { $or: [] };
+    if (req.query.createdBy) {
+      matchStage.$or.push({ createdBy: new ObjectId(req.query.createdBy) });
+    }
+    if (req.query.assignTo) {
+      matchStage.$or.push({ assignTo: new ObjectId(req.query.assignTo) });
+    }
     let data = await TasksModel.aggregate([
+      { $match: matchStage },
       {
         $lookup: {
           from: "users",
@@ -83,64 +91,12 @@ exports.getAllTask = async (req) => {
         },
       },
     ]);
+
     return { status: "Success", data: data };
   } catch (e) {
-    return { status: "fail", message: e };
+    return { status: "fail", message: e.toString() };
   }
 };
-
-// exports.getAllTask = async (req) => {
-//   try {
-//     const matchStage = {};
-//     // Optional filtering by createdBy
-//     if (req.query.createdBy) {
-//       matchStage.createdBy = new mongoose.Types.ObjectId(req.query.createdBy);
-//     }
-
-//     // Optional filtering by assignTo (must match any in the array)
-//     if (req.query.assignTo) {
-//       matchStage.assignTo = {
-//         $in: [new mongoose.Types.ObjectId(req.query.assignTo)],
-//       };
-//     }
-
-//     let data = await TasksModel.aggregate([
-//       { $match: matchStage },
-
-//       {
-//         $lookup: {
-//           from: "users",
-//           localField: "assignTo",
-//           foreignField: "_id",
-//           as: "assignTo",
-//         },
-//       },
-//       {
-//         $lookup: {
-//           from: "users",
-//           localField: "createdBy",
-//           foreignField: "_id",
-//           as: "createdBy",
-//         },
-//       },
-//       {
-//         $project: {
-//           "assignTo._id": 0,
-//           "createdBy._id": 0,
-//           "createdBy.email": 0,
-//           "createdBy.password": 0,
-//           "createdBy.mobile": 0,
-//           "assignTo.password": 0,
-//           "assignTo.createdDate": 0,
-//         },
-//       },
-//     ]);
-
-//     return { status: "Success", data: data };
-//   } catch (e) {
-//     return { status: "fail", message: e.toString() };
-//   }
-// };
 
 // geting In Progress task
 exports.getInprogressTaskService = async (req) => {

@@ -16,8 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAlltask } from "../redux/state-slice/allTask-slice";
 import { getUserDetails } from "../Helper/SessionHelper";
 
-
-
 const CreateTask = () => {
   const [load, setLoaded] = useState(false);
   const [isCarouselVisible, setCarouselVisible] = useState(false);
@@ -190,9 +188,9 @@ const CreateTask = () => {
                               </div>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="task-assignee pt-0">
-                                  <small>Created by : </small>
+                                  <small>Created by : </small>createdBy
                                   {item?.createdBy &&
-                                    item?.createdBy.map((item, i) => {
+                                    item?.createdBy?.map((item, i) => {
                                       return (
                                         <>
                                           <img

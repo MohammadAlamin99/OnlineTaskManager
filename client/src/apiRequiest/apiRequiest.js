@@ -72,20 +72,6 @@ export async function getAllTaskRequest() {
     }
 }
 
-// export async function getAllTaskRequest(filters = {}) {
-//     try {
-//         // Build query parameters from filters object
-//         const queryParams = new URLSearchParams(filters).toString();
-//         const url = `${BaseURL}/api/v1/getAllTask${queryParams ? `?${queryParams}` : ''}`;
-
-//         const result = await axios.get(url, Headers);
-//         return result.data.data;
-//     } catch (e) {
-//         console.error('Failed to fetch tasks:', e.message);
-//         return false;
-//     }
-// }
-
 // get In Progress request
 export async function getInProgressRequest(status) {
     try {
