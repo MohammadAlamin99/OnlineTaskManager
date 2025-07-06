@@ -62,15 +62,32 @@ export async function getTaskRequest(status) {
     }
 }
 // get all task request
-export async function getAllTaskRequest() {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/getAllTask', Headers);
-        let data = result['data']['data']
-        return data;
-    } catch (e) {
-        return false
-    }
+// export async function getAllTaskRequest() {
+//     try {
+//         let result = await axios.get(BaseURL + '/api/v1/getAllTask', Headers);
+//         let data = result['data']['data']
+//         return data;
+//     } catch (e) {
+//         return false
+//     }
+// }
+
+export async function getAllTaskRequest(createdBy = null, assignTo = null) {
+  try {
+    // Build query string
+    let query = [];
+    if (createdBy) query.push(`createdBy=${createdBy}`);
+    if (assignTo) query.push(`assignTo=${assignTo}`);
+    let queryString = query.length ? `?${query.join("&")}` : "";
+
+    let result = await axios.get(BaseURL + `/api/v1/getAllTask${queryString}`, Headers);
+    let data = result.data.data;
+    return data;
+  } catch (e) {
+    return false;
+  }
 }
+
 
 // get In Progress request
 export async function getInProgressRequest(status) {

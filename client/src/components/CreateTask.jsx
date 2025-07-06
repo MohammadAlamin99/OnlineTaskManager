@@ -22,6 +22,7 @@ const CreateTask = () => {
   const [isUpadateCarousel, setUpadateCarousel] = useState(false);
 
   const getTasks = useSelector((state) => state.getAllTask.alltask);
+  console.log("getTasks", getTasks);
   const dispatch = useDispatch();
 
   // create task carousel
@@ -49,7 +50,7 @@ const CreateTask = () => {
   useEffect(() => {
     (async () => {
       setLoaded(true);
-      let result = await getAllTaskRequest();
+      let result = await getAllTaskRequest(userDetails?._id, userDetails?._id);
       setLoaded(false);
       dispatch(setAlltask(result));
     })();
@@ -114,7 +115,11 @@ const CreateTask = () => {
               <div className="col-lg-8 taskText">
                 <p>🔥 Task</p>
               </div>
-              <div className={`col-lg-4 createTask ${userDetails?.role === "admin" ? "d-block" : "d-none"}`}>
+              <div
+                className={`col-lg-4 createTask ${
+                  userDetails?.role === "admin" ? "d-block" : "d-none"
+                }`}
+              >
                 <button onClick={showCarousel}>
                   Create Task
                   <svg
@@ -188,20 +193,14 @@ const CreateTask = () => {
                               </div>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="task-assignee pt-0">
-                                  <small>Created by : </small>createdBy
-                                  {item?.createdBy &&
-                                    item?.createdBy?.map((item, i) => {
-                                      return (
-                                        <>
-                                          <img
-                                            key={i}
-                                            src={item?.photo}
-                                            alt="Assignee"
-                                            className="assignee-photo m-0"
-                                          />
-                                        </>
-                                      );
-                                    })}
+                                  <small>Created by : </small>
+                                  {item?.createdBy && (
+                                    <img
+                                      src={item?.createdBy[0]?.photo}
+                                      alt="Creator"
+                                      className="assignee-photo m-0"
+                                    />
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -220,8 +219,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.createdDate
                                       ? new Date(
-                                        item.createdDate
-                                      ).toLocaleDateString()
+                                          item.createdDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -235,8 +234,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.dueDate
                                       ? new Date(
-                                        item.dueDate
-                                      ).toLocaleDateString()
+                                          item.dueDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -273,14 +272,15 @@ const CreateTask = () => {
                                 <div
                                   className="progress-fill"
                                   style={{
-                                    width: `${item?.todoCheckList?.length
-                                      ? (item?.todoCheckList?.filter(
-                                        (s) => s.completed
-                                      ).length /
-                                        item?.todoCheckList?.length) *
-                                      100
-                                      : 0
-                                      }%`,
+                                    width: `${
+                                      item?.todoCheckList?.length
+                                        ? (item?.todoCheckList?.filter(
+                                            (s) => s.completed
+                                          ).length /
+                                            item?.todoCheckList?.length) *
+                                          100
+                                        : 0
+                                    }%`,
                                   }}
                                 ></div>
                               </div>
@@ -301,7 +301,13 @@ const CreateTask = () => {
                                 </svg>
                                 <span>{item?.attachments?.length} file</span>
                               </div>
-                              <div className={`d-flex align-items-center gap-2 ${userDetails?.role === "admin" ? "d-block" : "d-none"}`}>
+                              <div
+                                className={`d-flex align-items-center gap-2 ${
+                                  userDetails?.role === "admin"
+                                    ? "d-block"
+                                    : "d-none"
+                                }`}
+                              >
                                 <AiOutlineDelete
                                   onClick={() => DeleteTaskHandler(item?._id)}
                                   style={{
