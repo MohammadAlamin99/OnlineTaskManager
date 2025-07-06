@@ -88,7 +88,7 @@ const Profile = () => {
                       {userGet?.name}
                       <img
                         className={`Varification__badge ${
-                          userGet.role === "admin" ? "" : "d-none"
+                          userGet?.role === "admin" ? "" : "d-none"
                         }`}
                         src={badge}
                         alt=""

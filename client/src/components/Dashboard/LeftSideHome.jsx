@@ -14,18 +14,16 @@ const LeftSideHome = () => {
         <ul className="p-0">
           <Link style={{ textDecoration: "none" }} to={"/"}>
             <li
-              className={`${
-                path === "/" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <RxDashboard /> Dashboard
             </li>
           </Link>
           <Link style={{ textDecoration: "none" }} to={"/profile"}>
             <li
-              className={`${
-                path === "/profile" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/profile" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <FiUserPlus /> Profile
             </li>
@@ -33,9 +31,8 @@ const LeftSideHome = () => {
 
           <Link style={{ textDecoration: "none" }} to={"/task"}>
             <li
-              className={`${
-                path === "/task" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/task" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <GoTasklist /> Tasks
             </li>
@@ -43,9 +40,8 @@ const LeftSideHome = () => {
 
           <Link style={{ textDecoration: "none" }} to={"/complete"}>
             <li
-              className={`${
-                path === "/complete" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/complete" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <MdOutlineAssignmentTurnedIn /> Complete
             </li>
@@ -53,11 +49,10 @@ const LeftSideHome = () => {
 
           <Link style={{ textDecoration: "none" }} to={"/inprogress"}>
             <li
-              className={`${
-                path === "/inprogress"
-                  ? "activeSideMenu"
-                  : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/inprogress"
+                ? "activeSideMenu"
+                : "Not_active_sidemenu"
+                }`}
             >
               <TbProgress /> In Progress
             </li>
@@ -65,18 +60,16 @@ const LeftSideHome = () => {
 
           <Link style={{ textDecoration: "none" }} to={"/todo"}>
             <li
-              className={`${
-                path === "/todo" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/todo" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <RiTodoLine /> To Do
             </li>
           </Link>
           <Link style={{ textDecoration: "none" }} to={"/teamTasks"}>
             <li
-              className={`${
-                path === "/teamTasks" ? "activeSideMenu" : "Not_active_sidemenu"
-              }`}
+              className={`${path === "/teamTasks" ? "activeSideMenu" : "Not_active_sidemenu"
+                }`}
             >
               <FaUsers /> Assign Tasks
             </li>

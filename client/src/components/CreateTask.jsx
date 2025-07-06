@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./Dashboard/Header";
 import LeftSideHome from "./Dashboard/LeftSideHome";
 import Carousel from "./Dashboard/TaskCarosal";
-import { FaRegCalendarAlt, FaRegCheckCircle } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import {
   DeleteTaskRequest,
   getAllTaskRequest,
@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlltask } from "../redux/state-slice/allTask-slice";
+
+
 
 const CreateTask = () => {
   const [load, setLoaded] = useState(false);

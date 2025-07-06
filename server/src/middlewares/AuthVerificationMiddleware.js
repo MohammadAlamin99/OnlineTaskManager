@@ -10,9 +10,12 @@ module.exports = (req, res, next) => {
             return res.status(201).json({ status: "unathurized" })
         }
         else {
-            let email = decoded['data'];
+            let email = decoded['email'];
+            let role = decoded['role'];
+            req.headers.role = role;
             req.headers.email = email;
             next();
         }
     })
 }
+

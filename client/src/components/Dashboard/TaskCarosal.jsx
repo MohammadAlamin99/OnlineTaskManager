@@ -25,6 +25,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [id, setId] = useState("");
+  
   useEffect(() => {
     (async () => {
       const result = await userDetailsRequest();
@@ -302,7 +303,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
           {assign && (
             <div className="border rounded p-2 mb-3">
               {assignToUser
-                .filter((user) => user._id !== myId)
+                .filter((user) => user._id !== id)
                 .map((item, i) => {
                   return (
                     <div key={item} className="d-flex align-items-center mb-2">

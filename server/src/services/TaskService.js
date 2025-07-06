@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 // Create tasks
+
 exports.CreateTask = async (req) => {
   try {
-    let reqBody = req.body;
-    reqBody.email = req.headers["email"];
-    let data = await TasksModel.create(reqBody);
-    return { status: "success", data: data };
+    if (req.headers["role"] === "admin") {
+      let reqBody = req.body;
+      reqBody.email = req.headers["email"];
+
+      let data = await TasksModel.create(reqBody);
+      return { status: "success", data: data };
+    }
+    else {
+      return { status: "fail", message: "Only admin can create tasks" };
+    }
   } catch (e) {
     return { status: "fail", message: "something went wrong" };
   }

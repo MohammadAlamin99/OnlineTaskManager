@@ -49,7 +49,7 @@ const Header = () => {
           </div>
           <div className="profil">
             <a href="/profile">
-              <img src={userGet.photo} alt="" />
+              <img src={userGet?.photo} alt="" />
             </a>
           </div>
         </div>

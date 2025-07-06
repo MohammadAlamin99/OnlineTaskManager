@@ -25,15 +25,15 @@ exports.UserLogin = async (req) => {
       { $match: reqBody },
       { $project: { password: 0, createdDate: 0 } },
     ]);
+
     if (data.length > 0) {
-      let payload = { data: data[0]["email"] }; //token create process
+      let payload = { email: data[0]["email"], role: data[0]["role"] }; //token create process
       let token = jwt.sign(payload, "bcd123");
       return { status: "success", token: token, data: data[0] };
     } else {
       return { status: "fail", message: "something went wrong" };
     }
   } catch (e) {
-    console.log(e);
     return { status: "fail", message: "something went wrong" };
   }
 };
