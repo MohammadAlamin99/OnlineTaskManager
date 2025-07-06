@@ -71,6 +71,21 @@ export async function getAllTaskRequest() {
         return false
     }
 }
+
+// export async function getAllTaskRequest(filters = {}) {
+//     try {
+//         // Build query parameters from filters object
+//         const queryParams = new URLSearchParams(filters).toString();
+//         const url = `${BaseURL}/api/v1/getAllTask${queryParams ? `?${queryParams}` : ''}`;
+
+//         const result = await axios.get(url, Headers);
+//         return result.data.data;
+//     } catch (e) {
+//         console.error('Failed to fetch tasks:', e.message);
+//         return false;
+//     }
+// }
+
 // get In Progress request
 export async function getInProgressRequest(status) {
     try {
@@ -167,7 +182,7 @@ export async function totalTaskCountRequest(status) {
 export async function UserProfileUpdateRequest(email, name, mobile, designation, photo) {
     try {
         let reqBody = { email: email, name: name, mobile: mobile, designation: designation, photo: photo }
-        let UserDetails = { email: email, name: name, mobile: mobile, designation: designation, photo: photo  }
+        let UserDetails = { email: email, name: name, mobile: mobile, designation: designation, photo: photo }
         let result = await axios.post(BaseURL + '/api/v1/upadateProfile', reqBody, Headers);
         setUserDetails(UserDetails);
         return result

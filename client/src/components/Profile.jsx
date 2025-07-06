@@ -25,10 +25,10 @@ const Profile = () => {
   }, [0]);
 
   // Logout button function
-    const handleLogout = () => {
-      localStorage.clear();
-      window.location.href = "/login";
-    };
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/login";
+  };
 
   // update api call
   const emailRef = useRef();
@@ -87,9 +87,8 @@ const Profile = () => {
                     <h3 className="fw-bold text-dark fs-5 mb-0 d-flex align-items-center gap-2">
                       {userGet?.name}
                       <img
-                        className={`Varification__badge ${
-                          userGet?.role === "admin" ? "" : "d-none"
-                        }`}
+                        className={`Varification__badge ${userGet?.role === "admin" ? "" : "d-none"
+                          }`}
                         src={badge}
                         alt=""
                       />

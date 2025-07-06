@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlltask } from "../redux/state-slice/allTask-slice";
+import { getUserDetails } from "../Helper/SessionHelper";
 
 
 
@@ -95,6 +96,9 @@ const CreateTask = () => {
       }
     });
   };
+
+  // user details form localstorage
+  const userDetails = getUserDetails();
   return (
     <>
       <div className="">
@@ -112,7 +116,7 @@ const CreateTask = () => {
               <div className="col-lg-8 taskText">
                 <p>🔥 Task</p>
               </div>
-              <div className="col-lg-4 createTask">
+              <div className={`col-lg-4 createTask ${userDetails?.role === "admin" ? "d-block" : "d-none"}`}>
                 <button onClick={showCarousel}>
                   Create Task
                   <svg
@@ -154,34 +158,54 @@ const CreateTask = () => {
                       getTasks.map((item, i) => {
                         return (
                           <div key={i} className="task-card">
-                            <div className="tag-wrapper d-flex align-items-center gap-2">
-                              {/* Status Tags */}
-                              {item?.status === "Pending" && (
-                                <div className="tag status-todo">Pending</div>
-                              )}
-                              {item?.status === "In Progress" && (
-                                <div className="tag status-in-progress">
-                                  In Progress
-                                </div>
-                              )}
-                              {item?.status === "Completed" && (
-                                <div className="tag status-completed">
-                                  Completed
-                                </div>
-                              )}
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                              <div className="tag-wrapper d-flex align-items-center gap-2">
+                                {/* Status Tags */}
+                                {item?.status === "Pending" && (
+                                  <div className="tag status-todo">Pending</div>
+                                )}
+                                {item?.status === "In Progress" && (
+                                  <div className="tag status-in-progress">
+                                    In Progress
+                                  </div>
+                                )}
+                                {item?.status === "Completed" && (
+                                  <div className="tag status-completed">
+                                    Completed
+                                  </div>
+                                )}
 
-                              {/* Priority Tags */}
-                              {item?.priority === "Low" && (
-                                <div className="tag priority-low">Low</div>
-                              )}
-                              {item?.priority === "Medium" && (
-                                <div className="tag priority-medium">
-                                  Medium
+                                {/* Priority Tags */}
+                                {item?.priority === "Low" && (
+                                  <div className="tag priority-low">Low</div>
+                                )}
+                                {item?.priority === "Medium" && (
+                                  <div className="tag priority-medium">
+                                    Medium
+                                  </div>
+                                )}
+                                {item?.priority === "High" && (
+                                  <div className="tag priority-high">High</div>
+                                )}
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <div className="task-assignee pt-0">
+                                  <small>Created by : </small>
+                                  {item?.createdBy &&
+                                    item?.createdBy.map((item, i) => {
+                                      return (
+                                        <>
+                                          <img
+                                            key={i}
+                                            src={item?.photo}
+                                            alt="Assignee"
+                                            className="assignee-photo m-0"
+                                          />
+                                        </>
+                                      );
+                                    })}
                                 </div>
-                              )}
-                              {item?.priority === "High" && (
-                                <div className="tag priority-high">High</div>
-                              )}
+                              </div>
                             </div>
 
                             <h3 className="task-title">{item?.title}</h3>
@@ -198,8 +222,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.createdDate
                                       ? new Date(
-                                          item.createdDate
-                                        ).toLocaleDateString()
+                                        item.createdDate
+                                      ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -213,8 +237,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.dueDate
                                       ? new Date(
-                                          item.dueDate
-                                        ).toLocaleDateString()
+                                        item.dueDate
+                                      ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -251,15 +275,14 @@ const CreateTask = () => {
                                 <div
                                   className="progress-fill"
                                   style={{
-                                    width: `${
-                                      item?.todoCheckList?.length
-                                        ? (item?.todoCheckList?.filter(
-                                            (s) => s.completed
-                                          ).length /
-                                            item?.todoCheckList?.length) *
-                                          100
-                                        : 0
-                                    }%`,
+                                    width: `${item?.todoCheckList?.length
+                                      ? (item?.todoCheckList?.filter(
+                                        (s) => s.completed
+                                      ).length /
+                                        item?.todoCheckList?.length) *
+                                      100
+                                      : 0
+                                      }%`,
                                   }}
                                 ></div>
                               </div>
@@ -280,7 +303,7 @@ const CreateTask = () => {
                                 </svg>
                                 <span>{item?.attachments?.length} file</span>
                               </div>
-                              <div className="d-flex align-items-center gap-2">
+                              <div className={`d-flex align-items-center gap-2 ${userDetails?.role === "admin" ? "d-block" : "d-none"}`}>
                                 <AiOutlineDelete
                                   onClick={() => DeleteTaskHandler(item?._id)}
                                   style={{
