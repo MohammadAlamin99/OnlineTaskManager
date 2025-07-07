@@ -12,10 +12,11 @@ import {
 } from "react-icons/fa";
 import { getUserDetails } from "../Helper/SessionHelper";
 
-const EditCarosal = ({ props, updateTask }) => {
+const EditCarosal = ({ props }) => {
   const { taskId, hideUpdate } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  console.log(selectedTask);
 
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [newAttachment, setNewAttachment] = useState("");
@@ -45,7 +46,7 @@ const EditCarosal = ({ props, updateTask }) => {
     return <div>Loading task...</div>;
   }
 
-  const user = getUserDetails()
+  const user = getUserDetails();
   // Update task
   const onUpdateHandler = async () => {
     try {
@@ -75,9 +76,9 @@ const EditCarosal = ({ props, updateTask }) => {
       );
       if (response.status === "success") {
         toast.success("Task updated successfully!");
-        if (updateTask) updateTask(response);
         setTimeout(() => {
           hideUpdate();
+          window.location.reload();
         }, 1000);
       }
     } catch (e) {

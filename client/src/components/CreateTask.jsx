@@ -60,16 +60,6 @@ const CreateTask = () => {
     dispatch(setAlltask([newTask, ...getTasks]));
   };
 
-  // when update task... updated data without reload
-  const handleUpdateTask = (newTask) => {
-    dispatch(
-      setAlltask(
-        getTasks.map((task) =>
-          task._id === newTask._id ? { ...task, ...newTask } : task
-        )
-      )
-    );
-  };
 
   // delete Task
   const DeleteTaskHandler = async (id) => {
@@ -348,7 +338,6 @@ const CreateTask = () => {
       {isUpadateCarousel && (
         <EditCarosal
           props={{ hideUpdate, taskId }}
-          updateTask={handleUpdateTask}
         />
       )}
     </>
