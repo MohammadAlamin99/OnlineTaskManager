@@ -211,7 +211,7 @@ exports.updaeTask = async (req) => {
       return { status: "fail", message: "Only admin can update tasks" };
     }
   } catch (e) {
-    return { status: "fail", message: "something went wrong" };
+    return { status: "fail", message: e.toString() };
   }
 };
 

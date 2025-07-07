@@ -1,216 +1,157 @@
-
-
 import { useEffect, useRef, useState } from "react";
 import {
   UpdateTaskRequest,
   getTaskbyIdRequest,
-  getUpdateTaskRequest,
 } from "../apiRequiest/apiRequiest";
 import toast, { Toaster } from "react-hot-toast";
-import { FaRegCalendarAlt, FaTimes, FaPaperclip, FaUserPlus } from "react-icons/fa";
+import {
+  FaRegCalendarAlt,
+  FaTimes,
+  FaPaperclip,
+  FaUserPlus,
+} from "react-icons/fa";
+import { getUserDetails } from "../Helper/SessionHelper";
 
 const EditCarosal = ({ props, updateTask }) => {
   const { taskId, hideUpdate } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedTask, setSelectedTask] = useState([]);
-  // console.log(selectedTask)
-  const [taskData, setTaskData] = useState({
-    title: "",
-    description: "",
-    dueDate: "",
-    priority: "Medium",
-    status: "Pending",
-    todoCheckList: [],
-    attachments: [],
-    assignTo: [],
-  });
+  const [selectedTask, setSelectedTask] = useState(null);
+
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [newAttachment, setNewAttachment] = useState("");
   const [newAssignee, setNewAssignee] = useState("");
 
-  // Refs for form inputs
+  // Refs
   const titleRef = useRef();
   const descriptionRef = useRef();
   const priorityRef = useRef();
   const statusRef = useRef();
   const dueDateRef = useRef();
-  const todoChecklistRef = useRef(); 
-  const attachmentsRef = useRef(); 
-  const assignToRef = useRef(); 
-  const createdByRef = useRef(); 
 
-
-  // get task by id
+  // Load task data by ID
   useEffect(() => {
     (async () => {
-      let result = await getTaskbyIdRequest(taskId);
-      setSelectedTask(result?.[0])
-    })()
-  }, [])
-
-  // Load task data
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const result = await getUpdateTaskRequest(taskId);
-        if (result && result.length > 0) {
-          const data = result[0];
-          setTaskData({
-            title: data.title || "",
-            description: data.description || "",
-            dueDate: data.dueDate || "",
-            priority: data.priority || "Medium",
-            status: data.status || "Pending",
-            todoCheckList: data.todoCheckList || [],
-            attachments: data.attachments || [],
-            assignTo: data.assignTo || [],
-          });
-        }
-      } catch (error) {
-        toast.error("Failed to load task data.");
-      } finally {
-        setIsLoading(false);
+      const result = await getTaskbyIdRequest(taskId);
+      if (result?.[0]) {
+        setSelectedTask(result[0]);
+      } else {
+        toast.error("Failed to fetch task data.");
       }
     })();
   }, [taskId]);
 
-  // Set form values when data is loaded
-  // useEffect(() => {
-  //   if (titleRef.current) titleRef.current.value = taskData.title || "";
-  //   if (descriptionRef.current) descriptionRef.current.value = taskData.description || "";
-  //   if (statusRef.current) statusRef.current.value = taskData.status || "Pending";
-  //   if (priorityRef.current) priorityRef.current.value = taskData.priority || "Medium";
-  //   if (dueDateRef.current) {
-  //     dueDateRef.current.value = taskData.dueDate
-  //       ? new Date(taskData.dueDate).toISOString().split("T")[0]
-  //       : "";
-  //   }
+  // Safety render fallback
+  if (!selectedTask) {
+    return <div>Loading task...</div>;
+  }
 
-  //   // Reset input fields for adding new items
-  //   setNewChecklistItem("");
-  //   setNewAttachment("");
-  //   setNewAssignee("");
-  // }, [taskData]);
-
-  // Checklist handlers
-  const handleAddChecklistItem = () => {
-    if (newChecklistItem.trim()) {
-      setTaskData(prev => ({
-        ...prev,
-        todoCheckList: [
-          ...prev.todoCheckList,
-          { title: newChecklistItem, completed: false }
-        ]
-      }));
-      setNewChecklistItem("");
-    }
-  };
-
-  const handleRemoveChecklistItem = (index) => {
-    setTaskData(prev => {
-      const updatedChecklist = [...prev.todoCheckList];
-      updatedChecklist.splice(index, 1);
-      return { ...prev, todoCheckList: updatedChecklist };
-    });
-  };
-
-  const toggleChecklistCompletion = (index) => {
-    setTaskData(prev => {
-      const updatedChecklist = [...prev.todoCheckList];
-      updatedChecklist[index] = {
-        ...updatedChecklist[index],
-        completed: !updatedChecklist[index].completed
-      };
-      return { ...prev, todoCheckList: updatedChecklist };
-    });
-  };
-
-  // Attachment handlers
-  const handleAddAttachment = () => {
-    if (newAttachment.trim()) {
-      setTaskData(prev => ({
-        ...prev,
-        attachments: [...prev.attachments, newAttachment]
-      }));
-      setNewAttachment("");
-    }
-  };
-
-  const handleRemoveAttachment = (index) => {
-    setTaskData(prev => {
-      const updatedAttachments = [...prev.attachments];
-      updatedAttachments.splice(index, 1);
-      return { ...prev, attachments: updatedAttachments };
-    });
-  };
-
-  // Assignee handlers
-  const handleAddAssignee = () => {
-    if (newAssignee.trim()) {
-      setTaskData(prev => ({
-        ...prev,
-        assignTo: [...prev.assignTo, newAssignee]
-      }));
-      setNewAssignee("");
-    }
-  };
-
-  const handleRemoveAssignee = (index) => {
-    setTaskData(prev => {
-      const updatedAssignees = [...prev.assignTo];
-      updatedAssignees.splice(index, 1);
-      return { ...prev, assignTo: updatedAssignees };
-    });
-  };
-
-  // Update task handler
+  const user = getUserDetails()
+  // Update task
   const onUpdateHandler = async () => {
     try {
       setIsLoading(true);
-      const updatedTask = {
-        _id: taskId,
-        title: titleRef.current.value,
-        description: descriptionRef.current.value,
-        dueDate: dueDateRef.current.value || null,
-        priority: priorityRef.current.value,
-        status: statusRef.current.value || "Pending",
-        todoCheckList: todoChecklistRef.current.value || [],
-        attachments: attachmentsRef.current.value || [],
-        assignTo: assignToRef.current.value || [],
-        progress: calculateProgress(taskData.todoCheckList)
-      };
+      const title = titleRef.current.value;
+      const description = descriptionRef.current.value;
+      const dueDate = dueDateRef.current.value || null;
+      const priority = priorityRef.current.value;
+      const status = statusRef.current.value;
+      const todoCheckList = selectedTask.todoCheckList || [];
+      const attachments = selectedTask.attachments || [];
+      const assignTo = selectedTask.assignTo || [];
+      const createdBy = user?._id;
+      const progress = 33;
       const response = await UpdateTaskRequest(
         taskId,
-        updatedTask.title,
-        updatedTask.description,
-        updatedTask.dueDate,
-        updatedTask.priority,
-        updatedTask.status,
-        updatedTask.todoCheckList,
-        updatedTask.attachments,
-        // updatedTask.assignTo,
-        updatedTask.progress
+        title,
+        description,
+        dueDate,
+        priority,
+        status,
+        todoCheckList,
+        attachments,
+        assignTo,
+        createdBy,
+        progress
       );
-      console.log(response);
-      if (response.data.status === "success") {
+      if (response.status === "success") {
         toast.success("Task updated successfully!");
-        if (updateTask) updateTask(updatedTask);
-        hideUpdate();
+        if (updateTask) updateTask(response);
+        setTimeout(() => {
+          hideUpdate();
+        }, 1000);
       }
     } catch (e) {
-      console.log(e);
       toast.error("Failed to update task.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Calculate progress based on completed checklist items
+  // Progress Calculation
   const calculateProgress = (checklist) => {
     if (!checklist || checklist.length === 0) return 0;
-    const completed = checklist.filter(item => item.completed).length;
+    const completed = checklist.filter((item) => item.completed).length;
     return Math.round((completed / checklist.length) * 100);
+  };
+
+  // Checklist Handlers
+  const handleAddChecklistItem = () => {
+    if (newChecklistItem.trim()) {
+      setSelectedTask((prev) => ({
+        ...prev,
+        todoCheckList: [
+          ...prev.todoCheckList,
+          { title: newChecklistItem, completed: false },
+        ],
+      }));
+      setNewChecklistItem("");
+    }
+  };
+
+  const handleRemoveChecklistItem = (index) => {
+    const updatedChecklist = [...selectedTask.todoCheckList];
+    updatedChecklist.splice(index, 1);
+    setSelectedTask((prev) => ({ ...prev, todoCheckList: updatedChecklist }));
+  };
+
+  const toggleChecklistCompletion = (index) => {
+    const updatedChecklist = [...selectedTask.todoCheckList];
+    updatedChecklist[index].completed = !updatedChecklist[index].completed;
+    setSelectedTask((prev) => ({ ...prev, todoCheckList: updatedChecklist }));
+  };
+
+  // Attachment Handlers
+  const handleAddAttachment = () => {
+    if (newAttachment.trim()) {
+      setSelectedTask((prev) => ({
+        ...prev,
+        attachments: [...prev.attachments, newAttachment],
+      }));
+      setNewAttachment("");
+    }
+  };
+
+  const handleRemoveAttachment = (index) => {
+    const updated = [...selectedTask.attachments];
+    updated.splice(index, 1);
+    setSelectedTask((prev) => ({ ...prev, attachments: updated }));
+  };
+
+  // Assignee Handlers
+  const handleAddAssignee = () => {
+    if (newAssignee.trim()) {
+      setSelectedTask((prev) => ({
+        ...prev,
+        assignTo: [...prev.assignTo, newAssignee],
+      }));
+      setNewAssignee("");
+    }
+  };
+
+  const handleRemoveAssignee = (index) => {
+    const updated = [...selectedTask.assignTo];
+    updated.splice(index, 1);
+    setSelectedTask((prev) => ({ ...prev, assignTo: updated }));
   };
 
   return (
@@ -218,7 +159,7 @@ const EditCarosal = ({ props, updateTask }) => {
       <Toaster position="top-center" />
       <div className="modal-backdrop fade show"></div>
 
-      <div className="modal fade show d-block" tabIndex="-1" aria-labelledby="editTaskModal">
+      <div className="modal fade show d-block" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
             <div className="modal-header bg-light">
@@ -228,7 +169,6 @@ const EditCarosal = ({ props, updateTask }) => {
                 className="btn-close"
                 onClick={hideUpdate}
                 disabled={isLoading}
-                aria-label="Close"
               ></button>
             </div>
 
@@ -242,7 +182,7 @@ const EditCarosal = ({ props, updateTask }) => {
                     className="form-control w-100"
                     required
                     disabled={isLoading}
-                    defaultValue={selectedTask?.title}
+                    defaultValue={selectedTask.title}
                   />
                 </div>
 
@@ -252,7 +192,7 @@ const EditCarosal = ({ props, updateTask }) => {
                     ref={descriptionRef}
                     className="form-control w-100"
                     rows="4"
-                    defaultValue={selectedTask?.description}
+                    defaultValue={selectedTask.description}
                   />
                 </div>
 
@@ -268,14 +208,11 @@ const EditCarosal = ({ props, updateTask }) => {
                         type="date"
                         className="form-control"
                         disabled={isLoading}
-                        defaultValue={
-                          selectedTask?.dueDate
-                            ? new Date(selectedTask.dueDate).toISOString().split("T")[0]
-                            : ""
-                        }
+                        defaultValue={selectedTask?.dueDate?.split("T")[0]}
                       />
                     </div>
                   </div>
+
                   <div className="col-md-4">
                     <label className="form-label fw-bold">Status*</label>
                     <select
@@ -283,13 +220,14 @@ const EditCarosal = ({ props, updateTask }) => {
                       className="form-select"
                       required
                       disabled={isLoading}
-                      value={selectedTask?.status}
+                      defaultValue={selectedTask.status}
                     >
                       <option value="Pending">Pending</option>
                       <option value="In Progress">In Progress</option>
                       <option value="Completed">Completed</option>
                     </select>
                   </div>
+
                   <div className="col-md-4">
                     <label className="form-label fw-bold">Priority*</label>
                     <select
@@ -297,7 +235,7 @@ const EditCarosal = ({ props, updateTask }) => {
                       className="form-select"
                       required
                       disabled={isLoading}
-                      value={selectedTask?.priority}
+                      defaultValue={selectedTask.priority}
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -306,19 +244,20 @@ const EditCarosal = ({ props, updateTask }) => {
                   </div>
                 </div>
 
-                {/* Todo Checklist Section */}
+                {/* Checklist */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Checklist</label>
                   <div className="input-group mb-2">
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control w-100"
                       placeholder="Add new checklist item"
                       value={newChecklistItem}
                       onChange={(e) => setNewChecklistItem(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddChecklistItem()}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleAddChecklistItem()
+                      }
                       disabled={isLoading}
-                      ref={todoChecklistRef}
                     />
                     <button
                       className="btn btn-outline-primary"
@@ -330,28 +269,45 @@ const EditCarosal = ({ props, updateTask }) => {
                     </button>
                   </div>
 
-                  {taskData.todoCheckList.length > 0 && (
+                  {selectedTask?.todoCheckList?.length > 0 && (
                     <div className="border rounded p-2">
                       <div className="d-flex justify-content-between mb-1">
-                        <small>Progress: {calculateProgress(taskData.todoCheckList)}%</small>
                         <small>
-                          {taskData.todoCheckList.filter(item => item.completed).length} of {taskData.todoCheckList.length} completed
+                          Progress:{" "}
+                          {calculateProgress(selectedTask.todoCheckList)}%
+                        </small>
+                        <small>
+                          {
+                            selectedTask.todoCheckList.filter(
+                              (item) => item.completed
+                            ).length
+                          }{" "}
+                          of {selectedTask.todoCheckList.length} completed
                         </small>
                       </div>
 
-                      {selectedTask?.todoCheckList?.map((item, index) => (
-                        <div key={index} className="d-flex align-items-center justify-content-between mb-2">
-                          <div className="d-flex align-items-center">
+                      {selectedTask.todoCheckList.map((item, index) => (
+                        <div
+                          key={index}
+                          className="d-flex justify-content-between align-items-center mb-1"
+                        >
+                          <div className="form-check">
                             <input
+                              className="form-check-input"
                               type="checkbox"
-                              className="form-check-input me-2"
                               checked={item.completed}
                               onChange={() => toggleChecklistCompletion(index)}
                               disabled={isLoading}
                             />
-                            <span className={item.completed ? "text-decoration-line-through text-muted" : ""}>
-                              {item.title || "checklist"}
-                            </span>
+                            <label
+                              className={`form-check-label ${
+                                item.completed
+                                  ? "text-decoration-line-through text-muted"
+                                  : ""
+                              }`}
+                            >
+                              {item.title}
+                            </label>
                           </div>
                           <button
                             className="btn btn-sm btn-outline-danger"
@@ -366,7 +322,7 @@ const EditCarosal = ({ props, updateTask }) => {
                   )}
                 </div>
 
-                {/* Attachments Section */}
+                {/* Attachments */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Attachments</label>
                   <div className="input-group mb-2">
@@ -376,9 +332,10 @@ const EditCarosal = ({ props, updateTask }) => {
                       placeholder="Add attachment URL"
                       value={newAttachment}
                       onChange={(e) => setNewAttachment(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddAttachment()}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleAddAttachment()
+                      }
                       disabled={isLoading}
-                      ref={attachmentsRef}
                     />
                     <button
                       className="btn btn-outline-primary"
@@ -390,12 +347,19 @@ const EditCarosal = ({ props, updateTask }) => {
                     </button>
                   </div>
 
-                  {taskData.attachments.length > 0 && (
+                  {selectedTask.attachments?.length > 0 && (
                     <div className="border rounded p-2">
-                      {selectedTask?.attachments?.map((url, index) => (
-                        <div key={index} className="d-flex align-items-center justify-content-between mb-2">
-                          <a href={url} target="_blank" rel="noopener noreferrer">
-                            {url.length > 30 ? `${url.substring(0, 30)}...` : url}
+                      {selectedTask.attachments.map((url, index) => (
+                        <div
+                          key={index}
+                          className="d-flex justify-content-between align-items-center mb-1"
+                        >
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {url.length > 30 ? `${url.slice(0, 30)}...` : url}
                           </a>
                           <button
                             className="btn btn-sm btn-outline-danger"
@@ -410,19 +374,20 @@ const EditCarosal = ({ props, updateTask }) => {
                   )}
                 </div>
 
-                {/* Assignees Section */}
+                {/* Assignees */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Assign To</label>
                   <div className="input-group mb-2">
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Add user ID to assign"
+                      placeholder="Add user ID"
                       value={newAssignee}
                       onChange={(e) => setNewAssignee(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddAssignee()}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleAddAssignee()
+                      }
                       disabled={isLoading}
-                      ref={assignToRef}
                     />
                     <button
                       className="btn btn-outline-primary"
@@ -434,10 +399,13 @@ const EditCarosal = ({ props, updateTask }) => {
                     </button>
                   </div>
 
-                  {taskData.assignTo.length > 0 && (
+                  {selectedTask.assignTo?.length > 0 && (
                     <div className="border rounded p-2">
-                      {taskData.assignTo.map((userId, index) => (
-                        <div key={index} className="d-flex align-items-center justify-content-between mb-2">
+                      {selectedTask.assignTo.map((userId, index) => (
+                        <div
+                          key={index}
+                          className="d-flex justify-content-between align-items-center mb-1"
+                        >
                           <span>{userId}</span>
                           <button
                             className="btn btn-sm btn-outline-danger"
@@ -456,7 +424,6 @@ const EditCarosal = ({ props, updateTask }) => {
 
             <div className="modal-footer border-top-0">
               <button
-                type="button"
                 className="btn btn-outline-secondary"
                 onClick={hideUpdate}
                 disabled={isLoading}
@@ -464,7 +431,6 @@ const EditCarosal = ({ props, updateTask }) => {
                 Cancel
               </button>
               <button
-                type="button"
                 className="btn btn-primary"
                 onClick={onUpdateHandler}
                 disabled={isLoading}

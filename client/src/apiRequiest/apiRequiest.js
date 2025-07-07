@@ -174,12 +174,11 @@ export async function UpdateTaskRequest(
     dueDate,
     priority,
     status,
-    category,
-    todoCheckList = [],  // Optional: Checklist items
-    attachments = [],    // Optional: File URLs
-    assignTo = [],       // Optional: User IDs
-    createdBy,           // Required: Creator ID
-    progress             // Progress percentage (0-100)
+    todoCheckList = [],
+    attachments = [],
+    assignTo = [],
+    createdBy,
+    progress
 ) {
     try {
         const reqBody = {
@@ -189,23 +188,21 @@ export async function UpdateTaskRequest(
             dueDate,
             priority,
             status,
-            category,
-            todoCheckList,  // Array of { title, completed }
-            attachments,    // Array of strings (URLs)
-            assignTo,       // Array of user IDs
-            createdBy,      // Single user ID (who created)
-            progress        // Number (0-100)
+            todoCheckList,
+            attachments,
+            assignTo,
+            createdBy,
+            progress
         };
 
         const result = await axios.post(
             `${BaseURL}/api/v1/taskUpdate`,
             reqBody,
-            Headers  // Ensure Headers include Auth (Bearer Token, etc.)
+            Headers
         );
 
         return result.data;
     } catch (e) {
-        console.error("UpdateTask Error:", e.response?.data || e.message);
         return { status: "fail", message: e.response?.data?.message || "Failed to update task" };
     }
 }

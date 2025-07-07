@@ -64,7 +64,9 @@ const CreateTask = () => {
   const handleUpdateTask = (newTask) => {
     dispatch(
       setAlltask(
-        getTasks.map((task) => (task._id === newTask._id ? newTask : task))
+        getTasks.map((task) =>
+          task._id === newTask._id ? { ...task, ...newTask } : task
+        )
       )
     );
   };
