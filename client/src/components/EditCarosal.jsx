@@ -1,374 +1,216 @@
-// import { useEffect, useRef, useState } from "react";
-// import {
-//   UpdateTaskRequest,
-//   getUpdateTaskRequest,
-// } from "../apiRequiest/apiRequiest";
-// import toast, { Toaster } from "react-hot-toast";
-
-// const EditCarosal = ({ props, updateTask }) => {
-//   const { taskId } = props;
-//   const { hideUpdate } = props;
-
-//   const titleRef = useRef();
-//   const descriptionRef = useRef();
-//   const categoryRef = useRef();
-//   const statusRef = useRef();
-//   const priorityRef = useRef();
-//   const dueDateRef = useRef();
-
-//   // Loading state
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   // store update default data
-//   const [update, setUpdate] = useState([]);
-
-//   useEffect(() => {
-//     (async () => {
-//       try {
-//         const result = await getUpdateTaskRequest(taskId);
-//         setUpdate(result[0]);
-//       } catch (error) {
-//         toast.error("Failed to load task data.");
-//       }
-//     })();
-//   }, [taskId]);
-
-//   useEffect(() => {
-//     if (
-//       update &&
-//       statusRef.current &&
-//       priorityRef.current &&
-//       dueDateRef.current
-//     ) {
-//       statusRef.current.value = update.status;
-//       priorityRef.current.value = update.priority;
-//       dueDateRef.current.value = update.dueDate
-//         ? new Date(update.dueDate).toISOString().split("T")[0]
-//         : "";
-//     }
-//   }, [update]);
-//   const onUpdateHandler = async () => {
-//     try {
-//       setIsLoading(true);
-//       const updatedTask = {
-//         _id: taskId,
-//         title: titleRef.current.value,
-//         description: descriptionRef.current.value,
-//         category: categoryRef.current.value,
-//         status: statusRef.current.value,
-//         priority: priorityRef.current.value,
-//         dueDate: dueDateRef.current.value,
-//       };
-
-//       const response = await UpdateTaskRequest(
-//         taskId,
-//         updatedTask.title,
-//         updatedTask.description,
-//         updatedTask.dueDate,
-//         updatedTask.priority,
-//         updatedTask.status,
-//         updatedTask.category
-//       );
-//       if (response.data.status === "success") {
-//         toast.success("Task updated successfully!");
-//         if (updateTask) updateTask(updatedTask);
-//       }
-//     } catch (error) {
-//       toast.error("Failed to update task.");
-//     } finally {
-//       hideUpdate();
-//       setIsLoading(false);
-//     }
-//   };
-//   return (
-//     <>
-//       {/* Toast Notification */}
-//       <Toaster position="top-center" />
-
-//       {/* Modal Backdrop */}
-//       <div className="modal-backdrop fade show"></div>
-
-//       {/* Modal */}
-//       <div
-//         className="modal fade show d-block"
-//         tabIndex="-1"
-//         role="dialog"
-//         aria-labelledby="editTaskModal"
-//         aria-hidden="true"
-//       >
-//         <div
-//           className="modal-dialog modal-dialog-centered modal-lg"
-//           role="document"
-//         >
-//           <div className="modal-content">
-//             <div className="modal-header">
-//               <h5 className="modal-title" id="editTaskModal">
-//                 Edit Task
-//               </h5>
-//               <button
-//                 type="button"
-//                 className="btn-close"
-//                 aria-label="Close"
-//                 onClick={hideUpdate}
-//                 disabled={isLoading}
-//               ></button>
-//             </div>
-//             <div className="modal-body">
-//               <form>
-//                 <div className="mb-3">
-//                   <label htmlFor="taskTitle" className="form-label fw-bold">
-//                     Title
-//                   </label>
-//                   <input
-//                     ref={titleRef}
-//                     id="taskTitle"
-//                     defaultValue={update.title}
-//                     type="text"
-//                     className="form-control w-100"
-//                     disabled={isLoading}
-//                   />
-//                 </div>
-//                 <div className="mb-3">
-//                   <label
-//                     htmlFor="taskDescription"
-//                     className="form-label fw-bold"
-//                   >
-//                     Description
-//                   </label>
-//                   <textarea
-//                     ref={descriptionRef}
-//                     id="taskDescription"
-//                     defaultValue={update.description}
-//                     className="form-control w-100"
-//                     rows="4"
-//                     disabled={isLoading}
-//                   />
-//                 </div>
-//                 <div className="mb-3">
-//                   <label htmlFor="taskCategory" className="form-label fw-bold">
-//                     Category
-//                   </label>
-//                   <input
-//                     ref={categoryRef}
-//                     id="taskCategory"
-//                     defaultValue={update.category}
-//                     type="text"
-//                     className="form-control w-100"
-//                     disabled={isLoading}
-//                   />
-//                 </div>
-//                 <div className="row">
-//                   <div className="col-md-4 mb-3">
-//                     <label htmlFor="taskStatus" className="form-label fw-bold">
-//                       Status
-//                     </label>
-//                     <select
-//                       ref={statusRef}
-//                       id="taskStatus"
-//                       className="form-select"
-//                       disabled={isLoading}
-//                     >
-//                       <option value="TODO">TODO</option>
-//                       <option value="In Progress">In Progress</option>
-//                       <option value="Completed">Completed</option>
-//                     </select>
-//                   </div>
-//                   <div className="col-md-4 mb-3">
-//                     <label
-//                       htmlFor="taskPriority"
-//                       className="form-label fw-bold"
-//                     >
-//                       Priority
-//                     </label>
-//                     <select
-//                       ref={priorityRef}
-//                       id="taskPriority"
-//                       className="form-select"
-//                       disabled={isLoading}
-//                     >
-//                       <option value="Low">Low</option>
-//                       <option value="Medium">Medium</option>
-//                       <option value="High">High</option>
-//                     </select>
-//                   </div>
-//                   <div className="col-md-4 mb-3">
-//                     <label htmlFor="taskDueDate" className="form-label fw-bold">
-//                       Due Date
-//                     </label>
-//                     <input
-//                       ref={dueDateRef}
-//                       id="taskDueDate"
-//                       type="date"
-//                       className="form-control"
-//                       disabled={isLoading}
-//                     />
-//                   </div>
-//                 </div>
-//               </form>
-//             </div>
-//             <div className="modal-footer">
-//               <button
-//                 type="button"
-//                 className="cencell_common_btn me-2"
-//                 onClick={hideUpdate}
-//                 disabled={isLoading}
-//               >
-//                 Cancel
-//               </button>
-//               <button
-//                 type="button"
-//                 onClick={onUpdateHandler}
-//                 className="commonBtn"
-//                 disabled={isLoading}
-//               >
-//                 {isLoading ? (
-//                   <>
-//                     <span
-//                       className="spinner-border spinner-border-sm me-2"
-//                       role="status"
-//                       aria-hidden="true"
-//                     ></span>
-//                     Updating...
-//                   </>
-//                 ) : (
-//                   "Update"
-//                 )}
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default EditCarosal;
 
 
 import { useEffect, useRef, useState } from "react";
 import {
   UpdateTaskRequest,
+  getTaskbyIdRequest,
   getUpdateTaskRequest,
 } from "../apiRequiest/apiRequiest";
 import toast, { Toaster } from "react-hot-toast";
-import { FaRegCalendarAlt, FaTimes } from "react-icons/fa";
+import { FaRegCalendarAlt, FaTimes, FaPaperclip, FaUserPlus } from "react-icons/fa";
 
 const EditCarosal = ({ props, updateTask }) => {
   const { taskId, hideUpdate } = props;
   const [isLoading, setIsLoading] = useState(false);
-  const [update, setUpdate] = useState({});
-  const [subtasks, setSubtasks] = useState([]);
-  const [newSubtask, setNewSubtask] = useState("");
+  const [selectedTask, setSelectedTask] = useState([]);
+  // console.log(selectedTask)
+  const [taskData, setTaskData] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+    priority: "Medium",
+    status: "Pending",
+    todoCheckList: [],
+    attachments: [],
+    assignTo: [],
+  });
+  const [newChecklistItem, setNewChecklistItem] = useState("");
+  const [newAttachment, setNewAttachment] = useState("");
+  const [newAssignee, setNewAssignee] = useState("");
 
   // Refs for form inputs
   const titleRef = useRef();
   const descriptionRef = useRef();
-  const categoryRef = useRef();
-  const statusRef = useRef();
   const priorityRef = useRef();
-  const startDateRef = useRef();
+  const statusRef = useRef();
   const dueDateRef = useRef();
-  const endDateRef = useRef();
+  const todoChecklistRef = useRef(); 
+  const attachmentsRef = useRef(); 
+  const assignToRef = useRef(); 
+  const createdByRef = useRef(); 
+
+
+  // get task by id
+  useEffect(() => {
+    (async () => {
+      let result = await getTaskbyIdRequest(taskId);
+      setSelectedTask(result?.[0])
+    })()
+  }, [])
 
   // Load task data
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const result = await getUpdateTaskRequest(taskId);
-        const taskData = result[0];
-        setUpdate(taskData);
-        setSubtasks(taskData.subtasks || []);
+        if (result && result.length > 0) {
+          const data = result[0];
+          setTaskData({
+            title: data.title || "",
+            description: data.description || "",
+            dueDate: data.dueDate || "",
+            priority: data.priority || "Medium",
+            status: data.status || "Pending",
+            todoCheckList: data.todoCheckList || [],
+            attachments: data.attachments || [],
+            assignTo: data.assignTo || [],
+          });
+        }
       } catch (error) {
         toast.error("Failed to load task data.");
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, [taskId]);
 
   // Set form values when data is loaded
-  useEffect(() => {
-    if (update && Object.keys(update).length > 0) {
-      if (titleRef.current) titleRef.current.value = update.title || "";
-      if (descriptionRef.current) descriptionRef.current.value = update.description || "";
-      if (categoryRef.current) categoryRef.current.value = update.category || "";
-      if (statusRef.current) statusRef.current.value = update.status || "TODO";
-      if (priorityRef.current) priorityRef.current.value = update.priority || "Medium";
-      if (startDateRef.current) startDateRef.current.value = update.startDate ? new Date(update.startDate).toISOString().split("T")[0] : "";
-      if (dueDateRef.current) dueDateRef.current.value = update.dueDate ? new Date(update.dueDate).toISOString().split("T")[0] : "";
-      if (endDateRef.current) endDateRef.current.value = update.endDate ? new Date(update.endDate).toISOString().split("T")[0] : "";
-    }
-  }, [update]);
+  // useEffect(() => {
+  //   if (titleRef.current) titleRef.current.value = taskData.title || "";
+  //   if (descriptionRef.current) descriptionRef.current.value = taskData.description || "";
+  //   if (statusRef.current) statusRef.current.value = taskData.status || "Pending";
+  //   if (priorityRef.current) priorityRef.current.value = taskData.priority || "Medium";
+  //   if (dueDateRef.current) {
+  //     dueDateRef.current.value = taskData.dueDate
+  //       ? new Date(taskData.dueDate).toISOString().split("T")[0]
+  //       : "";
+  //   }
 
-  // Subtask handlers
-  const handleAddSubtask = () => {
-    if (newSubtask.trim()) {
-      setSubtasks([...subtasks, { title: newSubtask, completed: false }]);
-      setNewSubtask("");
+  //   // Reset input fields for adding new items
+  //   setNewChecklistItem("");
+  //   setNewAttachment("");
+  //   setNewAssignee("");
+  // }, [taskData]);
+
+  // Checklist handlers
+  const handleAddChecklistItem = () => {
+    if (newChecklistItem.trim()) {
+      setTaskData(prev => ({
+        ...prev,
+        todoCheckList: [
+          ...prev.todoCheckList,
+          { title: newChecklistItem, completed: false }
+        ]
+      }));
+      setNewChecklistItem("");
     }
   };
 
-  const handleRemoveSubtask = (index) => {
-    const updatedSubtasks = [...subtasks];
-    updatedSubtasks.splice(index, 1);
-    setSubtasks(updatedSubtasks);
+  const handleRemoveChecklistItem = (index) => {
+    setTaskData(prev => {
+      const updatedChecklist = [...prev.todoCheckList];
+      updatedChecklist.splice(index, 1);
+      return { ...prev, todoCheckList: updatedChecklist };
+    });
   };
 
-  const toggleSubtaskCompletion = (index) => {
-    const updatedSubtasks = [...subtasks];
-    updatedSubtasks[index].completed = !updatedSubtasks[index].completed;
-    setSubtasks(updatedSubtasks);
+  const toggleChecklistCompletion = (index) => {
+    setTaskData(prev => {
+      const updatedChecklist = [...prev.todoCheckList];
+      updatedChecklist[index] = {
+        ...updatedChecklist[index],
+        completed: !updatedChecklist[index].completed
+      };
+      return { ...prev, todoCheckList: updatedChecklist };
+    });
+  };
+
+  // Attachment handlers
+  const handleAddAttachment = () => {
+    if (newAttachment.trim()) {
+      setTaskData(prev => ({
+        ...prev,
+        attachments: [...prev.attachments, newAttachment]
+      }));
+      setNewAttachment("");
+    }
+  };
+
+  const handleRemoveAttachment = (index) => {
+    setTaskData(prev => {
+      const updatedAttachments = [...prev.attachments];
+      updatedAttachments.splice(index, 1);
+      return { ...prev, attachments: updatedAttachments };
+    });
+  };
+
+  // Assignee handlers
+  const handleAddAssignee = () => {
+    if (newAssignee.trim()) {
+      setTaskData(prev => ({
+        ...prev,
+        assignTo: [...prev.assignTo, newAssignee]
+      }));
+      setNewAssignee("");
+    }
+  };
+
+  const handleRemoveAssignee = (index) => {
+    setTaskData(prev => {
+      const updatedAssignees = [...prev.assignTo];
+      updatedAssignees.splice(index, 1);
+      return { ...prev, assignTo: updatedAssignees };
+    });
   };
 
   // Update task handler
   const onUpdateHandler = async () => {
     try {
       setIsLoading(true);
-      
-      // Validate dates
-      const startDate = startDateRef.current.value;
-      const endDate = endDateRef.current.value;
-      
-      if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-        toast.error("End date must be after start date");
-        return;
-      }
-
       const updatedTask = {
         _id: taskId,
         title: titleRef.current.value,
         description: descriptionRef.current.value,
-        category: categoryRef.current.value,
-        status: statusRef.current.value,
-        priority: priorityRef.current.value,
-        startDate: startDate || null,
         dueDate: dueDateRef.current.value || null,
-        endDate: endDate || null,
-        subtasks: subtasks
+        priority: priorityRef.current.value,
+        status: statusRef.current.value || "Pending",
+        todoCheckList: todoChecklistRef.current.value || [],
+        attachments: attachmentsRef.current.value || [],
+        assignTo: assignToRef.current.value || [],
+        progress: calculateProgress(taskData.todoCheckList)
       };
-
       const response = await UpdateTaskRequest(
         taskId,
         updatedTask.title,
         updatedTask.description,
-        updatedTask.startDate,
         updatedTask.dueDate,
-        updatedTask.endDate,
         updatedTask.priority,
         updatedTask.status,
-        updatedTask.category,
-        updatedTask.subtasks
+        updatedTask.todoCheckList,
+        updatedTask.attachments,
+        // updatedTask.assignTo,
+        updatedTask.progress
       );
-
+      console.log(response);
       if (response.data.status === "success") {
         toast.success("Task updated successfully!");
         if (updateTask) updateTask(updatedTask);
         hideUpdate();
       }
-    } catch (error) {
-      console.error("Update error:", error);
-      toast.error(error.response?.data?.message || "Failed to update task.");
+    } catch (e) {
+      console.log(e);
+      toast.error("Failed to update task.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Calculate progress based on completed checklist items
+  const calculateProgress = (checklist) => {
+    if (!checklist || checklist.length === 0) return 0;
+    const completed = checklist.filter(item => item.completed).length;
+    return Math.round((completed / checklist.length) * 100);
   };
 
   return (
@@ -389,7 +231,7 @@ const EditCarosal = ({ props, updateTask }) => {
                 aria-label="Close"
               ></button>
             </div>
-            
+
             <div className="modal-body">
               <form>
                 <div className="mb-3">
@@ -397,9 +239,10 @@ const EditCarosal = ({ props, updateTask }) => {
                   <input
                     ref={titleRef}
                     type="text"
-                    className="form-control"
+                    className="form-control w-100"
                     required
                     disabled={isLoading}
+                    defaultValue={selectedTask?.title}
                   />
                 </div>
 
@@ -407,27 +250,13 @@ const EditCarosal = ({ props, updateTask }) => {
                   <label className="form-label fw-bold">Description</label>
                   <textarea
                     ref={descriptionRef}
-                    className="form-control"
+                    className="form-control w-100"
                     rows="4"
-                    disabled={isLoading}
+                    defaultValue={selectedTask?.description}
                   />
                 </div>
 
                 <div className="row mb-3">
-                  <div className="col-md-4">
-                    <label className="form-label fw-bold">Start Date</label>
-                    <div className="input-group">
-                      <span className="input-group-text">
-                        <FaRegCalendarAlt />
-                      </span>
-                      <input
-                        ref={startDateRef}
-                        type="date"
-                        className="form-control"
-                        disabled={isLoading}
-                      />
-                    </div>
-                  </div>
                   <div className="col-md-4">
                     <label className="form-label fw-bold">Due Date</label>
                     <div className="input-group">
@@ -439,46 +268,36 @@ const EditCarosal = ({ props, updateTask }) => {
                         type="date"
                         className="form-control"
                         disabled={isLoading}
+                        defaultValue={
+                          selectedTask?.dueDate
+                            ? new Date(selectedTask.dueDate).toISOString().split("T")[0]
+                            : ""
+                        }
                       />
                     </div>
                   </div>
                   <div className="col-md-4">
-                    <label className="form-label fw-bold">End Date</label>
-                    <div className="input-group">
-                      <span className="input-group-text">
-                        <FaRegCalendarAlt />
-                      </span>
-                      <input
-                        ref={endDateRef}
-                        type="date"
-                        className="form-control"
-                        disabled={isLoading}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row mb-3">
-                  <div className="col-md-6">
                     <label className="form-label fw-bold">Status*</label>
                     <select
                       ref={statusRef}
                       className="form-select"
                       required
                       disabled={isLoading}
+                      value={selectedTask?.status}
                     >
-                      <option value="TODO">To Do</option>
+                      <option value="Pending">Pending</option>
                       <option value="In Progress">In Progress</option>
                       <option value="Completed">Completed</option>
                     </select>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-4">
                     <label className="form-label fw-bold">Priority*</label>
                     <select
                       ref={priorityRef}
                       className="form-select"
                       required
                       disabled={isLoading}
+                      value={selectedTask?.priority}
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -487,57 +306,142 @@ const EditCarosal = ({ props, updateTask }) => {
                   </div>
                 </div>
 
+                {/* Todo Checklist Section */}
                 <div className="mb-3">
-                  <label className="form-label fw-bold">Category</label>
-                  <input
-                    ref={categoryRef}
-                    type="text"
-                    className="form-control"
-                    disabled={isLoading}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label fw-bold">Subtasks</label>
+                  <label className="form-label fw-bold">Checklist</label>
                   <div className="input-group mb-2">
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Add new subtask"
-                      value={newSubtask}
-                      onChange={(e) => setNewSubtask(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddSubtask()}
+                      placeholder="Add new checklist item"
+                      value={newChecklistItem}
+                      onChange={(e) => setNewChecklistItem(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && handleAddChecklistItem()}
                       disabled={isLoading}
+                      ref={todoChecklistRef}
                     />
                     <button
                       className="btn btn-outline-primary"
                       type="button"
-                      onClick={handleAddSubtask}
+                      onClick={handleAddChecklistItem}
                       disabled={isLoading}
                     >
                       Add
                     </button>
                   </div>
-                  
-                  {subtasks.length > 0 && (
+
+                  {taskData.todoCheckList.length > 0 && (
                     <div className="border rounded p-2">
-                      {subtasks.map((subtask, index) => (
+                      <div className="d-flex justify-content-between mb-1">
+                        <small>Progress: {calculateProgress(taskData.todoCheckList)}%</small>
+                        <small>
+                          {taskData.todoCheckList.filter(item => item.completed).length} of {taskData.todoCheckList.length} completed
+                        </small>
+                      </div>
+
+                      {selectedTask?.todoCheckList?.map((item, index) => (
                         <div key={index} className="d-flex align-items-center justify-content-between mb-2">
                           <div className="d-flex align-items-center">
                             <input
                               type="checkbox"
                               className="form-check-input me-2"
-                              checked={subtask.completed}
-                              onChange={() => toggleSubtaskCompletion(index)}
+                              checked={item.completed}
+                              onChange={() => toggleChecklistCompletion(index)}
                               disabled={isLoading}
                             />
-                            <span className={subtask.completed ? "text-decoration-line-through text-muted" : ""}>
-                              {subtask.title}
+                            <span className={item.completed ? "text-decoration-line-through text-muted" : ""}>
+                              {item.title || "checklist"}
                             </span>
                           </div>
                           <button
                             className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleRemoveSubtask(index)}
+                            onClick={() => handleRemoveChecklistItem(index)}
+                            disabled={isLoading}
+                          >
+                            <FaTimes />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Attachments Section */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Attachments</label>
+                  <div className="input-group mb-2">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Add attachment URL"
+                      value={newAttachment}
+                      onChange={(e) => setNewAttachment(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && handleAddAttachment()}
+                      disabled={isLoading}
+                      ref={attachmentsRef}
+                    />
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={handleAddAttachment}
+                      disabled={isLoading}
+                    >
+                      <FaPaperclip />
+                    </button>
+                  </div>
+
+                  {taskData.attachments.length > 0 && (
+                    <div className="border rounded p-2">
+                      {selectedTask?.attachments?.map((url, index) => (
+                        <div key={index} className="d-flex align-items-center justify-content-between mb-2">
+                          <a href={url} target="_blank" rel="noopener noreferrer">
+                            {url.length > 30 ? `${url.substring(0, 30)}...` : url}
+                          </a>
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveAttachment(index)}
+                            disabled={isLoading}
+                          >
+                            <FaTimes />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Assignees Section */}
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Assign To</label>
+                  <div className="input-group mb-2">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Add user ID to assign"
+                      value={newAssignee}
+                      onChange={(e) => setNewAssignee(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && handleAddAssignee()}
+                      disabled={isLoading}
+                      ref={assignToRef}
+                    />
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={handleAddAssignee}
+                      disabled={isLoading}
+                    >
+                      <FaUserPlus />
+                    </button>
+                  </div>
+
+                  {taskData.assignTo.length > 0 && (
+                    <div className="border rounded p-2">
+                      {taskData.assignTo.map((userId, index) => (
+                        <div key={index} className="d-flex align-items-center justify-content-between mb-2">
+                          <span>{userId}</span>
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleRemoveAssignee(index)}
                             disabled={isLoading}
                           >
                             <FaTimes />

@@ -73,21 +73,30 @@ export async function getTaskRequest(status) {
 // }
 
 export async function getAllTaskRequest(createdBy = null, assignTo = null) {
-  try {
-    // Build query string
-    let query = [];
-    if (createdBy) query.push(`createdBy=${createdBy}`);
-    if (assignTo) query.push(`assignTo=${assignTo}`);
-    let queryString = query.length ? `?${query.join("&")}` : "";
+    try {
+        // Build query string
+        let query = [];
+        if (createdBy) query.push(`createdBy=${createdBy}`);
+        if (assignTo) query.push(`assignTo=${assignTo}`);
+        let queryString = query.length ? `?${query.join("&")}` : "";
 
-    let result = await axios.get(BaseURL + `/api/v1/getAllTask${queryString}`, Headers);
-    let data = result.data.data;
-    return data;
-  } catch (e) {
-    return false;
-  }
+        let result = await axios.get(BaseURL + `/api/v1/getAllTask${queryString}`, Headers);
+        let data = result.data.data;
+        return data;
+    } catch (e) {
+        return false;
+    }
 }
 
+export async function getTaskbyIdRequest(id) {
+    try {
+        const result = await axios.get(`${BaseURL}/api/v1/taskById?id=${id}`, Headers);
+        const data = result.data.data;
+        return data;
+    } catch (e) {
+        return false;
+    }
+}
 
 // get In Progress request
 export async function getInProgressRequest(status) {
@@ -147,14 +156,57 @@ export async function DeleteTaskRequest(id) {
 }
 
 //  update task
-export async function UpdateTaskRequest(id, title, description, dueDate, priority, status, category) {
+// export async function UpdateTaskRequest(id, title, description, dueDate, priority, status, category) {
+//     try {
+//         let reqBody = { id: id, title: title, description: description, dueDate: dueDate, priority: priority, status: status, category: category };
+//         let result = await axios.post(BaseURL + '/api/v1/taskUpdate', reqBody, Headers);
+//         return result
+//     }
+//     catch (e) {
+//         return false
+//     }
+// }
+
+export async function UpdateTaskRequest(
+    id,
+    title,
+    description,
+    dueDate,
+    priority,
+    status,
+    category,
+    todoCheckList = [],  // Optional: Checklist items
+    attachments = [],    // Optional: File URLs
+    assignTo = [],       // Optional: User IDs
+    createdBy,           // Required: Creator ID
+    progress             // Progress percentage (0-100)
+) {
     try {
-        let reqBody = { id: id, title: title, description: description, dueDate: dueDate, priority: priority, status: status, category: category };
-        let result = await axios.post(BaseURL + '/api/v1/taskUpdate', reqBody, Headers);
-        return result
-    }
-    catch (e) {
-        return false
+        const reqBody = {
+            id,
+            title,
+            description,
+            dueDate,
+            priority,
+            status,
+            category,
+            todoCheckList,  // Array of { title, completed }
+            attachments,    // Array of strings (URLs)
+            assignTo,       // Array of user IDs
+            createdBy,      // Single user ID (who created)
+            progress        // Number (0-100)
+        };
+
+        const result = await axios.post(
+            `${BaseURL}/api/v1/taskUpdate`,
+            reqBody,
+            Headers  // Ensure Headers include Auth (Bearer Token, etc.)
+        );
+
+        return result.data;
+    } catch (e) {
+        console.error("UpdateTask Error:", e.response?.data || e.message);
+        return { status: "fail", message: e.response?.data?.message || "Failed to update task" };
     }
 }
 //  status update task

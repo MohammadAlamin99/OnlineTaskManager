@@ -98,6 +98,47 @@ exports.getAllTask = async (req) => {
   }
 };
 
+// get task by id
+exports.getTaskById = async (req) => {
+  try {
+    const id = new ObjectId(req.query.id);
+    let data = await TasksModel.aggregate([
+      { $match: { _id: id } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "assignTo",
+          foreignField: "_id",
+          as: "assignTo",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "createdBy",
+        },
+      },
+      {
+        $project: {
+          "assignTo._id": 0,
+          "createdBy._id": 0,
+          "createdBy.email": 0,
+          "createdBy.password": 0,
+          "createdBy.mobile": 0,
+          "assignTo.password": 0,
+          "assignTo.createdDate": 0,
+        },
+      },
+    ]);
+
+    return { status: "Success", data: data };
+  } catch (e) {
+    return { status: "fail", message: e.toString() };
+  }
+};
+
 // geting In Progress task
 exports.getInprogressTaskService = async (req) => {
   try {
@@ -159,11 +200,16 @@ exports.getCompleteTaskService = async (req) => {
 // update Task
 exports.updaeTask = async (req) => {
   try {
-    let reqBody = req.body;
-    let id = req.body.id;
-    let Query = { _id: id };
-    let data = await TasksModel.updateOne(Query, reqBody);
-    return { status: "success", data: data };
+    if (req.headers.role === "admin") {
+      let reqBody = req.body;
+      let id = req.body.id;
+      let Query = { _id: id };
+      let data = await TasksModel.updateOne(Query, reqBody);
+      return { status: "success", data: data };
+    }
+    else {
+      return { status: "fail", message: "Only admin can update tasks" };
+    }
   } catch (e) {
     return { status: "fail", message: "something went wrong" };
   }

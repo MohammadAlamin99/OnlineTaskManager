@@ -39,7 +39,6 @@ exports.UserLogin = async (req) => {
 };
 
 // Profile update
-
 exports.UpadateProfile = async (req) => {
   try {
     let email = req.headers["email"];

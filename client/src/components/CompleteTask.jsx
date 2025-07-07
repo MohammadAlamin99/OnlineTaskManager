@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  DeleteTaskRequest,
-  getCompletedRequest,
-} from "../apiRequiest/apiRequiest";
+import { DeleteTaskRequest, getCompletedRequest } from "../apiRequiest/apiRequiest";
 import { setComplete } from "../redux/state-slice/completeTask-slice";
 import { AiOutlineDelete } from "react-icons/ai";
 import { LiaEditSolid } from "react-icons/lia";
@@ -125,10 +122,10 @@ const CompleteTask = () => {
                     <h5 className="task-date">
                       {item?.dueDate
                         ? new Date(item.dueDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
                         : "No Due Date"}
                     </h5>
                     <div className="d-flex justify-content-between align-items-center">

@@ -14,6 +14,7 @@ const {
   TotalTaskCount,
   TeamTaskGet,
   getAllTask,
+  getTaskById,
 } = require("../services/TaskService");
 
 exports.taskCreate = async (req, res) => {
@@ -55,6 +56,11 @@ exports.getTaskController = async (req, res) => {
 //  task all
 exports.getAllTaskController = async (req, res) => {
   let result = await getAllTask(req);
+  return res.status(200).json(result);
+};
+//  get task by id
+exports.taskById = async (req, res) => {
+  let result = await getTaskById(req);
   return res.status(200).json(result);
 };
 //  get Inprogress Task
