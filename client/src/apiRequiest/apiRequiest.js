@@ -62,32 +62,22 @@ export async function getTaskRequest(status) {
     }
 }
 // get all task request
-// export async function getAllTaskRequest() {
-//     try {
-//         let result = await axios.get(BaseURL + '/api/v1/getAllTask', Headers);
-//         let data = result['data']['data']
-//         return data;
-//     } catch (e) {
-//         return false
-//     }
-// }
-
-export async function getAllTaskRequest(createdBy = null, assignTo = null) {
+export async function getAllTaskRequest(createdBy, assignTo) {
     try {
-        // Build query string
-        let query = [];
-        if (createdBy) query.push(`createdBy=${createdBy}`);
-        if (assignTo) query.push(`assignTo=${assignTo}`);
-        let queryString = query.length ? `?${query.join("&")}` : "";
-
-        let result = await axios.get(BaseURL + `/api/v1/getAllTask${queryString}`, Headers);
-        let data = result.data.data;
-        return data;
+        const params = {};
+        // ধাপ ২: যদি createdBy আছে, তাহলে params এ add করি
+        if (createdBy) params.createdBy = createdBy;
+        // ধাপ ৩: যদি assignTo আছে, তাহলে params এ add করি
+        if (assignTo) params.assignTo = assignTo;
+        const response = await axios.get(`${BaseURL}/api/v1/getAllTask`, {
+            params,        // এখানে params automatically ?createdBy=value&assignTo=value বানায়
+            ...Headers     // Headers গুলো spread করে দিয়ে দিলাম
+        });
+        return response?.data?.data || [];
     } catch (e) {
-        return false;
+        return [];
     }
 }
-
 export async function getTaskbyIdRequest(id) {
     try {
         const result = await axios.get(`${BaseURL}/api/v1/taskById?id=${id}`, Headers);

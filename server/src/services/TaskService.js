@@ -50,8 +50,8 @@ exports.getTaskService = async (req) => {
     return { status: "fail", message: e };
   }
 };
-// getting all task
 
+// getting all task
 exports.getAllTask = async (req) => {
   try {
     let matchStage = { $or: [] };

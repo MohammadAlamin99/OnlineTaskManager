@@ -60,7 +60,6 @@ const CreateTask = () => {
     dispatch(setAlltask([newTask, ...getTasks]));
   };
 
-
   // delete Task
   const DeleteTaskHandler = async (id) => {
     Swal.fire({
@@ -335,11 +334,7 @@ const CreateTask = () => {
       {isCarouselVisible && (
         <Carousel props={hideCarousel} onTaskCreated={handleTaskCreated} />
       )}
-      {isUpadateCarousel && (
-        <EditCarosal
-          props={{ hideUpdate, taskId }}
-        />
-      )}
+      {isUpadateCarousel && <EditCarosal props={{ hideUpdate, taskId }} />}
     </>
   );
 };
