@@ -33,7 +33,12 @@ const EditCarosal = ({ props }) => {
     (async () => {
       const result = await getTaskbyIdRequest(taskId);
       if (result?.[0]) {
-        setSelectedTask(result[0]);
+        // Convert existing string attachments to object format if needed
+        const taskData = result[0];
+        if (taskData.attachments && taskData.attachments.length > 0 && typeof taskData.attachments[0] === 'string') {
+          taskData.attachments = taskData.attachments.map(url => ({ url, id: Date.now() + Math.random() }));
+        }
+        setSelectedTask(taskData);
       } else {
         toast.error("Failed to fetch task data.");
       }
@@ -60,8 +65,6 @@ const EditCarosal = ({ props }) => {
       const attachments = selectedTask.attachments || [];
       const assignTo = selectedTask.assignTo || [];
       const createdBy = user?._id;
-      // const progress = calculateProgress(todoCheckList);
-      const progress = 30;
       
       const response = await UpdateTaskRequest(
         taskId,
@@ -74,7 +77,6 @@ const EditCarosal = ({ props }) => {
         attachments,
         assignTo,
         createdBy,
-        progress
       );
       
       if (response.status === "success") {
@@ -100,7 +102,7 @@ const EditCarosal = ({ props }) => {
           { 
             title: newChecklistItem, 
             completed: false,
-            id: Date.now() // Add unique ID
+            id: Date.now()
           },
         ],
       }));
@@ -137,16 +139,20 @@ const EditCarosal = ({ props }) => {
     if (newAttachment.trim()) {
       setSelectedTask((prev) => ({
         ...prev,
-        attachments: [...prev.attachments, newAttachment],
+        attachments: [
+          ...prev.attachments, 
+          { url: newAttachment, id: Date.now() + Math.random() }
+        ],
       }));
       setNewAttachment("");
     }
   };
 
-  const handleRemoveAttachment = (index) => {
-    const updated = [...selectedTask.attachments];
-    updated.splice(index, 1);
-    setSelectedTask((prev) => ({ ...prev, attachments: updated }));
+  const handleRemoveAttachment = (indexToRemove) => {
+    setSelectedTask(prev => ({
+      ...prev,
+      attachments: prev.attachments.filter((_, index) => index !== indexToRemove)
+    }));
   };
 
   // Assignee Handlers
@@ -285,7 +291,6 @@ const EditCarosal = ({ props }) => {
                       <div className="d-flex justify-content-between mb-1">
                         <small>
                           Progress:{" "}
-                          {/* {calculateProgress(selectedTask.todoCheckList)}% */}
                         </small>
                         <small>
                           {
@@ -360,17 +365,19 @@ const EditCarosal = ({ props }) => {
 
                   {selectedTask.attachments?.length > 0 && (
                     <div className="border rounded p-2">
-                      {selectedTask.attachments.map((url, index) => (
+                      {selectedTask.attachments.map((attachment, index) => (
                         <div
-                          key={`attachment-${index}`}
+                          key={`attachment-${attachment.id || index}`}
                           className="d-flex justify-content-between align-items-center mb-1"
                         >
                           <a
-                            href={url}
+                            href={typeof attachment === 'object' ? attachment.url : attachment}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {url.length > 30 ? `${url.slice(0, 30)}...` : url}
+                            {typeof attachment === 'object' 
+                              ? (attachment.url.length > 30 ? `${attachment.url.slice(0, 30)}...` : attachment.url)
+                              : (attachment.length > 30 ? `${attachment.slice(0, 30)}...` : attachment)}
                           </a>
                           <button
                             className="btn btn-sm btn-outline-danger"
