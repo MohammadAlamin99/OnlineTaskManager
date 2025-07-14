@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import {
   UpdateTaskRequest,
   getTaskbyIdRequest,
+  getUsersRequest,
 } from "../apiRequiest/apiRequiest";
-import toast, { Toaster } from "react-hot-toast";
+import toast, { resolveValue, Toaster } from "react-hot-toast";
 import {
   FaRegCalendarAlt,
   FaTimes,
   FaPaperclip,
   FaUserPlus,
+  FaSearch,
 } from "react-icons/fa";
 import { getUserDetails } from "../Helper/SessionHelper";
 
@@ -19,7 +21,12 @@ const EditCarosal = ({ props }) => {
 
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [newAttachment, setNewAttachment] = useState("");
-  const [newAssignee, setNewAssignee] = useState("");
+
+  // User search states
+  const [userSearchQuery, setUserSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
 
   // Refs
   const titleRef = useRef();
@@ -27,23 +34,118 @@ const EditCarosal = ({ props }) => {
   const priorityRef = useRef();
   const statusRef = useRef();
   const dueDateRef = useRef();
+  const searchInputRef = useRef();
 
   // Load task data by ID
   useEffect(() => {
     (async () => {
       const result = await getTaskbyIdRequest(taskId);
       if (result?.[0]) {
-        // Convert existing string attachments to object format if needed
-        const taskData = result[0];
-        if (taskData.attachments && taskData.attachments.length > 0 && typeof taskData.attachments[0] === 'string') {
-          taskData.attachments = taskData.attachments.map(url => ({ url, id: Date.now() + Math.random() }));
-        }
-        setSelectedTask(taskData);
+        const processedTask = {
+          ...result[0],
+          attachments:
+            result[0].attachments?.map((attachment, index) => {
+              if (typeof attachment === "string") {
+                return { id: Date.now() + index, url: attachment };
+              }
+              return attachment.id
+                ? attachment
+                : { id: Date.now() + index, url: attachment.url || attachment };
+            }) || [],
+          todoCheckList:
+            result[0].todoCheckList?.map((item, index) => ({
+              title: item.title,
+              completed: item.completed || false,
+              id: item.id || Date.now() + index,
+            })) || [],
+          assignTo: Array.isArray(result[0].assignTo) 
+            ? result[0].assignTo.map(user => {
+                if (user && typeof user === 'object' && user._id) {
+                  return user;
+                }
+                return user;
+              }).filter(Boolean)
+            : [],
+        };
+        setSelectedTask(processedTask);
       } else {
         toast.error("Failed to fetch task data.");
       }
     })();
   }, [taskId]);
+
+  // User search functionality
+  const handleUserSearch = async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowSearchDropdown(false);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      setShowSearchDropdown(true);
+
+      const response = await getUsersRequest(query);
+      let users = [];
+
+      if (response) {
+        if (response.data && Array.isArray(response.data)) {
+          users = response.data;
+        } else if (response.users && Array.isArray(response.users)) {
+          users = response.users;
+        } else if (Array.isArray(response)) {
+          users = response;
+        } else if (response.status === "success" && response.data) {
+          users = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+        }
+      }
+
+      if (users.length > 0) {
+        const filteredResults = users.filter(user => {
+          return !selectedTask.assignTo.some(assigned => {
+            const assignedId = typeof assigned === 'object' ? assigned._id : assigned;
+            return assignedId === user._id;
+          });
+        });
+        setSearchResults(filteredResults);
+      } else {
+        setSearchResults([]);
+      }
+    } catch (error) {
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Debounced search
+  useEffect(() => {
+    const delayedSearch = setTimeout(() => {
+      if (userSearchQuery) {
+        handleUserSearch(userSearchQuery);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayedSearch);
+  }, [userSearchQuery, selectedTask?.assignTo]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target)
+      ) {
+        setShowSearchDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Safety render fallback
   if (!selectedTask) {
@@ -61,11 +163,21 @@ const EditCarosal = ({ props }) => {
       const dueDate = dueDateRef.current.value || null;
       const priority = priorityRef.current.value;
       const status = statusRef.current.value;
-      const todoCheckList = selectedTask.todoCheckList || [];
-      const attachments = selectedTask.attachments || [];
-      const assignTo = selectedTask.assignTo || [];
+
+      const todoCheckList =
+        selectedTask.todoCheckList?.map((item) => ({
+          title: item.title,
+          completed: item.completed,
+        })) || [];
+
+      const attachments =
+        selectedTask.attachments?.map((att) => att.url || att) || [];
+
+      const assignTo = selectedTask.assignTo.map(user => {
+        return typeof user === 'object' ? user._id : user;
+      }).filter(Boolean);
+
       const createdBy = user?._id;
-      
       const response = await UpdateTaskRequest(
         taskId,
         title,
@@ -76,9 +188,8 @@ const EditCarosal = ({ props }) => {
         todoCheckList,
         attachments,
         assignTo,
-        createdBy,
+        createdBy
       );
-      
       if (response.status === "success") {
         toast.success("Task updated successfully!");
         setTimeout(() => {
@@ -99,10 +210,10 @@ const EditCarosal = ({ props }) => {
         ...prev,
         todoCheckList: [
           ...prev.todoCheckList,
-          { 
-            title: newChecklistItem, 
+          {
+            title: newChecklistItem,
             completed: false,
-            id: Date.now()
+            id: Date.now(),
           },
         ],
       }));
@@ -111,7 +222,7 @@ const EditCarosal = ({ props }) => {
   };
 
   const handleRemoveChecklistItem = (indexToRemove) => {
-    setSelectedTask(prev => {
+    setSelectedTask((prev) => {
       const updatedChecklist = prev.todoCheckList.filter(
         (_, index) => index !== indexToRemove
       );
@@ -123,8 +234,8 @@ const EditCarosal = ({ props }) => {
   };
 
   const toggleChecklistCompletion = (index) => {
-    setSelectedTask(prev => {
-      const updatedChecklist = prev.todoCheckList.map((item, i) => 
+    setSelectedTask((prev) => {
+      const updatedChecklist = prev.todoCheckList.map((item, i) =>
         i === index ? { ...item, completed: !item.completed } : item
       );
       return {
@@ -140,36 +251,64 @@ const EditCarosal = ({ props }) => {
       setSelectedTask((prev) => ({
         ...prev,
         attachments: [
-          ...prev.attachments, 
-          { url: newAttachment, id: Date.now() + Math.random() }
+          ...prev.attachments,
+          {
+            id: Date.now(),
+            url: newAttachment,
+          },
         ],
       }));
       setNewAttachment("");
     }
   };
 
-  const handleRemoveAttachment = (indexToRemove) => {
-    setSelectedTask(prev => ({
+  const handleRemoveAttachment = (attachmentId) => {
+    setSelectedTask((prev) => ({
       ...prev,
-      attachments: prev.attachments.filter((_, index) => index !== indexToRemove)
+      attachments: prev.attachments.filter(
+        (attachment) => attachment.id !== attachmentId
+      ),
     }));
   };
 
   // Assignee Handlers
-  const handleAddAssignee = () => {
-    if (newAssignee.trim()) {
-      setSelectedTask((prev) => ({
-        ...prev,
-        assignTo: [...prev.assignTo, newAssignee],
-      }));
-      setNewAssignee("");
+  const handleAddAssignee = (user) => {
+    if (!user) {
+      toast.error("Invalid user selected.");
+      return;
     }
+
+    const userToAdd = user._id ? user : { _id: user };
+
+    const isAlreadyAssigned = selectedTask.assignTo.some(assigned => {
+      const assignedId = typeof assigned === 'object' ? assigned._id : assigned;
+      return assignedId === userToAdd._id;
+    });
+
+    if (isAlreadyAssigned) {
+      toast.error("User already assigned.");
+      return;
+    }
+
+    setSelectedTask(prev => ({
+      ...prev,
+      assignTo: [...prev.assignTo, userToAdd]
+    }));
+
+    setUserSearchQuery("");
+    setShowSearchDropdown(false);
+    setSearchResults([]);
   };
 
   const handleRemoveAssignee = (index) => {
-    const updated = [...selectedTask.assignTo];
-    updated.splice(index, 1);
-    setSelectedTask((prev) => ({ ...prev, assignTo: updated }));
+    setSelectedTask(prev => {
+      const updatedAssignees = [...prev.assignTo];
+      updatedAssignees.splice(index, 1);
+      return {
+        ...prev,
+        assignTo: updatedAssignees
+      };
+    });
   };
 
   return (
@@ -261,7 +400,6 @@ const EditCarosal = ({ props }) => {
                   </div>
                 </div>
 
-                {/* Checklist */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Checklist</label>
                   <div className="input-group mb-2">
@@ -291,6 +429,14 @@ const EditCarosal = ({ props }) => {
                       <div className="d-flex justify-content-between mb-1">
                         <small>
                           Progress:{" "}
+                          {Math.round(
+                            (selectedTask.todoCheckList.filter(
+                              (item) => item.completed
+                            ).length /
+                              selectedTask.todoCheckList.length) *
+                              100
+                          )}
+                          %
                         </small>
                         <small>
                           {
@@ -338,7 +484,6 @@ const EditCarosal = ({ props }) => {
                   )}
                 </div>
 
-                {/* Attachments */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Attachments</label>
                   <div className="input-group mb-2">
@@ -365,23 +510,25 @@ const EditCarosal = ({ props }) => {
 
                   {selectedTask.attachments?.length > 0 && (
                     <div className="border rounded p-2">
-                      {selectedTask.attachments.map((attachment, index) => (
+                      {selectedTask.attachments.map((attachment) => (
                         <div
-                          key={`attachment-${attachment.id || index}`}
+                          key={`attachment-${attachment.id}`}
                           className="d-flex justify-content-between align-items-center mb-1"
                         >
                           <a
-                            href={typeof attachment === 'object' ? attachment.url : attachment}
+                            href={attachment.url}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {typeof attachment === 'object' 
-                              ? (attachment.url.length > 30 ? `${attachment.url.slice(0, 30)}...` : attachment.url)
-                              : (attachment.length > 30 ? `${attachment.slice(0, 30)}...` : attachment)}
+                            {attachment.url.length > 30
+                              ? `${attachment.url.slice(0, 30)}...`
+                              : attachment.url}
                           </a>
                           <button
                             className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleRemoveAttachment(index)}
+                            onClick={() =>
+                              handleRemoveAttachment(attachment.id)
+                            }
                             disabled={isLoading}
                           >
                             <FaTimes />
@@ -392,39 +539,92 @@ const EditCarosal = ({ props }) => {
                   )}
                 </div>
 
-                {/* Assignees */}
                 <div className="mb-3">
                   <label className="form-label fw-bold">Assign To</label>
-                  <div className="input-group mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Add user ID"
-                      value={newAssignee}
-                      onChange={(e) => setNewAssignee(e.target.value)}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && handleAddAssignee()
-                      }
-                      disabled={isLoading}
-                    />
-                    <button
-                      className="btn btn-outline-primary"
-                      type="button"
-                      onClick={handleAddAssignee}
-                      disabled={isLoading}
-                    >
-                      <FaUserPlus />
-                    </button>
+                  <div className="position-relative" ref={searchInputRef}>
+                    <div className="input-group mb-2">
+                      <span className="input-group-text">
+                        <FaSearch />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search users by name or email..."
+                        value={userSearchQuery}
+                        onChange={(e) => setUserSearchQuery(e.target.value)}
+                        onFocus={() =>
+                          userSearchQuery && setShowSearchDropdown(true)
+                        }
+                        disabled={isLoading}
+                      />
+                    </div>
+
+                    {showSearchDropdown && (
+                      <div
+                        className="dropdown-menu show w-100 mt-1"
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
+                      >
+                        {isSearching ? (
+                          <div className="dropdown-item-text text-center">
+                            <div
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          </div>
+                        ) : searchResults.length > 0 ? (
+                          searchResults.map((user) => (
+                            <button
+                              key={user._id}
+                              className="dropdown-item d-flex align-items-center"
+                              type="button"
+                              onClick={() => handleAddAssignee(user)}
+                            >
+                              <div className="me-2">
+                                <FaUserPlus className="text-primary" />
+                              </div>
+                              <div>
+                                <div className="fw-semibold">{user.name}</div>
+                                <small className="text-muted">
+                                  {user.email}
+                                </small>
+                              </div>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="dropdown-item-text text-muted">
+                            {userSearchQuery.trim()
+                              ? `No users found matching "${userSearchQuery}"`
+                              : "Start typing to search users..."}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {selectedTask.assignTo?.length > 0 && (
                     <div className="border rounded p-2">
-                      {selectedTask.assignTo.map((userId, index) => (
+                      <small className="text-muted mb-2 d-block">
+                        Assigned Users:
+                      </small>
+                      {selectedTask.assignTo.map((user, index) => (
                         <div
-                          key={`assignee-${index}`}
-                          className="d-flex justify-content-between align-items-center mb-1"
+                          key={`assignee-${index}-${
+                            typeof user === 'object' ? user._id : user
+                          }`}
+                          className="d-flex justify-content-between align-items-center mb-1 p-2 bg-light rounded"
                         >
-                          <span>{userId}</span>
+                          <div>
+                            <div className="fw-semibold">
+                              {typeof user === 'object' ? user.name : user}
+                            </div>
+                            {typeof user === 'object' && user.email && (
+                              <small className="text-muted">{user.email}</small>
+                            )}
+                          </div>
                           <button
                             className="btn btn-sm btn-outline-danger"
                             onClick={() => handleRemoveAssignee(index)}
