@@ -46,6 +46,7 @@ const EditCarosal = ({ props }) => {
   }
 
   const user = getUserDetails();
+
   // Update task
   const onUpdateHandler = async () => {
     try {
@@ -59,7 +60,9 @@ const EditCarosal = ({ props }) => {
       const attachments = selectedTask.attachments || [];
       const assignTo = selectedTask.assignTo || [];
       const createdBy = user?._id;
-      const progress = calculateProgress(todoCheckList);
+      // const progress = calculateProgress(todoCheckList);
+      const progress = 30;
+      
       const response = await UpdateTaskRequest(
         taskId,
         title,
@@ -73,11 +76,11 @@ const EditCarosal = ({ props }) => {
         createdBy,
         progress
       );
+      
       if (response.status === "success") {
         toast.success("Task updated successfully!");
         setTimeout(() => {
           hideUpdate();
-          // window.location.reload();
         }, 1000);
       }
     } catch (e) {
@@ -87,13 +90,6 @@ const EditCarosal = ({ props }) => {
     }
   };
 
-  // Progress Calculation
-  const calculateProgress = (checklist) => {
-    if (!checklist || checklist.length === 0) return 0;
-    const completed = checklist.filter((item) => item.completed).length;
-    return Math.round((completed / checklist.length) * 100);
-  };
-
   // Checklist Handlers
   const handleAddChecklistItem = () => {
     if (newChecklistItem.trim()) {
@@ -101,23 +97,39 @@ const EditCarosal = ({ props }) => {
         ...prev,
         todoCheckList: [
           ...prev.todoCheckList,
-          { title: newChecklistItem, completed: false },
+          { 
+            title: newChecklistItem, 
+            completed: false,
+            id: Date.now() // Add unique ID
+          },
         ],
       }));
       setNewChecklistItem("");
     }
   };
 
-  const handleRemoveChecklistItem = (index) => {
-    const updatedChecklist = [...selectedTask.todoCheckList];
-    updatedChecklist.splice(index, 1);
-    setSelectedTask((prev) => ({ ...prev, todoCheckList: updatedChecklist }));
+  const handleRemoveChecklistItem = (indexToRemove) => {
+    setSelectedTask(prev => {
+      const updatedChecklist = prev.todoCheckList.filter(
+        (_, index) => index !== indexToRemove
+      );
+      return {
+        ...prev,
+        todoCheckList: updatedChecklist,
+      };
+    });
   };
 
   const toggleChecklistCompletion = (index) => {
-    const updatedChecklist = [...selectedTask.todoCheckList];
-    updatedChecklist[index].completed = !updatedChecklist[index].completed;
-    setSelectedTask((prev) => ({ ...prev, todoCheckList: updatedChecklist }));
+    setSelectedTask(prev => {
+      const updatedChecklist = prev.todoCheckList.map((item, i) => 
+        i === index ? { ...item, completed: !item.completed } : item
+      );
+      return {
+        ...prev,
+        todoCheckList: updatedChecklist,
+      };
+    });
   };
 
   // Attachment Handlers
@@ -158,7 +170,6 @@ const EditCarosal = ({ props }) => {
     <>
       <Toaster position="top-center" />
       <div className="modal-backdrop fade show"></div>
-
       <div className="modal fade show d-block" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
@@ -274,7 +285,7 @@ const EditCarosal = ({ props }) => {
                       <div className="d-flex justify-content-between mb-1">
                         <small>
                           Progress:{" "}
-                          {calculateProgress(selectedTask.todoCheckList)}%
+                          {/* {calculateProgress(selectedTask.todoCheckList)}% */}
                         </small>
                         <small>
                           {
@@ -288,7 +299,7 @@ const EditCarosal = ({ props }) => {
 
                       {selectedTask.todoCheckList.map((item, index) => (
                         <div
-                          key={index}
+                          key={`checklist-${index}-${item.id || item.title}`}
                           className="d-flex justify-content-between align-items-center mb-1"
                         >
                           <div className="form-check">
@@ -351,7 +362,7 @@ const EditCarosal = ({ props }) => {
                     <div className="border rounded p-2">
                       {selectedTask.attachments.map((url, index) => (
                         <div
-                          key={index}
+                          key={`attachment-${index}`}
                           className="d-flex justify-content-between align-items-center mb-1"
                         >
                           <a
@@ -403,7 +414,7 @@ const EditCarosal = ({ props }) => {
                     <div className="border rounded p-2">
                       {selectedTask.assignTo.map((userId, index) => (
                         <div
-                          key={index}
+                          key={`assignee-${index}`}
                           className="d-flex justify-content-between align-items-center mb-1"
                         >
                           <span>{userId}</span>

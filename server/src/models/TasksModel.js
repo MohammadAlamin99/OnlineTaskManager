@@ -26,7 +26,6 @@ const DataSchema = mongoose.Schema(
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     attachments: [{ type: String }],
     todoCheckList: [todoSchema],
-    progress: { type: Number, default: 0 },
     createdDate: { type: Date, default: Date.now() },
   },
   { versionKey: false }

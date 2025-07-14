@@ -168,7 +168,6 @@ export async function UpdateTaskRequest(
     attachments = [],
     assignTo = [],
     createdBy,
-    progress
 ) {
     try {
         const reqBody = {
@@ -182,7 +181,6 @@ export async function UpdateTaskRequest(
             attachments,
             assignTo,
             createdBy,
-            progress
         };
 
         const result = await axios.post(
