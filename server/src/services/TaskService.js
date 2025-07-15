@@ -122,8 +122,6 @@ exports.getTaskById = async (req) => {
       },
       {
         $project: {
-          "assignTo._id": 0,
-          "createdBy._id": 0,
           "createdBy.email": 0,
           "createdBy.password": 0,
           "createdBy.mobile": 0,
