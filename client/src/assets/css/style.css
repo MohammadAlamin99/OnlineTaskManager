@@ -451,6 +451,11 @@ body {
   padding: 24px;
   border-radius: 16px;
   margin-right: 24px;
+  height: 400px;
+  overflow-y: scroll;
+}
+.custom_container .team_member::-webkit-scrollbar{
+  display: none;
 }
 
 .custom_container .team_member .team_title {

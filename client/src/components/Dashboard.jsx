@@ -1,49 +1,66 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import ApexCharts from "apexcharts";
-import { totalTaskCountRequest } from "../apiRequiest/apiRequiest";
+import {
+  getAllTaskRequest,
+  getUsersRequest,
+  totalTaskCountRequest,
+} from "../apiRequiest/apiRequiest";
 import BeatLoader from "react-spinners/BeatLoader";
 import { IoIosArrowRoundForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { setMember } from "../redux/state-slice/member-slice";
+import badge from "../assets/images/adminVarificationBadge.png";
+import { getUserDetails } from "../Helper/SessionHelper";
+import { setAlltask } from "../redux/state-slice/allTask-slice";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [load, setLoaded] = useState(false);
-  const [data, setData] = useState([]);
-  const status = "In Progress";
+  const getAllmember = useSelector((state) => state.getAllMember.member);
+  const getTasks = useSelector((state) => state.getAllTask.alltask);
+  const dispatch = useDispatch();
+  const memberDispatch = useDispatch();
+
+  // user get
   useEffect(() => {
     (async () => {
-      setLoaded(true);
-      let result = await totalTaskCountRequest(status);
-      console.log(result);
-      setLoaded(false);
-      setData(result);
-    })();
-  }, []);
-  const [todo, setTodo] = useState([]);
-  const totdo = "TODO";
-  useEffect(() => {
-    (async () => {
-      setLoaded(true);
-      let result = await totalTaskCountRequest(totdo);
-      setLoaded(false);
-      setTodo(result);
-    })();
-  }, []);
-  const [com, setCom] = useState([]);
-  const complete = "Completed";
-  useEffect(() => {
-    (async () => {
-      setLoaded(true);
-      let result = await totalTaskCountRequest(complete);
-      setLoaded(false);
-      setCom(result);
+      const result = await getUsersRequest();
+      memberDispatch(setMember(result?.data));
     })();
   }, []);
 
-  // apex chart options
+  // get all task
+  const userDetails = getUserDetails();
+  useEffect(() => {
+    (async () => {
+      setLoaded(true);
+      let result = await getAllTaskRequest(userDetails?._id, userDetails?._id);
+      setLoaded(false);
+      dispatch(setAlltask(result));
+    })();
+  }, [0]);
+
+  // Safety check: in case data not loaded yet
+  if (!Array.isArray(getTasks)) return null;
+
+  // Count by status
+  const pendingCount = getTasks.filter(
+    (task) => task.status === "Pending"
+  ).length;
+  const inProgressCount = getTasks.filter(
+    (task) => task.status === "In Progress"
+  ).length;
+  const completedCount = getTasks.filter(
+    (task) => task.status === "Completed"
+  ).length;
 
   useEffect(() => {
-    var options = {
-      series: [todo[0]?.total || 0, data[0]?.total || 0, com[0]?.total || 0],
+    const chartEl = document.querySelector("#chart");
+    if (!chartEl) return; // Avoid crash if chart div is missing
+
+    const chart = new ApexCharts(chartEl, {
+      series: [pendingCount || 0, inProgressCount || 0, completedCount || 0],
       chart: {
         width: 380,
         type: "pie",
@@ -63,15 +80,25 @@ const Dashboard = () => {
           },
         },
       ],
-    };
+    });
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
-    // Cleanup function to destroy chart when component unmounts
+
     return () => {
       chart.destroy();
     };
-  }, [todo, data, com]);
+  }, [pendingCount, inProgressCount, completedCount, getTasks]);
+
+  // Recent 5 tasks sorted by latest createdAt
+  const recentTasks = [...getTasks]
+    .map((task) => {
+      const timestamp = new Date(parseInt(task._id.substring(0, 8), 16) * 1000);
+      return { ...task, createdAt: timestamp };
+    })
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3);
+
+  console.log(recentTasks);
 
   return load ? (
     <div className="loader-container">
@@ -105,15 +132,7 @@ const Dashboard = () => {
               </div>
               <h4 className="card-title">Pending</h4>
               <div className="card-number ms-auto">
-                {todo && todo.length > 0 ? (
-                  todo.map((item, i) => (
-                    <p className="m-0" key={i}>
-                      {item?.total < 10 ? `0${item?.total}` : item?.total}
-                    </p>
-                  ))
-                ) : (
-                  <p className="m-0">00</p>
-                )}
+                {pendingCount < 10 ? `0${pendingCount}` : pendingCount}
               </div>
             </div>
             <div className="card_bottom d-flex justify-content-between align-items-center">
@@ -198,15 +217,9 @@ const Dashboard = () => {
               <h4 className="card-title">In Progress</h4>
               <h2 className="card-number ms-auto">
                 <div className="card-number ms-auto">
-                  {data && data.length > 0 ? (
-                    data.map((item, i) => (
-                      <p className="m-0" key={i}>
-                        {item?.total < 10 ? `0${item?.total}` : item?.total}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="m-0">00</p>
-                  )}
+                  {inProgressCount < 10
+                    ? `0${inProgressCount}`
+                    : inProgressCount}
                 </div>
               </h2>
             </div>
@@ -293,15 +306,7 @@ const Dashboard = () => {
               <h4 className="card-title">Task Completed</h4>
               <h2 className="card-number ms-auto">
                 <div className="card-number ms-auto">
-                  {com && com.length > 0 ? (
-                    com.map((item, i) => (
-                      <p className="m-0" key={i}>
-                        {item?.total < 10 ? `0${item?.total}` : item?.total}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="m-0">00</p>
-                  )}
+                  {completedCount < 10 ? `0${completedCount}` : completedCount}
                 </div>
               </h2>
             </div>
@@ -377,28 +382,36 @@ const Dashboard = () => {
           </div>
           <div className="team_member">
             <h2 className="team_title">Member</h2>
-            <div className="user d-flex align-items-center gap-3 mb-3">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWv_STBznwf1s9iwfhZ6qvvPEl4JzJ9BqxO2UifmICbuc2xlEeDuBUBalzsJtPhcZG4o&usqp=CAU"
-                alt=""
-                className="user_img"
-              />
-              <div className="user_text">
-                <h4 className="member_name m-0">Cris Morich</h4>
-                <p className="member_email m-0">alamin@gmail.com</p>
-              </div>
-            </div>
-            <div className="user d-flex align-items-center gap-3 mb-3">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwWv_STBznwf1s9iwfhZ6qvvPEl4JzJ9BqxO2UifmICbuc2xlEeDuBUBalzsJtPhcZG4o&usqp=CAU"
-                alt=""
-                className="user_img"
-              />
-              <div className="user_text">
-                <h4 className="member_name m-0">Cris Morich</h4>
-                <p className="member_email m-0">alamin@gmail.com</p>
-              </div>
-            </div>
+
+            {getAllmember?.length > 0 ? (
+              getAllmember.map((member, index) => {
+                return (
+                  <div
+                    className="user d-flex align-items-center gap-3 mb-3"
+                    key={index}
+                  >
+                    <img src={member?.photo} alt="" className="user_img" />
+                    <div className="user_text">
+                      <div className="d-flex align-items-center gap-1">
+                        <h4 className="member_name m-0">{member?.name}</h4>
+                        <img
+                          className={`${
+                            member?.role === "admin" ? "d-block" : "d-none"
+                          }`}
+                          width={15}
+                          height={15}
+                          src={badge}
+                          alt=""
+                        />
+                      </div>
+                      <p className="member_email m-0">{member?.email}</p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="no-data-found">No Task Found</p>
+            )}
           </div>
         </div>
       </div>
@@ -406,10 +419,12 @@ const Dashboard = () => {
         <div className="recent-task-wrapper">
           <div className="recent-top d-flex justify-content-between align-items-center">
             <h2 className="recent-title">Recent Tasks</h2>
-            <button>
-              See All
-              <IoIosArrowRoundForward />
-            </button>
+            <Link to="/task">
+              <button>
+                See All
+                <IoIosArrowRoundForward />
+              </button>
+            </Link>
           </div>
           <table className="recent-table">
             <thead>
@@ -421,24 +436,21 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="recent-table-body">
-                <td>Web development</td>
-                <td>Pending</td>
-                <td>High priority</td>
-                <td>17 March 2025</td>
-              </tr>
-              <tr className="recent-table-body">
-                <td>Web development</td>
-                <td>Pending</td>
-                <td>High priority</td>
-                <td>17 March 2025</td>
-              </tr>
-              <tr className="recent-table-body">
-                <td>Web development</td>
-                <td>Pending</td>
-                <td>High priority</td>
-                <td>17 March 2025</td>
-              </tr>
+              {recentTasks &&
+                recentTasks.map((task) => (
+                  <tr className="recent-table-body" key={task._id}>
+                    <td>{task.title}</td>
+                    <td>{task.status}</td>
+                    <td>{task.priority} priority</td>
+                    <td>
+                      {new Date(task.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

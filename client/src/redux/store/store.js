@@ -5,13 +5,14 @@ import inProgressTaskSlice from '../state-slice/inProgressTask-slice';
 import todoTaskSlice from '../state-slice/todoTask-slice';
 import getUserDetailsSlice from '../state-slice/getUserDetails-slice';
 import allTaskSlice from '../state-slice/allTask-slice';
+import memberSlice from '../state-slice/member-slice';
 
 
 const store = configureStore({
   reducer: {
     users: userSlice, getComplete: completeTaskSlice,
     getInProgress: inProgressTaskSlice, getTodo: todoTaskSlice, userGet: getUserDetailsSlice,
-    getAllTask:allTaskSlice
+    getAllTask: allTaskSlice, getAllMember: memberSlice,
   }
 })
 
