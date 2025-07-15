@@ -15,7 +15,6 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const priorityRef = useRef();
   const statusRef = useRef();
   const dueDateRef = useRef();
-  const attachmentsRef = useRef();
 
   // State variables
   const [selectedUsers, setSelectedUsers] = useState([]);

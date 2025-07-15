@@ -632,13 +632,10 @@ const EditCarosal = ({ props }) => {
                               onClick={() => handleAddAssignee(user)}
                             >
                               <div className="me-2">
-                                <FaUserPlus className="text-primary" />
+                                <img className="rounded-circle" width={30} height={30} src={user.photo} alt="" />
                               </div>
                               <div className="text-start">
                                 <div className="fw-semibold">{user.name}</div>
-                                <small className="text-muted">
-                                  {user.email}
-                                </small>
                               </div>
                             </button>
                           ))
