@@ -4,11 +4,10 @@ import {
   getUsersRequest,
   userDetailsRequest,
 } from "../../apiRequiest/apiRequiest";
-import { getUserDetails } from "../../Helper/SessionHelper";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../redux/state-slice/user-slice";
 import toast, { Toaster } from "react-hot-toast";
-
+import { MdDeleteOutline } from "react-icons/md";
 const TaskCarosal = ({ props, onTaskCreated }) => {
   // Refs for form inputs
   const titleRef = useRef();
@@ -25,11 +24,13 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [id, setId] = useState("");
-  
+  const [attachmentUrl, setAttachmentUrl] = useState("");
+  const [assign, setAssign] = useState("");
+
   useEffect(() => {
     (async () => {
       const result = await userDetailsRequest();
-      setId(result?.data?.[0]. _id);
+      setId(result?.data?.[0]._id);
     })();
   }, []);
 
@@ -39,6 +40,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
     const priority = priorityRef.current.value;
     const status = statusRef.current.value;
     const dueDate = dueDateRef.current.value;
+
     // Validate required fields
     if (!title) {
       toast.error("Title is required!");
@@ -111,9 +113,19 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
     setAttachments([...attachments, ...fileUrls]);
   };
 
+  const handleAddUrlAttachment = () => {
+    if (attachmentUrl.trim()) {
+      setAttachments([...attachments, attachmentUrl]);
+      setAttachmentUrl("");
+    }
+  };
+
   const handleRemoveAttachment = (index) => {
     const updatedAttachments = [...attachments];
-    URL.revokeObjectURL(updatedAttachments[index]); // Clean up memory
+    // Only revoke object URLs (for file uploads)
+    if (typeof updatedAttachments[index] !== 'string') {
+      URL.revokeObjectURL(updatedAttachments[index]);
+    }
     updatedAttachments.splice(index, 1);
     setAttachments(updatedAttachments);
   };
@@ -137,8 +149,6 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
     })();
   }, []);
 
-  // assign to
-  const [assign, setAssign] = useState("");
   const assignToUser = SearchUser?.filter((user) =>
     user.name.toLowerCase().includes(assign.toLowerCase())
   );
@@ -247,47 +257,59 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
                       </span>
                     </div>
                     <button
-                      className="btn btn-sm btn-outline-danger"
+                      className="common-delete-icon"
                       onClick={() => handleRemoveChecklistItem(index)}
                     >
-                      ×
+                      <MdDeleteOutline />
                     </button>
                   </div>
                 ))}
               </div>
             )}
           </div>
-
           <div className="mb-3">
-            <label className="form-label">Attachments</label>
-            <input
-              type="file"
-              className="form-control w-100"
-              multiple
-              onChange={handleFileUpload}
-              ref={attachmentsRef}
-            />
-            {attachments.length > 0 && (
-              <div className="mt-2">
-                {attachments.map((url, index) => (
+            <label className="form-label">Add Attachment URL</label>
+            <div className="input-group mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter URL"
+                value={attachmentUrl}
+                onChange={(e) => setAttachmentUrl(e.target.value)}
+              />
+              <button
+                className="checklistBtn"
+                type="button"
+                onClick={handleAddUrlAttachment}
+              >
+                Add +
+              </button>
+            </div>
+          </div>
+
+          {attachments.length > 0 && (
+            <div className="mb-3">
+              <label className="form-label">Attachments List</label>
+              <div className="border rounded p-2">
+                {attachments.map((item, index) => (
                   <div
                     key={index}
                     className="d-flex align-items-center justify-content-between mb-2"
                   >
-                    <span className="text-truncate">
-                      {url.split("/").pop()}
-                    </span>
+                    <a href={item} target="_blank" rel="noopener noreferrer">
+                      {item}
+                    </a>
                     <button
-                      className="btn btn-sm btn-outline-danger"
+                      className="common-delete-icon"
                       onClick={() => handleRemoveAttachment(index)}
                     >
-                      ×
+                      <MdDeleteOutline />
                     </button>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="mb-3">
             <label className="form-label">Assign To</label>

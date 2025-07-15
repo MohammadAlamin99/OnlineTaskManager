@@ -381,7 +381,7 @@ const EditCarosal = ({ props }) => {
     <>
       <Toaster position="top-center" />
       <div className="modal-backdrop fade show"></div>
-      <div className="modal fade show d-block" tabIndex="-1">
+      <div className="modal edit_model fade show d-block" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
             <div className="modal-header bg-light">
@@ -663,12 +663,10 @@ const EditCarosal = ({ props }) => {
                           className="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded"
                         >
                           <div>
-                            <div className="fw-semibold">
-                              {typeof user === 'object' ? user.name : user}
+                            <div className="fw-semibold d-flex align-items-center">
+                              <img className="rounded-circle me-2" width={30} height={30} src={user?.photo} alt="" />
+                              <h4 className="fs-6 m-0">{user?.name}</h4>
                             </div>
-                            {typeof user === 'object' && user.email && (
-                              <small className="text-muted">{user.email}</small>
-                            )}
                           </div>
                           <button
                             className="common-delete-icon"
