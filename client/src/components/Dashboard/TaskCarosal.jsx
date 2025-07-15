@@ -65,7 +65,6 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
         createdBy: id,
         attachments,
         todoCheckList,
-        progress: 0,
       };
 
       const createTask = await CreateTaskRequest(taskData);

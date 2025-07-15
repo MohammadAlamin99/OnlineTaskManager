@@ -45,6 +45,14 @@ body {
   border-radius: 23px;
 }
 
+.common-delete-icon {
+  border: none;
+  background: none;
+  border: 1px solid var(--card-title-color);
+  border-radius: 4px;
+  padding: 2px 6px
+}
+
 .checklistBtn {
   padding: 14px 20px;
   background: var(--active-bg-color);
@@ -554,7 +562,8 @@ body {
   padding: 16px 24px;
   background: var(--active-bg-color);
 }
-.adminTag{
+
+.adminTag {
   padding: 5px 10px;
   background: var(--active-bg-color);
   color: var(--active-text-color);
@@ -565,11 +574,13 @@ body {
   display: flex;
   justify-content: center;
 }
-.Varification__badge{
+
+.Varification__badge {
   width: 20px;
   height: 20px;
   object-fit: cover;
 }
+
 /* profile page css end */
 
 
