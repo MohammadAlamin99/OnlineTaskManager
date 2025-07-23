@@ -5,9 +5,9 @@ let BaseURL = "http://localhost:5000";
 const Headers = { headers: { "token": getToken() } };
 
 // registraion
-export async function UserRegistrationRequiest(email, firstName, lastName, mobile, password, photo) {
+export async function UserRegistrationRequiest(email, name, mobile, password, adminCode, designation, photo) {
     try {
-        let reqBody = { email: email, firstName: firstName, lastName: lastName, mobile: mobile, password: password, photo: photo }
+        let reqBody = { email: email, name: name, mobile: mobile, password: password, adminCode:adminCode, designation:designation, photo: photo }
         let result = await axios.post(BaseURL + '/api/v1/registration', reqBody);
         return result;
     }

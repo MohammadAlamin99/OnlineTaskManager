@@ -4,7 +4,6 @@ import ApexCharts from "apexcharts";
 import {
   getAllTaskRequest,
   getUsersRequest,
-  totalTaskCountRequest,
 } from "../apiRequiest/apiRequiest";
 import BeatLoader from "react-spinners/BeatLoader";
 import { IoIosArrowRoundForward } from "react-icons/io";
@@ -97,8 +96,6 @@ const Dashboard = () => {
     })
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 3);
-
-  console.log(recentTasks);
 
   return load ? (
     <div className="loader-container">
