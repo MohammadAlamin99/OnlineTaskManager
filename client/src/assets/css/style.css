@@ -454,7 +454,8 @@ body {
   height: 400px;
   overflow-y: scroll;
 }
-.custom_container .team_member::-webkit-scrollbar{
+
+.custom_container .team_member::-webkit-scrollbar {
   display: none;
 }
 
@@ -619,6 +620,24 @@ body {
 }
 
 
+
+/* team member css start */
+.heading__wrapper{
+  padding: 24px 24px 0 24px;
+}
+.team__main__tile {
+  color: var(--card-number-color);
+  font-family: var(--dm-sans);
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.members__container__wrapper{
+  padding: 24px;
+}
+
+/* team member css end */
 /* css for loader */
 .loader-container {
   position: fixed;

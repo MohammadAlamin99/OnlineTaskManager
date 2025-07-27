@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 
 const Members = () => {
@@ -61,23 +60,22 @@ const Members = () => {
   };
   return (
     <>
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-12">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2 className="text-primary">Team Members</h2>
-              <button
-                className="btn btn-success btn-lg"
-                onClick={() => setShowModal(true)}
-              >
-                <i className="bi bi-person-plus"></i> Add Member
-              </button>
-            </div>
-
+      <div className="heading__wrapper d-flex justify-content-between align-items-center px-4">
+        <h2 className="team__main__tile">🏆 Members</h2>
+        <button
+          className="commonBtn"
+          onClick={() => setShowModal(true)}
+        >
+          + Add Member
+        </button>
+      </div>
+      <div className="container">
+        <div className="row members__container__wrapper">
+          <div className="col-12 bg-white py-3 px-4 shadow-sm rounded">
             {/* Team Members Table */}
             <div className="table-responsive">
-              <table className="table table-striped table-hover">
-                <thead className="table-dark">
+              <table className="table mb-0">
+                <thead className="table-height">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
@@ -89,12 +87,10 @@ const Members = () => {
                 <tbody>
                   {members.map((member, index) => (
                     <tr key={member.id}>
-                      <th scope="row">{index + 1}</th>
+                      <th>{index + 1}</th>
                       <td>{member.name}</td>
                       <td>
-                        <span className="badge bg-primary">
                           {member.position}
-                        </span>
                       </td>
                       <td>{member.email}</td>
                       <td>{member.phone}</td>
@@ -108,10 +104,7 @@ const Members = () => {
 
         {/* Modal Popup */}
         {showModal && (
-          <div
-            className="modal fade show d-block"
-            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-          >
+          <div className="modal fade show d-block">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header bg-primary text-white">
