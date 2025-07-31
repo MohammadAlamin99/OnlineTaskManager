@@ -1,5 +1,6 @@
-import { useState } from "react";
-
+import { useState, useRef } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import BeatLoader from "react-spinners/BeatLoader";
 const Members = () => {
   const [members, setMembers] = useState([
     {
@@ -27,9 +28,48 @@ const Members = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  // Create refs for form inputs
+  const nameRef = useRef();
+  const positionRef = useRef();
+  const emailRef = useRef();
+  const phoneRef = useRef();
+  const passwordRef = useRef(); // not used but ref exists
+
   const handleClose = () => {
     setShowModal(false);
   };
+
+  const handleAddMember = () => {
+    const newMember = {
+      id: members.length + 1,
+      name: nameRef.current.value,
+      position: positionRef.current.value,
+      email: emailRef.current.value,
+      phone: phoneRef.current.value,
+    };
+
+    if (!newMember.name || !newMember.position || !newMember.email) {
+      toast.error("Name, Position, and Email are required!");
+      return;
+    }
+
+    setMembers((prevMembers) => [...prevMembers, newMember]);
+    setShowModal(false);
+  };
+
+  // if (load) {
+  //   return (
+  //     <div className="d-flex justify-content-center align-items-center min-vh-100">
+  //       <BeatLoader
+  //         color="#0866FF"
+  //         size={20}
+  //         aria-label="Loading Spinner"
+  //         data-testid="loader"
+  //       />
+  //     </div>
+  //   );
+  // }
+
   return (
     <>
       <div className="heading__wrapper d-flex justify-content-between align-items-center px-4">
@@ -41,7 +81,6 @@ const Members = () => {
       <div className="container">
         <div className="row members__container__wrapper">
           <div className="col-12 bg-white py-3 px-4 shadow-sm rounded">
-            {/* Team Members Table */}
             <div className="table-responsive">
               <table className="table mb-0">
                 <thead className="table-height">
@@ -93,6 +132,7 @@ const Members = () => {
                         type="text"
                         className="form-control w-100"
                         name="name"
+                        ref={nameRef}
                         placeholder="Enter full name"
                       />
                     </div>
@@ -105,6 +145,7 @@ const Members = () => {
                         type="text"
                         className="form-control w-100"
                         name="position"
+                        ref={positionRef}
                         placeholder="Enter position"
                       />
                     </div>
@@ -116,8 +157,8 @@ const Members = () => {
                       <input
                         type="email"
                         className="form-control w-100"
-                        id="email"
                         name="email"
+                        ref={emailRef}
                         placeholder="Enter email address"
                       />
                     </div>
@@ -129,20 +170,21 @@ const Members = () => {
                       <input
                         type="tel"
                         className="form-control w-100"
-                        id="phone"
                         name="phone"
+                        ref={phoneRef}
                         placeholder="Enter phone number"
                       />
                     </div>
+
                     <div className="mb-3">
-                      <label htmlFor="phone" className="form-label">
+                      <label htmlFor="password" className="form-label">
                         Password
                       </label>
                       <input
                         type="password"
                         className="form-control w-100"
-                        id="phone"
-                        name="phone"
+                        name="password"
+                        ref={passwordRef}
                         placeholder="Enter user password"
                       />
                     </div>
@@ -159,6 +201,7 @@ const Members = () => {
                     <button
                       type="button"
                       className="commonBtn"
+                      onClick={handleAddMember}
                     >
                       Add Member
                     </button>
