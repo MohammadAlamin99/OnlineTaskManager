@@ -622,9 +622,10 @@ body {
 
 
 /* team member css start */
-.heading__wrapper{
+.heading__wrapper {
   padding: 24px 24px 0 24px;
 }
+
 .team__main__tile {
   color: var(--card-number-color);
   font-family: var(--dm-sans);
@@ -633,8 +634,12 @@ body {
   margin: 0;
 }
 
-.members__container__wrapper{
+.members__container__wrapper {
   padding: 24px;
+}
+
+.add__memberBG {
+  background: var(--active-bg-color);
 }
 
 /* team member css end */

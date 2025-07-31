@@ -26,46 +26,15 @@ const Members = () => {
   ]);
 
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    position: "",
-    email: "",
-    phone: "",
-  });
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = () => {
-    if (formData.name && formData.position && formData.email) {
-      const newMember = {
-        id: members.length + 1,
-        ...formData,
-      };
-      setMembers([...members, newMember]);
-      setFormData({ name: "", position: "", email: "", phone: "" });
-      setShowModal(false);
-    } else {
-      alert("Please fill in all required fields");
-    }
-  };
 
   const handleClose = () => {
     setShowModal(false);
-    setFormData({ name: "", position: "", email: "", phone: "" });
   };
   return (
     <>
       <div className="heading__wrapper d-flex justify-content-between align-items-center px-4">
         <h2 className="team__main__tile">🏆 Members</h2>
-        <button
-          className="commonBtn"
-          onClick={() => setShowModal(true)}
-        >
+        <button className="commonBtn" onClick={() => setShowModal(true)}>
           + Add Member
         </button>
       </div>
@@ -89,9 +58,7 @@ const Members = () => {
                     <tr key={member.id}>
                       <th>{index + 1}</th>
                       <td>{member.name}</td>
-                      <td>
-                          {member.position}
-                      </td>
+                      <td>{member.position}</td>
                       <td>{member.email}</td>
                       <td>{member.phone}</td>
                     </tr>
@@ -107,8 +74,8 @@ const Members = () => {
           <div className="modal fade show d-block">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
-                <div className="modal-header bg-primary text-white">
-                  <h5 className="modal-title">Add New Team Member</h5>
+                <div className="modal-header add__memberBG text-white">
+                  <h5 className="modal-title fs-6">Add New Team Member</h5>
                   <button
                     type="button"
                     className="btn-close btn-close-white"
@@ -124,11 +91,8 @@ const Members = () => {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
-                        id="name"
+                        className="form-control w-100"
                         name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
                         placeholder="Enter full name"
                       />
                     </div>
@@ -139,11 +103,8 @@ const Members = () => {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
-                        id="position"
+                        className="form-control w-100"
                         name="position"
-                        value={formData.position}
-                        onChange={handleInputChange}
                         placeholder="Enter position"
                       />
                     </div>
@@ -154,11 +115,9 @@ const Members = () => {
                       </label>
                       <input
                         type="email"
-                        className="form-control"
+                        className="form-control w-100"
                         id="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
                         placeholder="Enter email address"
                       />
                     </div>
@@ -169,12 +128,22 @@ const Members = () => {
                       </label>
                       <input
                         type="tel"
-                        className="form-control"
+                        className="form-control w-100"
                         id="phone"
                         name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
                         placeholder="Enter phone number"
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="phone" className="form-label">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        className="form-control w-100"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter user password"
                       />
                     </div>
                   </div>
@@ -182,15 +151,14 @@ const Members = () => {
                   <div className="modal-footer">
                     <button
                       type="button"
-                      className="btn btn-secondary"
+                      className="cencell_common_btn"
                       onClick={handleClose}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
-                      className="btn btn-primary"
-                      onClick={handleSubmit}
+                      className="commonBtn"
                     >
                       Add Member
                     </button>
