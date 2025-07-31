@@ -106,11 +106,11 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   };
 
   // Attachment functions
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const fileUrls = files.map((file) => URL.createObjectURL(file));
-    setAttachments([...attachments, ...fileUrls]);
-  };
+  // const handleFileUpload = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const fileUrls = files.map((file) => URL.createObjectURL(file));
+  //   setAttachments([...attachments, ...fileUrls]);
+  // };
 
   const handleAddUrlAttachment = () => {
     if (attachmentUrl.trim()) {
@@ -146,7 +146,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
       const result = await getUsersRequest();
       dispatch(setUser(result.data));
     })();
-  }, []);
+  }, [dispatch]);
 
   const assignToUser = SearchUser?.filter((user) =>
     user.name.toLowerCase().includes(assign.toLowerCase())
@@ -324,7 +324,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
             <div className="border rounded p-2 mb-3">
               {assignToUser
                 .filter((user) => user._id !== id)
-                .map((item, i) => {
+                .map((item) => {
                   return (
                     <div key={item} className="d-flex align-items-center mb-2">
                       <input

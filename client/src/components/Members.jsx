@@ -3,14 +3,18 @@ import { getUsersRequest, UserRegistrationRequiest } from "../apiRequiest/apiReq
 import { IsEmpty } from "../Helper/FormHelper";
 import toast, { Toaster } from "react-hot-toast";
 import BeatLoader from "react-spinners/BeatLoader";
+import badge from "../assets/images/adminVarificationBadge.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setMember } from "../redux/state-slice/member-slice";
+import { getUserDetails } from "../Helper/SessionHelper";
 const Members = () => {
   const [load, setLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const getAllmember = useSelector((state) => state.getAllMember.member);
   const memberDispatch = useDispatch();
 
+  // user details form localstorage
+  const userDetails = getUserDetails();
   // Fatch all member
   useEffect(() => {
     (async () => {
@@ -102,9 +106,12 @@ const Members = () => {
       <Toaster position="top-center" />
       <div className="heading__wrapper d-flex justify-content-between align-items-center px-4">
         <h2 className="team__main__tile">🏆 Members</h2>
-        <button className="commonBtn" onClick={() => setShowModal(true)}>
-          + Add Member
-        </button>
+        {userDetails?.role === "admin" && (
+          <button className="commonBtn d-block" onClick={() => setShowModal(true)}>
+            + Add Member
+          </button>
+        )}
+
       </div>
       <div className="container-fluid">
         <div className="row members__container__wrapper">
@@ -124,7 +131,18 @@ const Members = () => {
                   {getAllmember && getAllmember.map((member, index) => (
                     <tr key={member.id}>
                       <th>{index + 1}</th>
-                      <td>{member?.name}</td>
+                      <td className="d-flex align-items-center gap-2">
+                        <img src={member?.photo} alt={member?.photo} width={30} height={30} className="user_img rounded-circle" />
+                        {member?.name}
+                        <img
+                          className={`${member?.role === "admin" ? "d-block" : "d-none"
+                            }`}
+                          width={15}
+                          height={15}
+                          src={badge}
+                          alt=""
+                        />
+                      </td>
                       <td>{member?.designation}</td>
                       <td>{member.email}</td>
                       <td>{member.mobile}</td>

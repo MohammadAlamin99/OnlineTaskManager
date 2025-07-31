@@ -9,7 +9,6 @@ import toast, { Toaster } from "react-hot-toast";
 import {
   FaRegCalendarAlt,
   FaPaperclip,
-  FaUserPlus,
   FaSearch,
 } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
@@ -416,21 +415,25 @@ const EditCarosal = ({ props }) => {
                   />
                 </div>
                 <div className="row mb-3">
-                  <div className="col-md-4">
-                    <label className="form-label fw-bold">Due Date</label>
-                    <div className="input-group">
-                      <span className="input-group-text">
-                        <FaRegCalendarAlt />
-                      </span>
-                      <input
-                        ref={dueDateRef}
-                        type="date"
-                        className="form-control"
-                        disabled={isLoading}
-                        defaultValue={selectedTask?.dueDate?.split("T")[0]}
-                      />
-                    </div>
-                  </div>
+                  {
+                    user?.role === "admin" && (
+                      <div className="col-md-4">
+                        <label className="form-label fw-bold">Due Date</label>
+                        <div className="input-group">
+                          <span className="input-group-text">
+                            <FaRegCalendarAlt />
+                          </span>
+                          <input
+                            ref={dueDateRef}
+                            type="date"
+                            className="form-control"
+                            disabled={isLoading}
+                            defaultValue={selectedTask?.dueDate?.split("T")[0]}
+                          />
+                        </div>
+                      </div>
+                    )
+                  }
                   <div className="col-md-4">
                     <label className="form-label fw-bold">Status*</label>
                     <select
@@ -445,46 +448,54 @@ const EditCarosal = ({ props }) => {
                       <option value="Completed">Completed</option>
                     </select>
                   </div>
-                  <div className="col-md-4">
-                    <label className="form-label fw-bold">Priority*</label>
-                    <select
-                      ref={priorityRef}
-                      className="form-select"
-                      required
-                      disabled={isLoading}
-                      defaultValue={selectedTask.priority}
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                    </select>
-                  </div>
+                  {
+                    user?.role === "admin" && (
+                      <div className="col-md-4">
+                        <label className="form-label fw-bold">Priority*</label>
+                        <select
+                          ref={priorityRef}
+                          className="form-select"
+                          required
+                          disabled={isLoading}
+                          defaultValue={selectedTask.priority}
+                        >
+                          <option value="Low">Low</option>
+                          <option value="Medium">Medium</option>
+                          <option value="High">High</option>
+                        </select>
+                      </div>
+                    )
+                  }
                 </div>
                 <div className="mb-3">
                   <label className="form-label fw-bold">Checklist</label>
-                  <div className="input-group mb-2 d-flex no-wrap flex-nowrap">
-                    <input
-                      type="text"
-                      className="form-control w-90"
-                      placeholder="Add new checklist item"
-                      value={newChecklistItem}
-                      onChange={(e) => setNewChecklistItem(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleAddChecklistItem(e);
-                        }
-                      }}
-                      disabled={isLoading}
-                    />
-                    <button
-                      className="checklistBtn"
-                      type="button"
-                      onClick={handleAddChecklistItem}
-                      disabled={isLoading}
-                    >
-                      + Add
-                    </button>
-                  </div>
+                  {
+                    user?.role === "admin" && (
+                      <div className="input-group mb-2 d-flex no-wrap flex-nowrap">
+                        <input
+                          type="text"
+                          className="form-control w-90"
+                          placeholder="Add new checklist item"
+                          value={newChecklistItem}
+                          onChange={(e) => setNewChecklistItem(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddChecklistItem(e);
+                            }
+                          }}
+                          disabled={isLoading}
+                        />
+                        <button
+                          className="checklistBtn"
+                          type="button"
+                          onClick={handleAddChecklistItem}
+                          disabled={isLoading}
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    )
+                  }
                   {selectedTask?.todoCheckList?.length > 0 && (
                     <div className="border rounded p-2">
                       <div className="d-flex justify-content-between mb-1">
@@ -519,14 +530,19 @@ const EditCarosal = ({ props }) => {
                               {item.title}
                             </label>
                           </div>
-                          <button
-                            className="common-delete-icon"
-                            type="button"
-                            onClick={(e) => handleRemoveChecklistItem(e, index)}
-                            disabled={isLoading}
-                          >
-                            <MdDeleteOutline />
-                          </button>
+                          {
+                            user?.role === "admin" && (
+                              <button
+                                className="common-delete-icon"
+                                type="button"
+                                onClick={(e) => handleRemoveChecklistItem(e, index)}
+                                disabled={isLoading}
+                              >
+                                <MdDeleteOutline />
+                              </button>
+                            )
+                          }
+
                         </div>
                       ))}
                     </div>
@@ -534,29 +550,33 @@ const EditCarosal = ({ props }) => {
                 </div>
                 <div className="mb-3">
                   <label className="form-label fw-bold">Attachments</label>
-                  <div className="input-group mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Add attachment URL"
-                      value={newAttachment}
-                      onChange={(e) => setNewAttachment(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleAddAttachment(e);
-                        }
-                      }}
-                      disabled={isLoading}
-                    />
-                    <button
-                      className="checklistBtn"
-                      type="button"
-                      onClick={handleAddAttachment}
-                      disabled={isLoading}
-                    >
-                      <FaPaperclip />
-                    </button>
-                  </div>
+                  {
+                    user?.role === "admin" && (
+                      <div className="input-group mb-2">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Add attachment URL"
+                          value={newAttachment}
+                          onChange={(e) => setNewAttachment(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddAttachment(e);
+                            }
+                          }}
+                          disabled={isLoading}
+                        />
+                        <button
+                          className="checklistBtn"
+                          type="button"
+                          onClick={handleAddAttachment}
+                          disabled={isLoading}
+                        >
+                          <FaPaperclip />
+                        </button>
+                      </div>
+                    )
+                  }
                   {selectedTask.attachments?.length > 0 && (
                     <div className="border rounded p-2">
                       {selectedTask.attachments.map((attachment) => (
@@ -573,14 +593,18 @@ const EditCarosal = ({ props }) => {
                               ? `${attachment.url.slice(0, 30)}...`
                               : attachment.url}
                           </a>
-                          <button
-                            className="common-delete-icon"
-                            type="button"
-                            onClick={(e) => handleRemoveAttachment(e, attachment.id)}
-                            disabled={isLoading}
-                          >
-                            <MdDeleteOutline />
-                          </button>
+                          {
+                            user?.admin === "admin" && (
+                              <button
+                                className="common-delete-icon"
+                                type="button"
+                                onClick={(e) => handleRemoveAttachment(e, attachment.id)}
+                                disabled={isLoading}
+                              >
+                                <MdDeleteOutline />
+                              </button>
+                            )
+                          }
                         </div>
                       ))}
                     </div>
@@ -589,20 +613,24 @@ const EditCarosal = ({ props }) => {
                 <div className="mb-3">
                   <label className="form-label fw-bold">Assign To</label>
                   <div className="position-relative" ref={searchInputRef}>
-                    <div className="input-group mb-2">
-                      <span className="input-group-text">
-                        <FaSearch />
-                      </span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search users by name or email..."
-                        value={userSearchQuery}
-                        onChange={(e) => setUserSearchQuery(e.target.value)}
-                        onFocus={handleSearchInputFocus}
-                        disabled={isLoading}
-                      />
-                    </div>
+                    {
+                      user?.role === "admin" && (
+                        <div className="input-group mb-2">
+                          <span className="input-group-text">
+                            <FaSearch />
+                          </span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search users by name or email..."
+                            value={userSearchQuery}
+                            onChange={(e) => setUserSearchQuery(e.target.value)}
+                            onFocus={handleSearchInputFocus}
+                            disabled={isLoading}
+                          />
+                        </div>
+                      )
+                    }
                     {showSearchDropdown && (
                       <div
                         className="dropdown-menu show w-100"
@@ -665,14 +693,18 @@ const EditCarosal = ({ props }) => {
                               <h4 className="fs-6 m-0">{user?.name}</h4>
                             </div>
                           </div>
-                          <button
-                            className="common-delete-icon"
-                            type="button"
-                            onClick={(e) => handleRemoveAssignee(e, index)}
-                            disabled={isLoading}
-                          >
-                            <MdDeleteOutline />
-                          </button>
+                          {
+                            user?.role === "admin" && user?.role === "member" && (
+                              <button
+                                className="common-delete-icon"
+                                type="button"
+                                onClick={(e) => handleRemoveAssignee(e, index)}
+                                disabled={isLoading}
+                              >
+                                <MdDeleteOutline />
+                              </button>
+                            )
+                          }
                         </div>
                       ))}
                     </div>

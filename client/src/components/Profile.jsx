@@ -22,7 +22,7 @@ const Profile = () => {
       setLoaded(false);
       dispatch(setuserDetails(result["data"][0]));
     })();
-  }, [0]);
+  }, [dispatch]);
 
   // Logout button function
   const handleLogout = () => {
