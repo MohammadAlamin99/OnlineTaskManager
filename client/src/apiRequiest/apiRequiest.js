@@ -182,7 +182,6 @@ export async function UpdateTaskRequest(
             assignTo,
             createdBy,
         };
-
         const result = await axios.post(
             `${BaseURL}/api/v1/taskUpdate`,
             reqBody,
