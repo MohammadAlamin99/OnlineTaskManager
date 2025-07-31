@@ -1,77 +1,105 @@
-import { useState, useRef } from "react";
-// import toast, { Toaster } from "react-hot-toast";
-// import BeatLoader from "react-spinners/BeatLoader";
+import { useState, useRef, useEffect } from "react";
+import { getUsersRequest, UserRegistrationRequiest } from "../apiRequiest/apiRequiest";
+import { IsEmpty } from "../Helper/FormHelper";
+import toast, { Toaster } from "react-hot-toast";
+import BeatLoader from "react-spinners/BeatLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { setMember } from "../redux/state-slice/member-slice";
 const Members = () => {
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Frontend Developer",
-      email: "john@example.com",
-      phone: "+1234567890",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Backend Developer",
-      email: "jane@example.com",
-      phone: "+0987654321",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      position: "UI/UX Designer",
-      email: "mike@example.com",
-      phone: "+1122334455",
-    },
-  ]);
-
+  const [load, setLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const getAllmember = useSelector((state) => state.getAllMember.member);
+  const memberDispatch = useDispatch();
+
+  // Fatch all member
+  useEffect(() => {
+    (async () => {
+      const result = await getUsersRequest();
+      console.log(result);
+      memberDispatch(setMember(result?.data));
+    })();
+  }, [memberDispatch]);
 
   // Create refs for form inputs
   const nameRef = useRef();
   const positionRef = useRef();
   const emailRef = useRef();
   const phoneRef = useRef();
-  const passwordRef = useRef(); 
+  const passwordRef = useRef();
 
   const handleClose = () => {
     setShowModal(false);
   };
 
-  const handleAddMember = () => {
-    const newMember = {
-      id: members.length + 1,
-      name: nameRef.current.value,
-      position: positionRef.current.value,
-      email: emailRef.current.value,
-      phone: phoneRef.current.value,
-    };
-
-    if (!newMember.name || !newMember.position || !newMember.email) {
-      // toast.error("Name, Position, and Email are required!");
-      return;
+  const handleAddMember = async () => {
+    const name = nameRef.current.value;
+    const positon = nameRef.current.value;
+    const email = emailRef.current.value;
+    const phone = phoneRef.current.value;
+    const password = passwordRef.current.value;
+    const admincode = "none";
+    const photo = "https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg";
+    if (IsEmpty(name)) {
+      toast.error("Name Required!");
     }
+    else if (IsEmpty(email)) {
+      toast.error("Email Required!");
+    }
+    else if (IsEmpty(password)) {
+      toast.error("Password Required!");
+    }
+    else {
+      try {
+        setLoaded(true);
+        const res = await UserRegistrationRequiest(
+          email,
+          name,
+          phone,
+          password,
+          admincode,
+          positon,
+          photo
+        );
+        setLoaded(false);
 
-    setMembers((prevMembers) => [...prevMembers, newMember]);
-    setShowModal(false);
+        if (res.status === 200) {
+          if (res.data.status === "Success") {
+            toast.success("User Add successfully !");
+            setShowModal(false);
+          } else if (res.data.status === "fail") {
+            if (
+              res.data.message.keyPattern &&
+              res.data.message.keyPattern.email === 1
+            ) {
+              toast.error("Email Already Exists");
+            } else {
+              toast.error("Something Went Wrong");
+            }
+          }
+        }
+      } catch (error) {
+        toast.error("Something Went Wrong");
+        setLoaded(false);
+      }
+    }
   };
 
-  // if (load) {
-  //   return (
-  //     <div className="d-flex justify-content-center align-items-center min-vh-100">
-  //       <BeatLoader
-  //         color="#0866FF"
-  //         size={20}
-  //         aria-label="Loading Spinner"
-  //         data-testid="loader"
-  //       />
-  //     </div>
-  //   );
-  // }
+  if (load) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <BeatLoader
+          color="#0866FF"
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   return (
     <>
+      <Toaster position="top-center" />
       <div className="heading__wrapper d-flex justify-content-between align-items-center px-4">
         <h2 className="team__main__tile">🏆 Members</h2>
         <button className="commonBtn" onClick={() => setShowModal(true)}>
@@ -85,7 +113,7 @@ const Members = () => {
               <table className="table mb-0">
                 <thead className="table-height">
                   <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">No</th>
                     <th scope="col">Name</th>
                     <th scope="col">Position</th>
                     <th scope="col">Email</th>
@@ -93,13 +121,13 @@ const Members = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {members.map((member, index) => (
+                  {getAllmember && getAllmember.map((member, index) => (
                     <tr key={member.id}>
                       <th>{index + 1}</th>
-                      <td>{member.name}</td>
-                      <td>{member.position}</td>
+                      <td>{member?.name}</td>
+                      <td>{member?.designation}</td>
                       <td>{member.email}</td>
-                      <td>{member.phone}</td>
+                      <td>{member.mobile}</td>
                     </tr>
                   ))}
                 </tbody>
