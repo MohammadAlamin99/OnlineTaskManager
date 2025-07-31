@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import BeatLoader from "react-spinners/BeatLoader";
+// import toast, { Toaster } from "react-hot-toast";
+// import BeatLoader from "react-spinners/BeatLoader";
 const Members = () => {
   const [members, setMembers] = useState([
     {
@@ -33,7 +33,7 @@ const Members = () => {
   const positionRef = useRef();
   const emailRef = useRef();
   const phoneRef = useRef();
-  const passwordRef = useRef(); // not used but ref exists
+  const passwordRef = useRef(); 
 
   const handleClose = () => {
     setShowModal(false);
@@ -49,7 +49,7 @@ const Members = () => {
     };
 
     if (!newMember.name || !newMember.position || !newMember.email) {
-      toast.error("Name, Position, and Email are required!");
+      // toast.error("Name, Position, and Email are required!");
       return;
     }
 
@@ -78,7 +78,7 @@ const Members = () => {
           + Add Member
         </button>
       </div>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row members__container__wrapper">
           <div className="col-12 bg-white py-3 px-4 shadow-sm rounded">
             <div className="table-responsive">

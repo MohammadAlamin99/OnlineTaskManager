@@ -45,6 +45,8 @@ const CreateTask = () => {
   const hideUpdate = () => {
     setUpadateCarousel(false);
   };
+    // user details form localstorage
+  const userDetails = getUserDetails();
   // get all task
   useEffect(() => {
     (async () => {
@@ -53,7 +55,7 @@ const CreateTask = () => {
       setLoaded(false);
       dispatch(setAlltask(result));
     })();
-  }, [0]);
+  }, [dispatch, userDetails?._id]);
 
   // when create task... updated data without reload
   const handleTaskCreated = (newTask) => {
@@ -86,8 +88,7 @@ const CreateTask = () => {
     });
   };
 
-  // user details form localstorage
-  const userDetails = getUserDetails();
+
   return (
     <>
       <div className="">

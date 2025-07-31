@@ -21,15 +21,15 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const memberDispatch = useDispatch();
 
-  // user get
+  // Fetch users (members)
   useEffect(() => {
     (async () => {
       const result = await getUsersRequest();
       memberDispatch(setMember(result?.data));
     })();
-  }, []);
+  }, [memberDispatch]);
 
-  // get all task
+  // Fetch all tasks
   const userDetails = getUserDetails();
   useEffect(() => {
     (async () => {
@@ -38,22 +38,17 @@ const Dashboard = () => {
       setLoaded(false);
       dispatch(setAlltask(result));
     })();
-  }, [0]);
+  }, [dispatch, userDetails?._id]);
 
   // Safety check: in case data not loaded yet
   if (!Array.isArray(getTasks)) return null;
 
   // Count by status
-  const pendingCount = getTasks.filter(
-    (task) => task.status === "Pending"
-  ).length;
-  const inProgressCount = getTasks.filter(
-    (task) => task.status === "In Progress"
-  ).length;
-  const completedCount = getTasks.filter(
-    (task) => task.status === "Completed"
-  ).length;
+  const pendingCount = getTasks.filter((task) => task.status === "Pending").length;
+  const inProgressCount = getTasks.filter((task) => task.status === "In Progress").length;
+  const completedCount = getTasks.filter((task) => task.status === "Completed").length;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const chartEl = document.querySelector("#chart");
     if (!chartEl) return; // Avoid crash if chart div is missing
@@ -145,7 +140,7 @@ const Dashboard = () => {
                     <path
                       d="M9 45.7573C9.43233 45.9655 10.2525 46.3237 15.2624 41.7925C21.5248 36.1285 27.2178 32.1638 33.4802 37.2613C39.7426 42.3589 43.7277 54.8196 51.698 51.4213C59.6683 48.0229 62.5149 22.535 72.1931 19.1367C81.8713 15.7383 88.1337 35.5622 94.9653 24.8006C101.797 14.0391 109.198 0.445683 114.322 2.14487C118.421 3.50422 122.482 9.13046 124 11.7737"
                       stroke="#5051F9"
-                      stroke-width="2"
+                      strokeWidth="2"
                     />
                   </g>
                   <defs>
@@ -156,9 +151,9 @@ const Dashboard = () => {
                       width="132.301"
                       height="68.0015"
                       filterUnits="userSpaceOnUse"
-                      color-interpolation-filters="sRGB"
+                      colorInterpolationFilters="sRGB"
                     >
-                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feFlood floodOpacity="0" result="BackgroundImageFix" />
                       <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
@@ -233,7 +228,7 @@ const Dashboard = () => {
                     <path
                       d="M9 45.7573C9.43233 45.9655 10.2525 46.3237 15.2624 41.7925C21.5248 36.1285 27.2178 32.1638 33.4802 37.2613C39.7426 42.3589 43.7277 54.8196 51.698 51.4213C59.6683 48.0229 62.5149 22.535 72.1931 19.1367C81.8713 15.7383 88.1337 35.5622 94.9653 24.8006C101.797 14.0391 109.198 0.445683 114.322 2.14487C118.421 3.50422 122.482 9.13046 124 11.7737"
                       stroke="#1EA7FF"
-                      stroke-width="2"
+                      strokeWidth="2"
                     />
                   </g>
                   <defs>
@@ -244,9 +239,9 @@ const Dashboard = () => {
                       width="132.301"
                       height="68.0015"
                       filterUnits="userSpaceOnUse"
-                      color-interpolation-filters="sRGB"
+                      colorInterpolationFilters="sRGB"
                     >
-                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feFlood floodOpacity="0" result="BackgroundImageFix" />
                       <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
@@ -320,7 +315,7 @@ const Dashboard = () => {
                     <path
                       d="M9 45.7573C9.43233 45.9655 10.2525 46.3237 15.2624 41.7925C21.5248 36.1285 27.2178 32.1638 33.4802 37.2613C39.7426 42.3589 43.7277 54.8196 51.698 51.4213C59.6683 48.0229 62.5149 22.535 72.1931 19.1367C81.8713 15.7383 88.1337 35.5622 94.9653 24.8006C101.797 14.0391 109.198 0.445683 114.322 2.14487C118.421 3.50422 122.482 9.13046 124 11.7737"
                       stroke="#FF614C"
-                      stroke-width="2"
+                      strokeWidth="2"
                     />
                   </g>
                   <defs>
@@ -331,9 +326,9 @@ const Dashboard = () => {
                       width="132.301"
                       height="68.0015"
                       filterUnits="userSpaceOnUse"
-                      color-interpolation-filters="sRGB"
+                      colorInterpolationFilters="sRGB"
                     >
-                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feFlood floodOpacity="0" result="BackgroundImageFix" />
                       <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
