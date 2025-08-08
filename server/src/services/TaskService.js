@@ -1,3 +1,4 @@
+const NotificationModel = require("../models/NotificationModel");
 const TasksModel = require("../models/TasksModel");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -8,10 +9,17 @@ exports.CreateTask = async (req) => {
   try {
     if (req.headers["role"] === "admin") {
       let reqBody = req.body;
-      reqBody.email = req.headers["email"];
 
+      // create task
       let data = await TasksModel.create(reqBody);
-      return { status: "success", data: data };
+      let notifi_msg = `New task "${reqBody?.title}" has been created.`;
+
+      // Create notification
+      let notification = await NotificationModel.create({
+        users: reqBody.assignTo,
+        message: notifi_msg,
+      });
+      return { status: "success", data: data, notification: notification };
     }
     else {
       return { status: "fail", message: "Only admin can create tasks" };
