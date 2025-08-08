@@ -21,14 +21,14 @@ exports.UserRegistration = async (req) => {
 exports.UserLogin = async (req) => {
   try {
     let reqBody = req.body;
-    if (!UsersModel?.isActive) {
-      return { status: "fail", message: "User account has been deactivated, contact the administrator" };
-    }
     let data = await UsersModel.aggregate([
       { $match: reqBody },
       { $project: { password: 0, createdDate: 0 } },
     ]);
     if (data.length > 0) {
+      if (!data[0].isActive) {
+        return { status: "fail", message: "User account has been deactivated, contact the administrator" };
+      }
       let payload = { email: data[0]["email"], role: data[0]["role"] }; //token create process
       let token = jwt.sign(payload, "bcd123");
       return { status: "success", token: token, data: data[0] };
@@ -83,5 +83,18 @@ exports.findUser = async () => {
     return { status: "success", data: data };
   } catch (e) {
     return { status: "fail", message: e };
+  }
+};
+
+
+// user update
+exports.userUpdate = async (req) => {
+  try {
+    let reqBody = req.body;
+    let id = reqBody.id;
+    let data = await UsersModel.updateOne({ _id: id }, { $set: reqBody });
+    return { status: "success", data: data };
+  } catch (e) {
+    return { status: "fail", message: "something went wrong" };
   }
 };

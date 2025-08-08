@@ -1,5 +1,5 @@
 
-const { UserRegistration, UserLogin, UpadateProfile, UserProfileDetails, RecoveryEmailVerify, RecoveryVerifyOTP, RecoveryNewPassword, findUser } = require("../services/UserService");
+const { UserRegistration, UserLogin, UpadateProfile, UserProfileDetails, RecoveryEmailVerify, RecoveryVerifyOTP, RecoveryNewPassword, findUser, userUpdate } = require("../services/UserService");
 
 exports.registration = async (req, res) => {
    let result = await UserRegistration(req);
@@ -31,9 +31,11 @@ exports.userDetails = async(req, res)=>{
    return res.status(200).json(result);
 }
 
-
-
-
+// user update
+exports.updateUser = async(req, res)=>{
+   let result = await userUpdate(req);
+   return res.status(200).json(result);
+}
 
 // Recover verify email
 exports.verifyEmail = async(req, res)=>{

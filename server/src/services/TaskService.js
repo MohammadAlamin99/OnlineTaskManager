@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 // Create tasks
-
 exports.CreateTask = async (req) => {
   try {
     if (req.headers["role"] === "admin") {
@@ -12,12 +11,22 @@ exports.CreateTask = async (req) => {
 
       // create task
       let data = await TasksModel.create(reqBody);
-      let notifi_msg = `New task "${reqBody?.title}" has been created.`;
+      let text = "New task has been assigned to you";
+      if (reqBody.assignTo?.length > 1) {
+        text = text + ` and ${reqBody.assignTo?.length - 1} others.`;
+      }
+
+      text =
+        text +
+        ` The task priority is set a ${reqBody.priority
+        } priority, so check and act accordingly. The task date is ${new Date(
+          reqBody.dueDate
+        ).toDateString()}. Thank you!!!`;
 
       // Create notification
       let notification = await NotificationModel.create({
         users: reqBody.assignTo,
-        message: notifi_msg,
+        message: text,
       });
       return { status: "success", data: data, notification: notification };
     }
@@ -28,7 +37,6 @@ exports.CreateTask = async (req) => {
     return { status: "fail", message: "something went wrong" };
   }
 };
-
 
 // getting all task
 exports.getAllTask = async (req) => {
@@ -116,9 +124,7 @@ exports.getTaskById = async (req) => {
   }
 };
 
-
 // update Task
-
 exports.updaeTask = async (req) => {
   try {
     let reqBody = req.body;
@@ -149,7 +155,6 @@ exports.deleteTask = async (req) => {
 };
 
 // Get Update Task
-
 exports.getUpdateTask = async (req) => {
   try {
     let id = req.params.id;
@@ -162,7 +167,6 @@ exports.getUpdateTask = async (req) => {
 };
 
 //  select task
-
 exports.ListTaskByStatus = async (req, res) => {
   try {
     let status = req.params.status;

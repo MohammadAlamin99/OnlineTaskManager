@@ -8,6 +8,7 @@ const AuthVerificationMiddleware = require("../middlewares/AuthVerificationMiddl
 router.post("/registration", UsersController.registration)
 router.post("/userLogin", UsersController.userLogin)
 router.post("/upadateProfile",AuthVerificationMiddleware, UsersController.upadateProfile)
+router.post("/updateUser",AuthVerificationMiddleware, UsersController.updateUser)
 router.get("/userDetails",AuthVerificationMiddleware, UsersController.userDetails)
 // profile details
 router.get("/profileDetails",AuthVerificationMiddleware, UsersController.profileDetails)
