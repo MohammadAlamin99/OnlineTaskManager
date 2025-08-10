@@ -13,14 +13,12 @@ const Members = () => {
   const [load, setLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [activeModal, setActiveModal] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState(null); // Store selected user ID
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const getAllmember = useSelector((state) => state.getAllMember.member);
   const memberDispatch = useDispatch();
 
-  // user details form localstorage
   const userDetails = getUserDetails();
 
-  // Fetch all member
   useEffect(() => {
     (async () => {
       const result = await getUsersRequest();
@@ -28,25 +26,21 @@ const Members = () => {
     })();
   }, [memberDispatch]);
 
-  // Create refs for form inputs
   const nameRef = useRef();
   const positionRef = useRef();
   const emailRef = useRef();
   const phoneRef = useRef();
   const passwordRef = useRef();
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
-
+  const handleClose = () => setShowModal(false);
   const handleActiveClose = () => {
     setActiveModal(false);
-    setSelectedUserId(null); // Reset selected user ID
+    setSelectedUserId(null);
   };
 
   const handleAddMember = async () => {
     const name = nameRef.current.value;
-    const position = positionRef.current.value; // Fixed typo: was using nameRef instead of positionRef
+    const position = positionRef.current.value;
     const email = emailRef.current.value;
     const phone = phoneRef.current.value;
     const password = passwordRef.current.value;
@@ -55,14 +49,11 @@ const Members = () => {
 
     if (IsEmpty(name)) {
       toast.error("Name Required!");
-    }
-    else if (IsEmpty(email)) {
+    } else if (IsEmpty(email)) {
       toast.error("Email Required!");
-    }
-    else if (IsEmpty(password)) {
+    } else if (IsEmpty(password)) {
       toast.error("Password Required!");
-    }
-    else {
+    } else {
       try {
         setLoaded(true);
         const res = await UserRegistrationRequiest(
@@ -71,7 +62,7 @@ const Members = () => {
           phone,
           password,
           admincode,
-          position, // Fixed: now using position variable
+          position,
           photo
         );
         setLoaded(false);
@@ -80,7 +71,6 @@ const Members = () => {
           if (res.data.status === "Success") {
             toast.success("User Add successfully !");
             setShowModal(false);
-            // Refresh member list after adding new member
             const result = await getUsersRequest();
             memberDispatch(setMember(result?.data));
           } else if (res.data.status === "fail") {
@@ -101,18 +91,15 @@ const Members = () => {
     }
   };
 
-  // Open modal and set selected user ID
   const handleActionClick = (id) => {
     setActiveModal(true);
     setSelectedUserId(id);
   };
 
-  // Handle user status update (active/deactive)
   const handleStatusUpdate = async (status) => {
     try {
       setLoaded(true);
       await userUpdateRequest(selectedUserId, status);
-      // 🔄 Re-fetch updated list
       const result = await getUsersRequest();
       memberDispatch(setMember(result?.data));
       toast.success(`User status updated successfully!`);
@@ -128,12 +115,7 @@ const Members = () => {
   if (load) {
     return (
       <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <BeatLoader
-          color="#0866FF"
-          size={20}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+        <BeatLoader color="#0866FF" size={20} aria-label="Loading Spinner" data-testid="loader" />
       </div>
     );
   }
@@ -174,14 +156,8 @@ const Members = () => {
                         <img src={member?.photo} alt={member?.photo} width={30} height={30} className="user_img rounded-circle" />
                         {member?.name}
                         {member?.role === "admin" && (
-                          <img
-                            width={15}
-                            height={15}
-                            src={badge}
-                            alt=""
-                          />
+                          <img width={15} height={15} src={badge} alt="" />
                         )}
-
                       </td>
                       <td>{member?.designation}</td>
                       <td>{member.email}</td>
@@ -193,9 +169,7 @@ const Members = () => {
                       </td>
                       <td>
                         <div className="edit__team__member__button">
-                          <LiaEditSolid
-                            onClick={() => handleActionClick(member?._id)}
-                          />
+                          <LiaEditSolid onClick={() => handleActionClick(member?._id)} />
                         </div>
                       </td>
                     </tr>
@@ -208,146 +182,73 @@ const Members = () => {
 
         {/* Add Member Modal */}
         {showModal && (
-          <div className="modal fade show d-block">
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header add__memberBG text-white">
-                  <h5 className="modal-title fs-6">Add New Team Member</h5>
-                  <button
-                    type="button"
-                    className="btn-close btn-close-white"
-                    onClick={handleClose}
-                  ></button>
-                </div>
-
-                <div>
-                  <div className="modal-body">
-                    <div className="mb-3">
-                      <label htmlFor="name" className="form-label">
-                        Full Name <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control w-100"
-                        name="name"
-                        ref={nameRef}
-                        placeholder="Enter full name"
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="position" className="form-label">
-                        Position <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control w-100"
-                        name="position"
-                        ref={positionRef}
-                        placeholder="Enter position"
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="email" className="form-label">
-                        Email <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control w-100"
-                        name="email"
-                        ref={emailRef}
-                        placeholder="Enter email address"
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="phone" className="form-label">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        className="form-control w-100"
-                        name="phone"
-                        ref={phoneRef}
-                        placeholder="Enter phone number"
-                      />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="password" className="form-label">
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control w-100"
-                        name="password"
-                        ref={passwordRef}
-                        placeholder="Enter user password"
-                      />
-                    </div>
+          <>
+            <div className="modal fade show d-block" tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header add__memberBG text-white">
+                    <h5 className="modal-title fs-6">Add New Team Member</h5>
+                    <button type="button" className="btn-close btn-close-white" onClick={handleClose}></button>
                   </div>
-
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="cencell_common_btn"
-                      onClick={handleClose}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="commonBtn"
-                      onClick={handleAddMember}
-                    >
-                      Add Member
-                    </button>
+                  <div>
+                    <div className="modal-body">
+                      <div className="mb-3">
+                        <label className="form-label">Full Name <span className="text-danger">*</span></label>
+                        <input type="text" className="form-control w-100" ref={nameRef} placeholder="Enter full name" />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Position <span className="text-danger">*</span></label>
+                        <input type="text" className="form-control w-100" ref={positionRef} placeholder="Enter position" />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Email <span className="text-danger">*</span></label>
+                        <input type="email" className="form-control w-100" ref={emailRef} placeholder="Enter email address" />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Phone</label>
+                        <input type="tel" className="form-control w-100" ref={phoneRef} placeholder="Enter phone number" />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Password</label>
+                        <input type="password" className="form-control w-100" ref={passwordRef} placeholder="Enter user password" />
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="cencell_common_btn" onClick={handleClose}>Cancel</button>
+                      <button type="button" className="commonBtn" onClick={handleAddMember}>Add Member</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            {/* Backdrop */}
+            <div className="modal-backdrop fade show"></div>
+          </>
         )}
 
         {/* User Status Update Modal */}
         {activeModal && (
-          <div className="modal fade show d-block">
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header add__memberBG text-white">
-                  <h5 className="modal-title fs-6">Update User Status</h5>
-                  <button
-                    type="button"
-                    className="btn-close btn-close-white"
-                    onClick={handleActiveClose}
-                  ></button>
-                </div>
-
-                <div className="modal-body">
-                  <p>Are you sure you want to update the user status?</p>
-
-                </div>
-
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-success me-2"
-                    onClick={() => handleStatusUpdate(true, selectedUserId)}
-                  >
-                    Active
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleStatusUpdate(false, selectedUserId)}
-                  >
-                    Deactivate
-                  </button>
+          <>
+            <div className="modal fade show d-block" tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header add__memberBG text-white">
+                    <h5 className="modal-title fs-6">Update User Status</h5>
+                    <button type="button" className="btn-close btn-close-white" onClick={handleActiveClose}></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>Are you sure you want to update the user status?</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-success me-2" onClick={() => handleStatusUpdate(true)}>Active</button>
+                    <button type="button" className="btn btn-danger" onClick={() => handleStatusUpdate(false)}>Deactivate</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            {/* Backdrop */}
+            <div className="modal-backdrop fade show"></div>
+          </>
         )}
       </div>
     </>
