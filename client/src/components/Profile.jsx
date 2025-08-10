@@ -35,17 +35,23 @@ const Profile = () => {
   const NameRef = useRef();
   const mobileRef = useRef();
   const designationRef = useRef();
+  const oldPasswordRef = useRef();
+  const passwordRef = useRef();
   const photoRef = useRef();
 
   const onSubmitHanler = async () => {
     const email = emailRef.current.value;
     const name = NameRef.current.value;
     const mobile = mobileRef.current.value;
+    const oldPassword = oldPasswordRef.current.value;
+    const password = passwordRef.current.value;
     const designation = designationRef.current.value;
     const photo = photoRef.current.value;
-    console.log("designation", designation);
 
-    await UserProfileUpdateRequest(email, name, mobile, designation, photo);
+    const data = await UserProfileUpdateRequest(email, name, mobile, oldPassword, password, designation, photo);
+    if (data.data.message === "Old password is incorrect") {
+      toast.error("Old password is incorrect");
+    }
     toast.success("Profile Update Successfully!");
     // window.location.reload();
   };
@@ -182,6 +188,30 @@ const Profile = () => {
                       placeholder="Designation"
                       className="form-control w-100 form-control-lg fs-6 border-2"
                       type="text"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold text-dark">
+                      Old password
+                    </label>
+                    <input
+                      ref={oldPasswordRef}
+                      defaultValue={userGet?.password}
+                      placeholder="Password"
+                      className="form-control w-100 form-control-lg fs-6 border-2"
+                      type="password"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold text-dark">
+                      New password
+                    </label>
+                    <input
+                      ref={passwordRef}
+                      defaultValue={userGet?.password}
+                      placeholder="Password"
+                      className="form-control w-100 form-control-lg fs-6 border-2"
+                      type="password"
                     />
                   </div>
 

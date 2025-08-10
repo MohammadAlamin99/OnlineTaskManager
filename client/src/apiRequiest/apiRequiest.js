@@ -7,7 +7,7 @@ const Headers = { headers: { "token": getToken() } };
 // registraion
 export async function UserRegistrationRequiest(email, name, mobile, password, adminCode, designation, photo) {
     try {
-        let reqBody = { email: email, name: name, mobile: mobile, password: password, adminCode:adminCode, designation:designation, photo: photo }
+        let reqBody = { email: email, name: name, mobile: mobile, password: password, adminCode: adminCode, designation: designation, photo: photo }
         let result = await axios.post(BaseURL + '/api/v1/registration', reqBody);
         return result;
     }
@@ -42,8 +42,8 @@ export async function getUsersRequest() {
 //  user update 
 export async function userUpdateRequest(id, isActive) {
     try {
-        let reqbody ={id:id, isActive:isActive} 
-        let result = await axios.post(BaseURL + '/api/v1/updateUser',reqbody, Headers);
+        let reqbody = { id: id, isActive: isActive }
+        let result = await axios.post(BaseURL + '/api/v1/updateUser', reqbody, Headers);
         let data = result['data']
         return data;
     }
@@ -230,9 +230,9 @@ export async function totalTaskCountRequest(status) {
 
 //  User profile update
 
-export async function UserProfileUpdateRequest(email, name, mobile, designation, photo) {
+export async function UserProfileUpdateRequest(email, name, mobile, oldPassword, password, designation, photo) {
     try {
-        let reqBody = { email: email, name: name, mobile: mobile, designation: designation, photo: photo }
+        let reqBody = { email: email, name: name, mobile: mobile, oldPassword: oldPassword, password: password, designation: designation, photo: photo }
         let UserDetails = { email: email, name: name, mobile: mobile, designation: designation, photo: photo }
         let result = await axios.post(BaseURL + '/api/v1/upadateProfile', reqBody, Headers);
         setUserDetails(UserDetails);

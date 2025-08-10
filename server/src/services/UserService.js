@@ -41,16 +41,37 @@ exports.UserLogin = async (req) => {
 };
 
 // Profile update
+
 exports.UpadateProfile = async (req) => {
   try {
     let email = req.headers["email"];
-    let reqBody = req.body;
-    let data = await UsersModel.updateOne({ email: email }, reqBody);
-    return { status: "success", data: data };
+    // password find 
+    let user = await UsersModel.findOne({ email });
+
+    let { oldPassword, password, ...reqbody } = req.body;
+    if (password) {
+      if (!oldPassword) {
+        return { status: "fail", message: "Old password is required" };
+      }
+      if (user.password !== oldPassword) {
+        return { status: "fail", message: "Old password is incorrect" };
+      }
+
+      reqbody.password = password;
+    }
+
+    let data = await UsersModel.updateOne(
+      { email: email },
+      { $set: reqbody },
+      { upsert: true }
+    );
+
+    return { status: "success", data };
   } catch (e) {
     return { status: "fail", message: "something went wrong" };
   }
 };
+
 
 // Profile Details
 exports.UserProfileDetails = async (req) => {
