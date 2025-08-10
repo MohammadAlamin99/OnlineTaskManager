@@ -444,6 +444,15 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
+.edit__team__member__button{
+  display: flex;
+  justify-content: start;
+}
+.edit__team__member__button svg{
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
 
 .custom_container .team_member {
   margin-top: 30px;

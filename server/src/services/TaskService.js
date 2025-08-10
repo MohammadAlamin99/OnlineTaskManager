@@ -17,12 +17,7 @@ exports.CreateTask = async (req) => {
         text = text + ` and ${reqBody.assignTo?.length - 1} others.`;
       }
 
-      text =
-        text +
-        ` The task priority is set a ${reqBody.priority
-        } priority, so check and act accordingly. The task date is ${new Date(
-          reqBody.dueDate
-        ).toDateString()}.Thank you!!!`;
+      text = text + ` The task priority is set a ${reqBody.priority} priority, so check and act accordingly. The task date is ${new Date(reqBody.dueDate).toDateString()}.Thank you!!!`;
 
       // Create notification
       let notification = await NotificationModel.create({

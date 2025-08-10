@@ -26,12 +26,16 @@ const Login = () => {
         setLoaded(false);
 
         if (res.status === 200) {
-          if (res.data.status === "fail") {
-            toast.error("Wrong Password or Email");
-          } else {
+          if (res.data.message === "Username or password invalid") {
+            toast.error("Username or password invalid", { duration: 1000 });
+          }
+          else if (res.data.message === "User account has been deactivated, contact the administrator") {
+            toast.error("User account has been deactivated, contact the administrator", { duration: 4000 });
+          }
+          else {
             setToken(res.data["token"]);
             setUserDetails(res.data["data"]);
-            toast.success("Login Success");
+            toast.success("Login Success", { duration: 1000 });
             window.location.href = "/";
           }
         }
@@ -57,7 +61,11 @@ const Login = () => {
 
   return (
     <Fragment>
-      <Toaster position="top-right" />
+      <Toaster position="top-right"
+        toastOptions={{
+          duration: 1000,
+        }}
+      />
       <div className="min-vh-100 d-flex align-items-center bg-light">
         <div className="container">
           <div className="row justify-content-center">

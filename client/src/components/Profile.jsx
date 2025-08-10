@@ -86,12 +86,13 @@ const Profile = () => {
                   <div className="flex-grow-1">
                     <h3 className="fw-bold text-dark fs-5 mb-0 d-flex align-items-center gap-2">
                       {userGet?.name}
-                      <img
-                        className={`Varification__badge ${userGet?.role === "admin" ? "" : "d-none"
-                          }`}
-                        src={badge}
-                        alt=""
-                      />
+                      {userGet?.role === "admin" && (
+                        <img
+                          className="Varification__badge"
+                          src={badge}
+                          alt=""
+                        />
+                      )}
                     </h3>
                     <p className="text-muted mb-0 fs-6">{userGet?.email}</p>
                     <p className="text-muted mb-0 fs-6">{userGet?.mobile}</p>

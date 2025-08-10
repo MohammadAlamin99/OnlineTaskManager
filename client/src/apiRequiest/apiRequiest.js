@@ -39,6 +39,18 @@ export async function getUsersRequest() {
         return false
     }
 }
+//  user update 
+export async function userUpdateRequest(id, isActive) {
+    try {
+        let reqbody ={id:id, isActive:isActive} 
+        let result = await axios.post(BaseURL + '/api/v1/updateUser',reqbody, Headers);
+        let data = result['data']
+        return data;
+    }
+    catch (e) {
+        return false
+    }
+}
 
 // create task 
 export async function CreateTaskRequest(reqBody) {

@@ -386,15 +386,14 @@ const Dashboard = () => {
                     <div className="user_text">
                       <div className="d-flex align-items-center gap-1">
                         <h4 className="member_name m-0">{member?.name}</h4>
-                        <img
-                          className={`${
-                            member?.role === "admin" ? "d-block" : "d-none"
-                          }`}
-                          width={15}
-                          height={15}
-                          src={badge}
-                          alt=""
-                        />
+                        {member?.role === "admin" && (
+                          <img
+                            width={15}
+                            height={15}
+                            src={badge}
+                            alt=""
+                          />
+                        )}
                       </div>
                       <p className="member_email m-0">{member?.email}</p>
                     </div>
