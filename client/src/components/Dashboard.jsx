@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import ApexCharts from "apexcharts";
-import {
-  getAllTaskRequest,
-  getUsersRequest,
-} from "../apiRequiest/apiRequiest";
+import { getAllTaskRequest, getUsersRequest } from "../apiRequiest/apiRequiest";
 import BeatLoader from "react-spinners/BeatLoader";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,9 +41,15 @@ const Dashboard = () => {
   if (!Array.isArray(getTasks)) return null;
 
   // Count by status
-  const pendingCount = getTasks.filter((task) => task.status === "Pending").length;
-  const inProgressCount = getTasks.filter((task) => task.status === "In Progress").length;
-  const completedCount = getTasks.filter((task) => task.status === "Completed").length;
+  const pendingCount = getTasks.filter(
+    (task) => task.status === "Pending"
+  ).length;
+  const inProgressCount = getTasks.filter(
+    (task) => task.status === "In Progress"
+  ).length;
+  const completedCount = getTasks.filter(
+    (task) => task.status === "Completed"
+  ).length;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -387,12 +390,7 @@ const Dashboard = () => {
                       <div className="d-flex align-items-center gap-1">
                         <h4 className="member_name m-0">{member?.name}</h4>
                         {member?.role === "admin" && (
-                          <img
-                            width={15}
-                            height={15}
-                            src={badge}
-                            alt=""
-                          />
+                          <img width={15} height={15} src={badge} alt="" />
                         )}
                       </div>
                       <p className="member_email m-0">{member?.email}</p>
