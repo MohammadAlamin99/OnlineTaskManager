@@ -1,5 +1,6 @@
 const NotificationModel = require("../models/NotificationModel");
 const TasksModel = require("../models/TasksModel");
+const io = require("../../../socket/socket");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -21,13 +22,14 @@ exports.CreateTask = async (req) => {
         ` The task priority is set a ${reqBody.priority
         } priority, so check and act accordingly. The task date is ${new Date(
           reqBody.dueDate
-        ).toDateString()}. Thank you!!!`;
+        ).toDateString()}.Thank you!!!`;
 
       // Create notification
       let notification = await NotificationModel.create({
         users: reqBody.assignTo,
         message: text,
       });
+
       return { status: "success", data: data, notification: notification };
     }
     else {
