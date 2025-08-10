@@ -48,12 +48,22 @@ const Profile = () => {
     const designation = designationRef.current.value;
     const photo = photoRef.current.value;
 
-    const data = await UserProfileUpdateRequest(email, name, mobile, oldPassword, password, designation, photo);
+    const data = await UserProfileUpdateRequest(
+      email,
+      name,
+      mobile,
+      oldPassword,
+      password,
+      designation,
+      photo
+    );
     if (data.data.message === "Old password is incorrect") {
       toast.error("Old password is incorrect");
+    } else {
+      toast.success("Profile Update Successfully!");
+      const result = await userDetailsRequest();
+      dispatch(setuserDetails(result["data"][0]));
     }
-    toast.success("Profile Update Successfully!");
-    // window.location.reload();
   };
 
   return load ? (
@@ -70,10 +80,10 @@ const Profile = () => {
     </div>
   ) : (
     <div className="bg-light min-vh-100 py-4">
-      <div className="container">
+      <div className="container-fluid">
         {/* Profile Header Section */}
         <div className="row justify-content-center mb-4">
-          <div className="col-lg-8">
+          <div className="col-lg-12 px-4">
             <div className="card shadow border-0 mb-4">
               <div className="card-body p-4">
                 <div className="d-flex align-items-center flex-column flex-md-row text-center text-md-start">
@@ -106,7 +116,10 @@ const Profile = () => {
                   <div>
                     <div className="d-flex gap-2">
                       <p className="adminTag m-0">{userGet?.role}</p>
-                      <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
+                      <button
+                        onClick={handleLogout}
+                        className="btn btn-outline-danger btn-sm"
+                      >
                         <TbLogout className="me-2" />
                         Log Out
                       </button>
@@ -120,7 +133,7 @@ const Profile = () => {
 
         {/* Profile Settings Form */}
         <div className="row justify-content-center">
-          <div className="col-lg-8">
+          <div className="col-lg-12 px-4">
             <div className="card shadow border-0">
               <div className="card-header profile__settings text-white">
                 <h4 className="fw-semibold fs-5">Profile Settings</h4>
@@ -234,7 +247,7 @@ const Profile = () => {
 
         {/* Additional Info Card */}
         <div className="row justify-content-center mt-4">
-          <div className="col-lg-8">
+          <div className="col-lg-12 px-4">
             <div className="card border-0 bg-primary bg-opacity-10">
               <div className="card-body p-3">
                 <div className="d-flex align-items-center">
@@ -252,7 +265,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </div>
   );

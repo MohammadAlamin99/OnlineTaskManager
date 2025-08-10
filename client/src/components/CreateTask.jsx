@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import BeatLoader from "react-spinners/BeatLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlltask } from "../redux/state-slice/allTask-slice";
-import { getUserDetails } from "../Helper/SessionHelper";
+import { setuserDetails } from "../redux/state-slice/getUserDetails-slice";
 
 const CreateTask = () => {
   const [load, setLoaded] = useState(false);
@@ -23,6 +23,7 @@ const CreateTask = () => {
 
   const getTasks = useSelector((state) => state.getAllTask.alltask);
   const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.userGet.userDetails);
 
   // create task carousel
   const showCarousel = () => {
@@ -45,8 +46,16 @@ const CreateTask = () => {
   const hideUpdate = () => {
     setUpadateCarousel(false);
   };
-  // user details form localstorage
-  const userDetails = getUserDetails();
+
+  useEffect(() => {
+    (async () => {
+      setLoaded(true);
+      const result = await userDetailsRequest();
+      setLoaded(false);
+      dispatch(setuserDetails(result["data"][0]));
+    })();
+  }, [dispatch]);
+
   // get all task
   useEffect(() => {
     (async () => {
@@ -88,7 +97,6 @@ const CreateTask = () => {
     });
   };
 
-
   return (
     <>
       <div className="">
@@ -106,35 +114,31 @@ const CreateTask = () => {
               <div className="col-lg-8 taskText">
                 <p>🔥 Task</p>
               </div>
-              {
-                userDetails?.role === "admin" && (
-                  <div
-                    className={`col-lg-4 createTask`}
-                  >
-                    <button onClick={showCarousel}>
-                      Create Task
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <rect width="24" height="24" rx="7" fill="#E8EAFF" />
-                        <rect x="11" y="7" width="2" height="10" fill="#6772FE" />
-                        <rect
-                          x="7"
-                          y="13"
-                          width="2"
-                          height="10"
-                          transform="rotate(-90 7 13)"
-                          fill="#6772FE"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )
-              }
+              {userDetails?.role === "admin" && (
+                <div className={`col-lg-4 createTask`}>
+                  <button onClick={showCarousel}>
+                    Create Task
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <rect width="24" height="24" rx="7" fill="#E8EAFF" />
+                      <rect x="11" y="7" width="2" height="10" fill="#6772FE" />
+                      <rect
+                        x="7"
+                        y="13"
+                        width="2"
+                        height="10"
+                        transform="rotate(-90 7 13)"
+                        fill="#6772FE"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
             {load ? (
               <div className="loader-container">
@@ -212,8 +216,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.createdDate
                                       ? new Date(
-                                        item.createdDate
-                                      ).toLocaleDateString()
+                                          item.createdDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -227,8 +231,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.dueDate
                                       ? new Date(
-                                        item.dueDate
-                                      ).toLocaleDateString()
+                                          item.dueDate
+                                        ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -265,14 +269,15 @@ const CreateTask = () => {
                                 <div
                                   className="progress-fill"
                                   style={{
-                                    width: `${item?.todoCheckList?.length
-                                      ? (item?.todoCheckList?.filter(
-                                        (s) => s.completed
-                                      ).length /
-                                        item?.todoCheckList?.length) *
-                                      100
-                                      : 0
-                                      }%`,
+                                    width: `${
+                                      item?.todoCheckList?.length
+                                        ? (item?.todoCheckList?.filter(
+                                            (s) => s.completed
+                                          ).length /
+                                            item?.todoCheckList?.length) *
+                                          100
+                                        : 0
+                                    }%`,
                                   }}
                                 ></div>
                               </div>
@@ -294,20 +299,19 @@ const CreateTask = () => {
                                 <span>{item?.attachments?.length} file</span>
                               </div>
                               <div
-                                className={`d-flex align-items-center gap-2`}>
-                                {
-                                  userDetails?.role === "admin" && (
-                                    <AiOutlineDelete
-                                      onClick={() => DeleteTaskHandler(item?._id)}
-                                      style={{
-                                        color: "#768396",
-                                        width: "18px",
-                                        height: "18px",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                  )
-                                }
+                                className={`d-flex align-items-center gap-2`}
+                              >
+                                {userDetails?.role === "admin" && (
+                                  <AiOutlineDelete
+                                    onClick={() => DeleteTaskHandler(item?._id)}
+                                    style={{
+                                      color: "#768396",
+                                      width: "18px",
+                                      height: "18px",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                )}
                                 <LiaEditSolid
                                   onClick={() => showUpdate(item._id)}
                                   style={{

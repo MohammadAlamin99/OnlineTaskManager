@@ -1,43 +1,43 @@
 class SessionHelper {
 
-    setToken(token){
+    setToken(token) {
         localStorage.setItem("token", token)
     }
-    getToken(){
+    getToken() {
         return localStorage.getItem("token")
     }
 
 
-    setUserDetails(userDetails){
+    setUserDetails(userDetails) {
         localStorage.setItem("userDetails", JSON.stringify(userDetails))
     }
-    
-    getUserDetails(){
-       return JSON.parse(localStorage.getItem("userDetails"))
+
+    getUserDetails() {
+        return JSON.parse(localStorage.getItem("userDetails"))
     }
 
-    logoutUser = ()=>{
+    logoutUser = () => {
         localStorage.clear();
-        window.location.href="/login"
+        window.location.href = "/login"
     }
 
 
 
 
 
-    setEmail(Email){
-        localStorage.setItem("Email",Email)
+    setEmail(Email) {
+        localStorage.setItem("Email", Email)
     }
-    getEmail(){
+    getEmail() {
         return localStorage.getItem("Email")
     }
 
-    setOTP(OTP){
-        localStorage.setItem("OTP",OTP)
+    setOTP(OTP) {
+        localStorage.setItem("OTP", OTP)
     }
-    getOTP(){
+    getOTP() {
         return localStorage.getItem("OTP")
     }
 }
 
-export const {setToken,getToken,setUserDetails,getUserDetails,logoutUser,setEmail,getEmail,setOTP,getOTP}= new SessionHelper();
+export const { setToken, getToken, setUserDetails, getUserDetails, logoutUser, setEmail, getEmail, setOTP, getOTP } = new SessionHelper();

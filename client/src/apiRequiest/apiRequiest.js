@@ -217,16 +217,6 @@ export async function StatusUpdateRequest(id, status) {
     }
 }
 
-// Total Task Count
-
-export async function totalTaskCountRequest(status) {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/totalCounTask/' + status, Headers);
-        return result['data']['data'];
-    } catch (e) {
-        return false
-    }
-}
 
 //  User profile update
 
