@@ -18,7 +18,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
 
   // State variables
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [assets, setAssets] = useState("");
+  const [assets, setAssets] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [todoCheckList, setTodoCheckList] = useState([]);
   const [newChecklistItem, setNewChecklistItem] = useState("");
@@ -80,6 +80,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
       props();
     }
   };
+
 
   // Checklist functions
   const handleAddChecklistItem = () => {

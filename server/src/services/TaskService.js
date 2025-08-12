@@ -35,7 +35,7 @@ exports.CreateTask = async (req) => {
     }
   } catch (e) {
     console.log(e)
-    return { status: "fail", message: "something went wrong" };
+    return { status: "fail", message: e.toString()};
   }
 };
 
