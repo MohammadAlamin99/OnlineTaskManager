@@ -18,6 +18,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
 
   // State variables
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [assets, setAssets] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [todoCheckList, setTodoCheckList] = useState([]);
   const [newChecklistItem, setNewChecklistItem] = useState("");
@@ -65,6 +66,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
         assignTo: selectedUsers,
         createdBy: id,
         attachments,
+        assets,
         todoCheckList,
       };
 
@@ -122,7 +124,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
   const handleRemoveAttachment = (index) => {
     const updatedAttachments = [...attachments];
     // Only revoke object URLs (for file uploads)
-    if (typeof updatedAttachments[index] !== 'string') {
+    if (typeof updatedAttachments[index] !== "string") {
       URL.revokeObjectURL(updatedAttachments[index]);
     }
     updatedAttachments.splice(index, 1);
@@ -266,6 +268,7 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
               </div>
             )}
           </div>
+
           <div className="mb-3">
             <label className="form-label">Add Attachment URL</label>
             <div className="input-group mb-2">
@@ -309,6 +312,19 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
               </div>
             </div>
           )}
+
+          <div className="mb-3">
+            <label className="form-label">Assets</label>
+            <div className="input-group mb-2">
+              <input
+                type="file"
+                className="form-control"
+                placeholder="Enter URL"
+                value={assets}
+                onChange={(e) => setAssets(e.target.value)}
+              />
+            </div>
+          </div>
 
           <div className="mb-3">
             <label className="form-label">Assign To</label>

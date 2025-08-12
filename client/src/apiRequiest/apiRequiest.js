@@ -16,7 +16,6 @@ export async function UserRegistrationRequiest(email, name, mobile, password, ad
     }
 }
 
-
 //  login
 export async function UserLoginRequiest(email, password) {
     try {

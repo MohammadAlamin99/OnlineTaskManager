@@ -3,6 +3,7 @@ const router = express.Router();
 const UsersController = require("../controllers/UsersController");
 const TasksController = require("../controllers/TasksController");
 const AuthVerificationMiddleware = require("../middlewares/AuthVerificationMiddleware");
+const upload = require("../middlewares/uploadAssests");
 
 
 router.post("/registration", UsersController.registration)
@@ -15,7 +16,7 @@ router.get("/profileDetails",AuthVerificationMiddleware, UsersController.profile
 router.post("/upadateProfile",AuthVerificationMiddleware, UsersController.upadateProfile)
 
 // createing task
-router.post("/createTask",AuthVerificationMiddleware, TasksController.taskCreate)
+router.post("/createTask",AuthVerificationMiddleware, upload.array("assets", 5), TasksController.taskCreate)
 router.get("/getTaskController/:status",AuthVerificationMiddleware, TasksController.getTaskController)
 router.get("/getAllTask",AuthVerificationMiddleware, TasksController.getAllTaskController)
 router.get("/taskById",AuthVerificationMiddleware, TasksController.taskById)

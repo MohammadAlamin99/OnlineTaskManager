@@ -9,28 +9,32 @@ exports.CreateTask = async (req) => {
   try {
     if (req.headers["role"] === "admin") {
       let reqBody = req.body;
-
+      if (req.files && req.files.length > 0) {
+        reqBody.assets = req.files.map(file => file.filename);
+      }
       // create task
-      let data = await TasksModel.create(reqBody);
+      await TasksModel.create(reqBody);
       let text = "New task has been assigned to you";
       if (reqBody.assignTo?.length > 1) {
         text = text + ` and ${reqBody.assignTo?.length - 1} others.`;
       }
-
-      text = text + ` The task priority is set a ${reqBody.priority} priority, so check and act accordingly. The task date is ${new Date(reqBody.dueDate).toDateString()}.Thank you!!!`;
+      text = text + ` The task priority is set a ${reqBody.priority} priority, so check and act accordingly.
+      The task date is ${new Date(reqBody.dueDate).toDateString()}.Thank you!!!`;
 
       // Create notification
-      let notification = await NotificationModel.create({
+      await NotificationModel.create({
         users: reqBody.assignTo,
         message: text,
       });
 
-      return { status: "success", data: data, notification: notification };
+      return { status: "success", data: "Task created", notification: "Notification sent" };
     }
     else {
+      
       return { status: "fail", message: "Only admin can create tasks" };
     }
   } catch (e) {
+    console.log(e)
     return { status: "fail", message: "something went wrong" };
   }
 };
@@ -168,7 +172,7 @@ exports.ListTaskByStatus = async (req, res) => {
   try {
     let status = req.params.status;
     let email = req.headers["email"];
-    
+
     let result = await TasksModel.aggregate([
       { $match: { status: status, email: email } },
 

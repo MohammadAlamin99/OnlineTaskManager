@@ -25,6 +25,7 @@ const DataSchema = mongoose.Schema(
     assignTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
     attachments: [{ type: String }],
+    assets: [{ type: String }],
     todoCheckList: [todoSchema],
     createdDate: { type: Date, default: Date.now() },
   },
