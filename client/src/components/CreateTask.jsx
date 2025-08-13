@@ -6,6 +6,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import {
   DeleteTaskRequest,
   getAllTaskRequest,
+  userDetailsRequest,
 } from "../apiRequiest/apiRequiest";
 import { LiaEditSolid } from "react-icons/lia";
 import EditCarosal from "./EditCarosal";
@@ -20,8 +21,8 @@ const CreateTask = () => {
   const [load, setLoaded] = useState(false);
   const [isCarouselVisible, setCarouselVisible] = useState(false);
   const [isUpadateCarousel, setUpadateCarousel] = useState(false);
-
   const getTasks = useSelector((state) => state.getAllTask.alltask);
+
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.userGet.userDetails);
 
@@ -58,6 +59,7 @@ const CreateTask = () => {
 
   // get all task
   useEffect(() => {
+    if (!userDetails?._id) return;
     (async () => {
       setLoaded(true);
       let result = await getAllTaskRequest(userDetails?._id, userDetails?._id);
@@ -153,11 +155,10 @@ const CreateTask = () => {
               <div className="row g-0">
                 <div className="getTask d-flex pb-2">
                   <div className="card-container">
-                    {getTasks && getTasks.length > 0 ? (
-                      getTasks &&
-                      getTasks.map((item, i) => {
+                    {getTasks.length > 0 ? (
+                      getTasks.map((item, id) => {
                         return (
-                          <div key={i} className="task-card">
+                          <div key={id} className="task-card">
                             <div className="d-flex justify-content-between align-items-center mb-3">
                               <div className="tag-wrapper d-flex align-items-center gap-2">
                                 {/* Status Tags */}
@@ -216,8 +217,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.createdDate
                                       ? new Date(
-                                          item.createdDate
-                                        ).toLocaleDateString()
+                                        item.createdDate
+                                      ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -231,8 +232,8 @@ const CreateTask = () => {
                                   <span>
                                     {item?.dueDate
                                       ? new Date(
-                                          item.dueDate
-                                        ).toLocaleDateString()
+                                        item.dueDate
+                                      ).toLocaleDateString()
                                       : "No start date"}
                                   </span>
                                 </div>
@@ -269,15 +270,14 @@ const CreateTask = () => {
                                 <div
                                   className="progress-fill"
                                   style={{
-                                    width: `${
-                                      item?.todoCheckList?.length
-                                        ? (item?.todoCheckList?.filter(
-                                            (s) => s.completed
-                                          ).length /
-                                            item?.todoCheckList?.length) *
-                                          100
-                                        : 0
-                                    }%`,
+                                    width: `${item?.todoCheckList?.length
+                                      ? (item?.todoCheckList?.filter(
+                                        (s) => s.completed
+                                      ).length /
+                                        item?.todoCheckList?.length) *
+                                      100
+                                      : 0
+                                      }%`,
                                   }}
                                 ></div>
                               </div>

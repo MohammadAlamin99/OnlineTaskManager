@@ -52,14 +52,15 @@ export async function userUpdateRequest(id, isActive) {
 }
 
 // create task 
-export async function CreateTaskRequest(reqBody) {
+export async function CreateTaskRequest(reqbody) {
     try {
-        let result = await axios.post(BaseURL + '/api/v1/createTask', reqBody, Headers);
+        let result = await axios.post(BaseURL + '/api/v1/createTask', reqbody, Headers);
         return result;
     } catch (e) {
         return false;
     }
 }
+
 
 
 // get task request

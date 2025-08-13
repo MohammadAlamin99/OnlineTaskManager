@@ -9,6 +9,8 @@ exports.CreateTask = async (req) => {
   try {
     if (req.headers["role"] === "admin") {
       let reqBody = req.body;
+      reqBody.todoCheckList = JSON.parse(req.body.todoCheckList);
+
       if (req.files && req.files.length > 0) {
         reqBody.assets = req.files.map(file => file.filename);
       }
@@ -30,12 +32,11 @@ exports.CreateTask = async (req) => {
       return { status: "success", data: "Task created", notification: "Notification sent" };
     }
     else {
-      
+
       return { status: "fail", message: "Only admin can create tasks" };
     }
   } catch (e) {
-    console.log(e)
-    return { status: "fail", message: e.toString()};
+    return { status: "fail", message: e.toString() };
   }
 };
 
