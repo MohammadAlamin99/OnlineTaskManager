@@ -69,8 +69,9 @@ const CreateTask = () => {
   }, [dispatch, userDetails?._id]);
 
   // when create task... updated data without reload
-  const handleTaskCreated = (newTask) => {
-    dispatch(setAlltask([newTask, ...getTasks]));
+  const handleTaskCreated = async () => {
+    let result = await getAllTaskRequest(userDetails?._id, userDetails?._id);
+    dispatch(setAlltask(result));
   };
 
   // delete Task
