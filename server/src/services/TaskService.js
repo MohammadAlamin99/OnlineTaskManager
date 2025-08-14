@@ -25,6 +25,7 @@ exports.CreateTask = async (req) => {
 
       // Create notification
       await NotificationModel.create({
+        type: "New task",
         users: reqBody.assignTo,
         message: text,
       });

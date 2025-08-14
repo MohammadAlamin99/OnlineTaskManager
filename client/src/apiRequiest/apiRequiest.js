@@ -31,7 +31,7 @@ export async function UserLoginRequiest(email, password) {
 export async function getUsersRequest() {
     try {
         let result = await axios.get(BaseURL + '/api/v1/userDetails', Headers);
-        let data = result['data']
+        let data = result['data'];
         return data;
     }
     catch (e) {
@@ -61,18 +61,6 @@ export async function CreateTaskRequest(reqbody) {
     }
 }
 
-
-
-// get task request
-export async function getTaskRequest(status) {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/getTaskController/' + status, Headers);
-        let data = result['data']['data']
-        return data;
-    } catch (e) {
-        return false
-    }
-}
 // get all task request
 export async function getAllTaskRequest(createdBy, assignTo) {
     try {
@@ -100,51 +88,37 @@ export async function getTaskbyIdRequest(id) {
     }
 }
 
-// get In Progress request
-export async function getInProgressRequest(status) {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/getInprogress/' + status, Headers);
-        let data = result['data']['data']
-        return data;
-    } catch (e) {
-        return false
-    }
-}
-// get In Completed request
-export async function getCompletedRequest(status) {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/getInprogress/' + status, Headers);
-        let data = result['data']['data']
-        return data;
-    } catch (e) {
-        return false
-    }
-}
 
-
-//  List by status requiest
-export async function ListByStatusRequiest(status) {
+// GET Notification 
+export async function getNotificationRequest(users) {
+    const params = {};
+    if (users) {
+        params.users = users;
+    }
     try {
-        let result = await axios.get(BaseURL + '/api/v1/listByStatus/' + status, Headers);
-        let data = result.data["data"];
-        return data
+        let result = await axios.get(`${BaseURL}/api/v1/notification`, {
+            params,
+            ...Headers,
+        });
+        return result.data.data;
     }
     catch (e) {
-        return false
+        return [];
     }
 }
 
-//  Task list count
-export async function ListTaskCountRequiest(status) {
+// mark as read notification
+export async function getMarkAsReadRequest(notificationId, userID) {
     try {
-        let result = await axios.get(BaseURL + '/api/v1/totalCounTask/' + status, Headers);
-        let data = result.data["data"];
-        return data;
+        let reqbody = { notificationId: notificationId, userId: userID }
+        let result = await axios.post(`${BaseURL}/api/v1/markAsRead`, reqbody, Headers);
+        return result.data.data;
     }
     catch (e) {
-        return false
+        return [];
     }
 }
+
 
 //  Delete Task
 export async function DeleteTaskRequest(id) {
@@ -156,19 +130,6 @@ export async function DeleteTaskRequest(id) {
         return false
     }
 }
-
-//  update task
-// export async function UpdateTaskRequest(id, title, description, dueDate, priority, status, category) {
-//     try {
-//         let reqBody = { id: id, title: title, description: description, dueDate: dueDate, priority: priority, status: status, category: category };
-//         let result = await axios.post(BaseURL + '/api/v1/taskUpdate', reqBody, Headers);
-//         return result
-//     }
-//     catch (e) {
-//         return false
-//     }
-// }
-
 export async function UpdateTaskRequest(
     id,
     title,
@@ -255,17 +216,6 @@ export async function getUpdateTaskRequest(id) {
         return data;
     } catch (e) {
         return false
-    }
-}
-
-// get team task
-export async function getTeamTaskRequest(id) {
-    try {
-        let result = await axios.get(BaseURL + '/api/v1/getTeamTask/' + id, Headers);
-        let data = result['data']['message'];
-        return data;
-    } catch (e) {
-        return false;
     }
 }
 

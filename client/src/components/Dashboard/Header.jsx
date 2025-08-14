@@ -1,52 +1,65 @@
 import { useEffect, useState } from "react";
 import { FaTasks } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { userDetailsRequest } from "../../apiRequiest/apiRequiest";
+import {
+  getMarkAsReadRequest,
+  getNotificationRequest,
+  userDetailsRequest,
+} from "../../apiRequiest/apiRequiest";
 import { setuserDetails } from "../../redux/state-slice/getUserDetails-slice";
+import { setNotification } from "../../redux/state-slice/notification-slice";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userGet = useSelector((state) => state.userGet.userDetails);
+  const getNotification = useSelector(
+    (state) => state.getNotification.notification
+  );
+
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Sample notification data - replace with your actual data
-  const notifications = [
-    {
-      id: 1,
-      title: "New Task Assigned",
-      message: "You have been assigned a new task: Complete project documentation",
-      time: "2 minutes ago",
-      isRead: false
-    },
-    {
-      id: 2,
-      title: "Meeting Reminder",
-      message: "Team meeting scheduled at 3:00 PM today",
-      time: "1 hour ago",
-      isRead: true
-    }
-  ];
+  useEffect(() => {
+    if (!userGet?._id) return;
+    (async () => {
+      let result = await getNotificationRequest(userGet._id);
+      dispatch(setNotification(result));
+    })();
+  }, [dispatch, userGet?._id]);
 
   useEffect(() => {
     (async () => {
       let result = await userDetailsRequest();
       dispatch(setuserDetails(result["data"][0]));
     })();
-  }, [0]);
+  }, [dispatch]);
+
+  // update notification as read
+  const isReadHandler = async (notificationId) => {
+    await getMarkAsReadRequest(notificationId, userGet?._id);
+    let result = await getNotificationRequest(userGet._id);
+    dispatch(setNotification(result));
+  };
+
+  // unread notification count
+  const unreadNotificationCount = getNotification.filter(
+    (item) => !item.isRead.includes(userGet._id)
+  ).length;
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
 
   const handleClickOutside = (e) => {
-    if (!e.target.closest('.notification-wrapper')) {
+    if (!e.target.closest(".notification-wrapper")) {
       setShowNotifications(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   return (
@@ -70,7 +83,11 @@ const Header = () => {
         </div>
         <div className="header_right col-lg-2 d-flex justify-content-end align-items-center gap-3 p-0">
           <div className="notification-wrapper position-relative">
-            <div className="notification" onClick={toggleNotifications} style={{ cursor: 'pointer' }}>
+            <div
+              className="notification"
+              onClick={toggleNotifications}
+              style={{ cursor: "pointer" }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -83,7 +100,9 @@ const Header = () => {
                   fill="#768396"
                 />
               </svg>
-              <span>2</span>
+              {unreadNotificationCount > 0 && (
+                <span>{unreadNotificationCount}</span>
+              )}
             </div>
 
             {/* Notification Dropdown */}
@@ -91,12 +110,12 @@ const Header = () => {
               <div
                 className="notification-dropdown position-absolute bg-white border rounded shadow-lg p-3"
                 style={{
-                  top: '100%',
-                  right: '0',
-                  minWidth: '300px',
-                  maxWidth: '400px',
+                  top: "100%",
+                  right: "0",
+                  minWidth: "300px",
+                  maxWidth: "400px",
                   zIndex: 1000,
-                  marginTop: '8px'
+                  marginTop: "8px",
                 }}
               >
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -104,36 +123,59 @@ const Header = () => {
                   <small className="text-muted">Mark all as read</small>
                 </div>
 
-                <div className="notification-list" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                  {notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`notification-item p-2 mb-2 rounded ${!notification.isRead ? 'bg-light' : ''}`}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div className="d-flex justify-content-between align-items-start">
-                        <div className="flex-grow-1">
-                          <h6 className="mb-1 fw-semibold" style={{ fontSize: '14px' }}>
-                            {notification.title}
-                          </h6>
-                          <p className="mb-1 text-muted" style={{ fontSize: '12px' }}>
-                            {notification.message}
-                          </p>
-                          <small className="text-muted">{notification.time}</small>
-                        </div>
-                        {!notification.isRead && (
+                <div
+                  className="notification-list"
+                  style={{ maxHeight: "300px", overflowY: "auto" }}
+                >
+                  {getNotification.length > 0
+                    ? getNotification.map((item, i) => {
+                        return (
                           <div
-                            className="bg-primary rounded-circle"
-                            style={{ width: '8px', height: '8px', marginTop: '4px' }}
-                          ></div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                            key={i}
+                            className={`notification-item p-2 mb-2 rounded ${
+                              !item.isRead.includes(userGet._id)
+                                ? "bg-light"
+                                : ""
+                            }`}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              isReadHandler(item._id);
+                              if (item.type === "New task") {
+                                navigate("/task");
+                              }
+                            }}
+                          >
+                            <div className="d-flex justify-content-between align-items-start">
+                              <div className="flex-grow-1">
+                                <h6
+                                  className="mb-1 fw-semibold"
+                                  style={{ fontSize: "14px" }}
+                                >
+                                  {item.type}
+                                </h6>
+                                <p
+                                  className="mb-1 text-muted"
+                                  style={{ fontSize: "12px" }}
+                                >
+                                  {item.message}
+                                </p>
+                                <small className="text-muted">
+                                  {new Date(
+                                    item.createdAt
+                                  ).toLocaleDateString()}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : "no notification"}
                 </div>
 
                 <div className="text-center mt-3">
-                  <a href="#" className="text-decoration-none small">View all notifications</a>
+                  <a href="#" className="text-decoration-none small">
+                    View all notifications
+                  </a>
                 </div>
               </div>
             )}
