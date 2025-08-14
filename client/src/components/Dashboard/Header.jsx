@@ -127,49 +127,48 @@ const Header = () => {
                   className="notification-list"
                   style={{ maxHeight: "300px", overflowY: "auto" }}
                 >
-                  {getNotification.length > 0
-                    ? getNotification.map((item, i) => {
-                        return (
-                          <div
-                            key={i}
-                            className={`notification-item p-2 mb-2 rounded ${
-                              !item.isRead.includes(userGet._id)
-                                ? "bg-light"
-                                : ""
-                            }`}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              isReadHandler(item._id);
-                              if (item.type === "New task") {
-                                navigate("/task");
-                              }
-                            }}
-                          >
-                            <div className="d-flex justify-content-between align-items-start">
-                              <div className="flex-grow-1">
-                                <h6
-                                  className="mb-1 fw-semibold"
-                                  style={{ fontSize: "14px" }}
-                                >
-                                  {item.type}
-                                </h6>
-                                <p
-                                  className="mb-1 text-muted"
-                                  style={{ fontSize: "12px" }}
-                                >
-                                  {item.message}
-                                </p>
-                                <small className="text-muted">
-                                  {new Date(
-                                    item.createdAt
-                                  ).toLocaleDateString()}
-                                </small>
-                              </div>
+                  {getNotification.length > 0 ? (
+                    getNotification.map((item, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className={`notification-item p-2 mb-2 rounded ${
+                            !item.isRead.includes(userGet._id) ? "bg-light" : ""
+                          }`}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            isReadHandler(item._id);
+                            if (item.type === "New task") {
+                              navigate("/task");
+                            }
+                          }}
+                        >
+                          <div className="d-flex justify-content-between align-items-start">
+                            <div className="flex-grow-1">
+                              <h6
+                                className="mb-1 fw-semibold"
+                                style={{ fontSize: "14px" }}
+                              >
+                                {item.type}
+                              </h6>
+                              <p
+                                className="mb-1 text-muted"
+                                style={{ fontSize: "12px" }}
+                              >
+                                {item.message}
+                              </p>
+                              <small className="text-muted">
+                                {new Date(item.createdAt).toLocaleDateString()}
+                              </small>
                             </div>
                           </div>
-                        );
-                      })
-                    : "no notification"}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p className="no-data-found fs-6">No Notification Found</p>
+
+                  )}
                 </div>
 
                 <div className="text-center mt-3">

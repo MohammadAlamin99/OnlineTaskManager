@@ -34,8 +34,6 @@ const TaskCarosal = ({ props, onTaskCreated }) => {
       setId(result?.data?.[0]._id);
     })();
   }, []);
-
-
   const onBtnClick = async () => {
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;

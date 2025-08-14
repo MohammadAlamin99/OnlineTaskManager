@@ -112,10 +112,15 @@ exports.findUser = async () => {
 // user update
 exports.userUpdate = async (req) => {
   try {
-    let reqBody = req.body;
-    let id = reqBody.id;
-    let data = await UsersModel.updateOne({ _id: id }, { $set: reqBody });
-    return { status: "success", data: data };
+    if (req.headers["role"] === "admin") {
+      let reqBody = req.body;
+      let id = reqBody.id;
+      let data = await UsersModel.updateOne({ _id: id }, { $set: reqBody });
+      return { status: "success", data: data };
+    }
+    else {
+      return { status: "fail", message: "only admin can update" };
+    }
   } catch (e) {
     return { status: "fail", message: "something went wrong" };
   }
